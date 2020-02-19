@@ -13,12 +13,22 @@
 #include "../incs/minishell.h"
 #include <stdio.h>
 
-int main()
+int main(int ac, char **av)
 {
-	printf("test : %zu\n", ft_strlen("test"));
-	char *entry = "\"ec\'h \'\"o\"\" test";
-	char *treated_entry = NULL;
-	if (!sanitize(entry, &treated_entry))
-		return (0);
-	printf("Treated entry : %s\n", treated_entry);
+	char	*entry;
+	char	*treated;
+	
+	(void)ac;
+	(void)av;
+	entry = NULL;
+	treated = NULL;
+	while (get_next_line(&entry) == SUCCESS)
+	{
+		printf("test : %zu\n", ft_strlen("test"));
+		printf("entry : %s\n", entry);
+		if (!sanitize(entry, &treated))
+			return (0);
+		printf("Treated entry : |%s|\n", treated);
+	}
+	exit(0);
 }
