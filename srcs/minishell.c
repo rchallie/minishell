@@ -26,6 +26,7 @@ int main(int ac, char **av)
 	{
 		printf("test : %zu\n", ft_strlen("test"));
 		printf("entry : %s\n", entry);
+		treated = NULL;
 		if (!sanitize(entry, &treated))
 			return (0);
 		printf("Treated entry : |%s|\n", treated);
