@@ -18,6 +18,8 @@
 
 # include "../srcs/libft/libft.h"
 
-int		sanitize(char *entry, char **treated);
+int             ft_secure_strlen(char *str);
+int             ft_is_whitespace(char c);
+int		        sanitize(char *entry, char **treated);
 
 #endif
