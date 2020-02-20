@@ -6,14 +6,14 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/20 11:12:40 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/20 18:30:59 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 #include <stdio.h>
 
-int main(int ac, char **av)
+int main(int ac, char **av, char **envp)
 {
 	char	*entry;
 	char	*treated;
@@ -21,6 +21,7 @@ int main(int ac, char **av)
 	
 	(void)ac;
 	(void)av;
+	(void)envp;
 	ret = 1;
 	entry = NULL;
 	treated = NULL;
@@ -29,14 +30,29 @@ int main(int ac, char **av)
 		char *pwd;
 		if (!get_pwd_short(&pwd))
 			return (ERROR);
-		printf("PWD : %s\n", pwd);
-		write(0, "minishell % > ", 14);
+		ft_printf("[minishell] %s > ", pwd);
+		free(pwd);
 		ret = get_next_line(&entry); // while
-		// printf("entry : %s\n", entry);
 		treated = NULL;
 		if (!sanitize(entry, &treated))
 			return (0);
+		// printf("Sanitized : %s\n", treated);
+		t_args args;
+		t_args args2;
+		char *test;
+		char *test2;
+		test = ft_strdup("\"test= test\"");
+		test2 = ft_strdup("test2=test2");
+		args.content = test;
+		args2.content = test2;
+		args2.next = NULL;
+		args.next = &args2;
+		export(&args);
+		// env(envp);
 		// printf("Treated entry : |%s|\n", treated);
+		// print_work_dir();
+		// cd("srcs/err/error.c");
+		// while(1);
 	}
 	exit(0);
 }
