@@ -17,6 +17,7 @@
 # define ERROR 0
 
 # include "../srcs/libft/libft.h"
+# include "./termcaps.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h> 
@@ -26,5 +27,7 @@ int             ft_secure_strlen(const char *str);
 int             ft_is_whitespace(char c);
 int		        sanitize(char *entry, char **treated);
 int				get_pwd(char **pwd);
+int             line_edition(void);
+
 
 #endif

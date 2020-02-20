@@ -31,8 +31,9 @@ int main(int ac, char **av)
 			return (ERROR);
 		printf("PWD : %s\n", pwd);
 		write(0, "minishell % > ", 14);
+		line_edition();
 		ret = get_next_line(&entry); // while
-		// printf("entry : %s\n", entry);
+		printf("entry : %s\n", entry);
 		treated = NULL;
 		if (!sanitize(entry, &treated))
 			return (0);
