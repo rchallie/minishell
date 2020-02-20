@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sanitize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 20:58:51 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/19 21:03:28 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/02/20 08:58:42 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int	ft_secure_strlen(char *str)
+int	ft_secure_strlen(const char *str)
 {
 	int	len;
 
