@@ -28,9 +28,10 @@ int get_pwd_short(char **pwd)
 	if(!get_pwd(pwd))
 		return (ERROR);
 	pwd_len = ft_secure_strlen(*pwd);
-	while (pwd[pwd_len] != '/' && pwd_len != 0)
-		pwd_len--;
-	pritnf("Char : %c\n", pwd[pwd_len]);
+	// while (*pwd[pwd_len] != '/' && pwd_len != 0)
+	// 	pwd_len--;
+	// printf("Char : %c\n", *pwd[pwd_len]);
+	return (SUCCESS);
 }
 
 // get pwd short
