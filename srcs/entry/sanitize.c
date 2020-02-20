@@ -6,45 +6,12 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/19 18:40:56 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/20 10:34:14 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 #include <stdio.h>
-
-int				ft_is_whitespace(int c)
-{
-	if (c == '\t' || c == '\n' || c == '\r'
-		|| c == '\v' || c == '\f' || c == ' ')
-		return (SUCCESS);
-	return (ERROR);
-}
-
-static void	ft_bzero(void *s, size_t n)
-{
-	size_t			i;
-	unsigned char	*suc;
-
-	i = 0;
-	suc = (unsigned char *)s;
-	while (i < n)
-	{
-		suc[i] = 0;
-		i++;
-	}
-	s = suc;
-}
-
-static int ft_secure_strlen(const char *s)
-{
-	int i = 0;
-	if (!s || !*s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
@@ -80,19 +47,6 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	while (n--)
 		dstc[n] = srccc[n];
 	return (dst);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*rtn;
-	size_t	len;
-
-	len = ft_secure_strlen(s1) + 1;
-	rtn = malloc(sizeof(char) * len);
-	if (!rtn)
-		return (0);
-	rtn = ft_memcpy(rtn, s1, len);
-	return (rtn);
 }
 
 char		*ft_strjoin(char const *s1, char const *s2)
@@ -211,9 +165,6 @@ int				sanitize(char *entry, char **treated)
 		up += get_word((entry + up), &word);
 		while (ft_is_whitespace(*(entry + up))) //ça peut etre un '\0'?
 			up++;
-		*treated = ft_strjoin(*treated, word);
-		*treated = ft_strjoin(*treated, " ");
-		printf("WORD |%s|\n", word); //Join treated et word
 		to_free = *treated;
 		if (treated[0] != '\0')
 		{

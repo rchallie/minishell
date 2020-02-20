@@ -5,6 +5,7 @@ OBJS_DIR 	= 	objs/
 SRCS_DIR 	= 	srcs/
 
 SRC			=	minishell.c 		\
+				path/pwd.c			\
 				entry/sanitize.c 	\
 				entry/sanitize_utils.c
 
@@ -15,12 +16,13 @@ OBJS 		= 	$(addprefix $(OBJS_DIR), $(OBJ))
 all:	$(NAME)
 
 $(NAME): $(OBJS)
-	# $(MAKE) bonus -C $(SRCS_DIR)libft
-	gcc -Wall -Wextra -Werror -o $(NAME) $(OBJS)
+	$(MAKE) bonus -C $(SRCS_DIR)libft
+	gcc -Wall -Wextra -Werror $(SRCS_DIR)libft/libft.a -o $(NAME) $(OBJS)
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c
 		@mkdir -p $(OBJS_DIR)
 		@mkdir -p $(OBJS_DIR)entry
+		@mkdir -p $(OBJS_DIR)path
 		@echo "Compiling: $<"
 		@gcc -Wall -Wextra -Werror -I./incs/ -c $< -o $@
 
@@ -28,11 +30,11 @@ all: $(NAME)
 
 clean:
 	rm -rf $(OBJS_DIR)
-	# $(MAKE) clean -C $(SRCS_DIR)libft
+	$(MAKE) clean -C $(SRCS_DIR)libft
 	
 fclean: clean
 	rm -f $(NAME)
-	# $(MAKE) fclean -C $(SRCS_DIR)libft
+	$(MAKE) fclean -C $(SRCS_DIR)libft
 	
 re: fclean all
 
