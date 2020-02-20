@@ -19,7 +19,9 @@
 # include "../srcs/libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h> 
 
+int		        ft_printf(const char *str, ...);
 int             ft_secure_strlen(const char *str);
 int             ft_is_whitespace(char c);
 int		        sanitize(char *entry, char **treated);
