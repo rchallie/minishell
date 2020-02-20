@@ -1,9 +1,15 @@
 NAME 		= 	minishell
+
 OBJS_DIR 	= 	objs/
+
 SRCS_DIR 	= 	srcs/
-SRC			=	minishell.c \
-				entry/sanitize.c
+
+SRC			=	minishell.c 		\
+				entry/sanitize.c 	\
+				entry/sanitize_utils.c
+
 OBJ 		= 	$(SRC:.c=.o)
+
 OBJS 		= 	$(addprefix $(OBJS_DIR), $(OBJ))
 
 all:	$(NAME)

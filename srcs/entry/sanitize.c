@@ -193,6 +193,7 @@ static int		get_word(char *entry, char **word)
 
 int				sanitize(char *entry, char **treated)
 {
+	char	*to_free;
 	char	*word;
 	int		up;
 
@@ -208,11 +209,22 @@ int				sanitize(char *entry, char **treated)
 	{
 		word = NULL;
 		up += get_word((entry + up), &word);
-		while (ft_is_whitespace(*(entry + up)))
+		while (ft_is_whitespace(*(entry + up))) //ça peut etre un '\0'?
 			up++;
 		*treated = ft_strjoin(*treated, word);
 		*treated = ft_strjoin(*treated, " ");
 		printf("WORD |%s|\n", word); //Join treated et word
+		to_free = *treated;
+		if (treated[0] != '\0')
+		{
+			*treated = ft_strjoin(*treated, " ");
+			free(to_free);
+			to_free = *treated;
+		}
+		printf("treated before join = |%s|\n", *treated);
+		*treated = ft_strjoin(*treated, word);
+		printf("treated after join = |%s|\n", *treated);
+		free(to_free);
 		free(word);
 	}
 	return (SUCCESS);
