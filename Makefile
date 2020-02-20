@@ -16,8 +16,8 @@ OBJS 		= 	$(addprefix $(OBJS_DIR), $(OBJ))
 all:	$(NAME)
 
 $(NAME): $(OBJS)
-	$(MAKE) bonus -C $(SRCS_DIR)libft
-	gcc -Wall -Wextra -Werror $(SRCS_DIR)libft/libft.a -o $(NAME) $(OBJS)
+	$(MAKE) -C $(SRCS_DIR)ft_printf
+	gcc -Wall -Wextra -Werror $(SRCS_DIR)ft_printf/libftprintf.a -o $(NAME) $(OBJS)
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c
 		@mkdir -p $(OBJS_DIR)
@@ -31,10 +31,12 @@ all: $(NAME)
 clean:
 	rm -rf $(OBJS_DIR)
 	$(MAKE) clean -C $(SRCS_DIR)libft
+	$(MAKE) clean -C $(SRCS_DIR)ft_printf
 	
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) fclean -C $(SRCS_DIR)libft
+	$(MAKE) fclean -C $(SRCS_DIR)ft_printf
 	
 re: fclean all
 
