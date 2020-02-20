@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/19 16:56:09 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/19 18:45:31 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 int main()
 {
-	printf("test : %zu\n", ft_strlen("test"));
-	char *entry = "\"ec\'h \'\"o\"\" test";
+	char *entry = "ec\'h \'o\"\"\"testeste\"\'\'\"te\'\"s\"\'\'\"t\"\"";
 	char *treated_entry = NULL;
 	if (!sanitize(entry, &treated_entry))
 		return (0);
