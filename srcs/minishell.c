@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/20 10:24:47 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/20 11:12:40 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int main(int ac, char **av)
 	while (ret == SUCCESS)
 	{
 		char *pwd;
-		if (!get_pwd(&pwd))
+		if (!get_pwd_short(&pwd))
 			return (ERROR);
 		printf("PWD : %s\n", pwd);
 		write(0, "minishell % > ", 14);
