@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
-#include <stdio.h>
 
 int main(int ac, char **av, char **envp)
 {
@@ -19,13 +18,14 @@ int main(int ac, char **av, char **envp)
 	char	**treated;
 	int		*sequence;
 	int		ret;
-	
+
 	(void)ac;
 	(void)av;
 	(void)envp;
 	ret = 1;
 	entry = NULL;
 	treated = NULL;
+	default_term_mode();
 	while (ret == SUCCESS)
 	{
 		char *pwd;
@@ -33,14 +33,14 @@ int main(int ac, char **av, char **envp)
 			return (ERROR);
 		ft_printf("[minishell] %s > ", pwd);
 		free(pwd);
-		ret = get_next_line(&entry); // while
+		ret = line_edition(&entry);	
 		treated = NULL;
 		if (!sanitize(entry, &treated))
 			return (0);
 		int i = 0;
 		while (treated[i])
 		{
-			printf("[%d] : %s\n", i, treated[i]);
+			printf("\n[%d] : %s", i, treated[i]);
 			i++;
 		}
 		get_sequence(treated, &sequence);

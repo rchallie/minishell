@@ -87,7 +87,9 @@ int				sanitize(char *entry, char ***treated)
 	char	*word;
 	int		up;
 	
-	if (!entry || !*entry)
+	printf("\nbef san entry = |%s|\n", entry);
+	write(1, "aa\n", 3);
+	if (!entry || !*entry || entry[0] == '\n')
 	{
 		if (!(word = (char *)malloc(sizeof(char) * 1)))
 			return (ERROR);
@@ -111,5 +113,7 @@ int				sanitize(char *entry, char ***treated)
 			up++;
 		free(word);
 	}
+	write(1, "bb\n", 3);
+	free(entry);
 	return (SUCCESS);
 }

@@ -12,13 +12,13 @@
 
 #include "../../incs/minishell.h"
 
-int		get_double_char_tab_len(char **tab)
+int		get_double_char_tab_len(char **tabl)
 {
 	int i = 0;
 	
-	if (!tab || !*tab)
+	if (!tabl || !*tabl)
 		return (0);
-	while (tab[i])
+	while (tabl[i])
 		i++;
 	return (i);
 }
