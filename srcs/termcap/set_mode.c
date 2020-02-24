@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/termcaps.h"
+#include "../../incs/minishell.h"
 
 void	default_term_mode(void)
 {

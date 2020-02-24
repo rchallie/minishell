@@ -20,6 +20,7 @@
 # include <termios.h>
 # include <sys/ioctl.h>
 # include "../srcs/libft/libft.h"
+# include "./minishell.h"
 
 # define MAX_CMD_LEN 4096
 # define MAX_KEY_LEN 4
@@ -61,18 +62,18 @@ typedef struct	s_line
 	t_winsz	winsz;
 	t_winsz start;
 	char	cmd[MAX_CMD_LEN];
+	char	**treated;
 }				t_line;
 
 struct	s_keymove
 {
 	int		key;
-	void	(*p)(t_line *line);
+	void	(*funct)(t_line *line);
 }		t_keymove;
 
 void    init_terminal_data(void);
 void    interrogate_terminal(void);
 void	default_term_mode(void);
 void	raw_term_mode(void);
-int     main();
 
 #endif

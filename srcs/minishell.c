@@ -11,19 +11,19 @@
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
-#include <stdio.h>
 
 int main(int ac, char **av)
 {
 	char	*entry;
 	char	*treated;
 	int		ret;
-	
+
 	(void)ac;
 	(void)av;
 	ret = 1;
 	entry = NULL;
 	treated = NULL;
+	default_term_mode();
 	while (ret == SUCCESS)
 	{
 		char *pwd;
@@ -31,13 +31,11 @@ int main(int ac, char **av)
 			return (ERROR);
 		printf("PWD : %s\n", pwd);
 		write(0, "minishell % > ", 14);
-		line_edition();
-		ret = get_next_line(&entry); // while
-		printf("entry : %s\n", entry);
+		ret = line_edition(&entry);
+		printf("\nentry = |%s|\n", entry);
 		treated = NULL;
 		if (!sanitize(entry, &treated))
 			return (0);
-		// printf("Treated entry : |%s|\n", treated);
 	}
 	exit(0);
 }

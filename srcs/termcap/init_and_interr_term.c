@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/termcaps.h"
+#include "../../incs/minishell.h"
 
 static char term_buffer[2046];
 
