@@ -6,101 +6,109 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/19 16:57:01 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/24 09:09:02 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
-#include <stdio.h>
 
-static char		*add_char_to_word(char *word, char c)
+
+static int		add_word_to_tab(char *word, char ***treated)
 {
-	int		new_word_len;
-	int		i;
-	char	*save_word;
+	char	**new_tab;
+	int		treated_len = 0;
+	int		i = 0;
 
-	if (!word)
+	if (!treated || !*treated)
 	{
-		if (!(word = (char *)malloc(sizeof(char) * 2)))
+		if (!(new_tab = (char **)malloc(sizeof(char *) * 2)))
 			return (ERROR);
-		word[0] = c;
-		word[1] = '\0';
-		return (word);
+		ft_bzero(new_tab, sizeof(char *) * 2);
+		*new_tab = ft_strdup(word);
+		*treated = new_tab;
+		return (SUCCESS);
 	}
+	treated_len = get_double_char_tab_len(*treated);
 	i = 0;
-	new_word_len = ft_secure_strlen(word) + 2;
-	save_word = word;
-	if (!(word = (char *)malloc(sizeof(char) * new_word_len)))
+	if (!(new_tab = (char **)malloc(sizeof(char *) * (treated_len + 2))))
 		return (ERROR);
-	ft_bzero(word, new_word_len);
-	while (save_word[i])
+	ft_bzero(new_tab, sizeof(char *) * (treated_len + 2));
+	while (i < treated_len)
 	{
-		word[i] = save_word[i];
+		new_tab[i] = ft_strdup(treated[0][i]);
 		i++;
 	}
-	word[i++] = c;
-	word[i] = '\0';
-	free(save_word);
-	return (word);
+	new_tab[i] = ft_strdup(word);
+	*treated = new_tab;
+	return (SUCCESS);
 }
 
-static int		get_word(char *entry, char **word)
+static int		special_char(char ***treated, char *entry, int up, char c)
 {
-	int simple_q;
-	int double_q;
-	int char_count;
-
-	simple_q = 0;
-	double_q = 0;
-	char_count = 0;
-	while (*entry)
+	char	*word;
+	
+	word = NULL;
+	if (*(entry + up) == c)
 	{
-		if (*entry == ' ' && !(simple_q || double_q))
-			break ;
-		if (*entry == '\'' && simple_q == 0 && double_q == 0)
-			simple_q = 1;
-		else if (*entry == '\'' && double_q == 1)
-			*word = add_char_to_word(*word, *entry);
-		else if (*entry == '\'')
-			simple_q = 0;
-		if (*entry == '\"' && double_q == 0 && simple_q == 0)
-			double_q = 1;
-		else if (*entry == '\"' && simple_q == 1)
-			*word = add_char_to_word(*word, *entry);
-		else if (*entry == '\"')
-			double_q = 0;
-		if (*entry != '\'' && *entry != '\"')
-			*word = add_char_to_word(*word, *entry);
-		if (!word)
+		if (word)
+			free(word);
+		word = NULL;
+		while (*(entry + up) == c)
+		{
+			word = add_char_to_word(word, *(entry + up));
+			up++;
+		}
+		if (ft_secure_strlen(word) > 2)
+		{
+			ft_printf("minishell: syntax error near unexpected token `%c%c'\n", c, c); // ||| = 1, >>/<</>/< = 2
 			return (ERROR);
-		entry++;
-		char_count++;
+		}
+		else
+			add_word_to_tab(word, treated);
+		while (ft_is_whitespace(*(entry + up)))
+		up++;
 	}
-	if (simple_q || double_q)
-		exit(1);
-	return (char_count);
+	return (up);
 }
 
-int				sanitize(char *entry, char **treated)
+static int		check_special_chars(char ***treated, char *entry, int up)
+{
+	if (!(up = special_char(treated, entry, up, '>'))
+		|| !(up = special_char(treated, entry, up, '<'))
+		|| !(up = special_char(treated, entry, up, '|'))
+		|| !(up = special_char(treated, entry, up, '>'))
+		|| !(up = special_char(treated, entry, up, ';')))
+			return (ERROR);
+	return (up);
+}
+
+int				sanitize(char *entry, char ***treated)
 {
 	char	*word;
 	int		up;
-
+	
 	if (!entry || !*entry)
 	{
-		if (!(*treated = (char *)malloc(sizeof(char) * 1)))
+		if (!(word = (char *)malloc(sizeof(char) * 1)))
 			return (ERROR);
-		*treated[0] = '\0';
+		word[0] = '\0';
+		add_word_to_tab(word, treated);
 		return (SUCCESS);
 	}
 	up = 0;
 	while (*(entry + up))
 	{
-		word = NULL;
-		up += get_word((entry + up), &word);
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
-		printf("WORD |%s|\n", word); //Join treated et word
+		word = NULL;
+		up += get_word((entry + up), &word);
+		add_word_to_tab(word, treated);
+		while (ft_is_whitespace(*(entry + up)))
+			up++;
+		if(!(up = check_special_chars(treated, entry, up)))
+			return (ERROR);
+		while (ft_is_whitespace(*(entry + up)))
+			up++;
 		free(word);
 	}
 	return (SUCCESS);
