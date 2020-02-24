@@ -6,177 +6,114 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/20 10:34:14 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/24 09:09:02 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
-#include <stdio.h>
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+
+static int		add_word_to_tab(char *word, char ***treated)
 {
-	char *d;
-	char *s;
+	char	**new_tab;
+	int		treated_len = 0;
+	int		i = 0;
 
-	d = (char *)dst;
-	s = (char *)src;
-	if (dst == src)
-		return (dst);
-	if (s < d)
+	if (!treated || !*treated)
 	{
-		while (len--)
-			*(d + len) = *(s + len);
-		return (dst);
-	}
-	while (len--)
-		*d++ = *s++;
-	return (dst);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	char		*dstc;
-	const char	*srccc;
-
-	if ((dst == src) || n == 0)
-		return (dst);
-	if (!dst && !src)
-		return (0);
-	dstc = (char *)dst;
-	srccc = (const char *)src;
-	while (n--)
-		dstc[n] = srccc[n];
-	return (dst);
-}
-
-char		*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	s1_len;
-	size_t	s2_len;
-	size_t	stot_len;
-	char	*rtn;
-
-	if (!s1 && !s2)
-		return (ft_strdup(""));
-	if (s1 && !s2)
-		return (ft_strdup(s1));
-	if (!s1 && s2)
-		return (ft_strdup(s2));
-	s1_len = ft_secure_strlen((char *)s1);
-	s2_len = ft_secure_strlen(s2);
-	stot_len = s1_len + s2_len + 1;
-	rtn = malloc(sizeof(char) * stot_len);
-	if (!rtn)
-		return (0);
-	ft_memmove(rtn, s1, s1_len);
-	ft_memmove(rtn + s1_len, s2, s2_len);
-	rtn[stot_len - 1] = '\0';
-	return (rtn);
-}
-
-static char		*add_char_to_word(char *word, char c)
-{
-	int		new_word_len;
-	int		i;
-	char	*save_word;
-
-	if (!word)
-	{
-		if (!(word = (char *)malloc(sizeof(char) * 2)))
+		if (!(new_tab = (char **)malloc(sizeof(char *) * 2)))
 			return (ERROR);
-		word[0] = c;
-		word[1] = '\0';
-		return (word);
+		ft_bzero(new_tab, sizeof(char *) * 2);
+		*new_tab = ft_strdup(word);
+		*treated = new_tab;
+		return (SUCCESS);
 	}
+	treated_len = get_double_char_tab_len(*treated);
 	i = 0;
-	new_word_len = ft_secure_strlen(word) + 2;
-	save_word = word;
-	if (!(word = (char *)malloc(sizeof(char) * new_word_len)))
+	if (!(new_tab = (char **)malloc(sizeof(char *) * (treated_len + 2))))
 		return (ERROR);
-	ft_bzero(word, new_word_len);
-	while (save_word[i])
+	ft_bzero(new_tab, sizeof(char *) * (treated_len + 2));
+	while (i < treated_len)
 	{
-		word[i] = save_word[i];
+		new_tab[i] = ft_strdup(treated[0][i]);
 		i++;
 	}
-	word[i++] = c;
-	word[i] = '\0';
-	free(save_word);
-	return (word);
+	new_tab[i] = ft_strdup(word);
+	*treated = new_tab;
+	return (SUCCESS);
 }
 
-static int		get_word(char *entry, char **word)
+static int		special_char(char ***treated, char *entry, int up, char c)
 {
-	int simple_q;
-	int double_q;
-	int char_count;
-
-	simple_q = 0;
-	double_q = 0;
-	char_count = 0;
-	while (*entry)
+	char	*word;
+	
+	word = NULL;
+	if (*(entry + up) == c)
 	{
-		if (*entry == ' ' && !(simple_q || double_q))
-			break ;
-		if (*entry == '\'' && simple_q == 0 && double_q == 0)
-			simple_q = 1;
-		else if (*entry == '\'' && double_q == 1)
-			*word = add_char_to_word(*word, *entry);
-		else if (*entry == '\'')
-			simple_q = 0;
-		if (*entry == '\"' && double_q == 0 && simple_q == 0)
-			double_q = 1;
-		else if (*entry == '\"' && simple_q == 1)
-			*word = add_char_to_word(*word, *entry);
-		else if (*entry == '\"')
-			double_q = 0;
-		if (*entry != '\'' && *entry != '\"')
-			*word = add_char_to_word(*word, *entry);
-		if (!word)
+		if (word)
+			free(word);
+		word = NULL;
+		while (*(entry + up) == c)
+		{
+			word = add_char_to_word(word, *(entry + up));
+			up++;
+		}
+		if (ft_secure_strlen(word) > 2)
+		{
+			ft_printf("minishell: syntax error near unexpected token `%c%c'\n", c, c); // ||| = 1, >>/<</>/< = 2
 			return (ERROR);
-		entry++;
-		char_count++;
+		}
+		else
+			add_word_to_tab(word, treated);
+		while (ft_is_whitespace(*(entry + up)))
+		up++;
 	}
-	if (simple_q || double_q)
-	{
-		printf("s_q : %d | d_q : %d\n", simple_q, double_q);
-		exit(1);
-	}
-	return (char_count);
+	return (up);
 }
 
-int				sanitize(char *entry, char **treated)
+static int		check_special_chars(char ***treated, char *entry, int up)
 {
-	char	*to_free;
+	if (!(up = special_char(treated, entry, up, '>'))
+		|| !(up = special_char(treated, entry, up, '<'))
+		|| !(up = special_char(treated, entry, up, '|'))
+		|| !(up = special_char(treated, entry, up, '>'))
+		|| !(up = special_char(treated, entry, up, ';')))
+			return (ERROR);
+	return (up);
+}
+
+int				sanitize(char *entry, char ***treated)
+{
 	char	*word;
 	int		up;
-
-	if (!entry || !*entry)
+	
+	printf("\nbef san entry = |%s|\n", entry);
+	write(1, "aa\n", 3);
+	if (!entry || !*entry || entry[0] == '\n')
 	{
-		if (!(*treated = (char *)malloc(sizeof(char) * 1)))
+		if (!(word = (char *)malloc(sizeof(char) * 1)))
 			return (ERROR);
-		*treated[0] = '\0';
+		word[0] = '\0';
+		add_word_to_tab(word, treated);
 		return (SUCCESS);
 	}
 	up = 0;
 	while (*(entry + up))
 	{
+		while (ft_is_whitespace(*(entry + up)))
+			up++;
 		word = NULL;
 		up += get_word((entry + up), &word);
-		while (ft_is_whitespace(*(entry + up))) //ça peut etre un '\0'?
+		add_word_to_tab(word, treated);
+		while (ft_is_whitespace(*(entry + up)))
 			up++;
-		to_free = *treated;
-		if (treated[0] != '\0')
-		{
-			*treated = ft_strjoin(*treated, " ");
-			free(to_free);
-			to_free = *treated;
-		}
-		printf("treated before join = |%s|\n", *treated);
-		*treated = ft_strjoin(*treated, word);
-		printf("treated after join = |%s|\n", *treated);
-		free(to_free);
+		if(!(up = check_special_chars(treated, entry, up)))
+			return (ERROR);
+		while (ft_is_whitespace(*(entry + up)))
+			up++;
 		free(word);
 	}
+	write(1, "bb\n", 3);
+	free(entry);
 	return (SUCCESS);
 }

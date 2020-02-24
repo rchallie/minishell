@@ -1,41 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sanitize_utils.c                                   :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/19 20:58:51 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/21 15:01:56 by rchallie         ###   ########.fr       */
+/*   Created: 2020/02/20 13:54:42 by rchallie          #+#    #+#             */
+/*   Updated: 2020/02/20 16:40:07 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int		get_double_char_tab_len(char **tabl)
+int		error_identifier(char *cmd, const char *identifier, char *error)
 {
-	int i = 0;
-	
-	if (!tabl || !*tabl)
-		return (0);
-	while (tabl[i])
-		i++;
-	return (i);
+	ft_printf("minishell: %s: `%s': %s\n", cmd, identifier, error);
+	return (ERROR);
 }
 
-int	ft_secure_strlen(const char *str)
+int		error_path(const char *cmd, const char *path, int errnum)
 {
-	int	len;
-
-	len = 0;
-	if (!str)
-		return (0);
-	while (str[len])
-		len++;
-	return (len);
-}
-
-int	ft_is_whitespace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\v' || c == '\n' || c == '\r');
+	ft_printf("minishell: %s: %s: %s\n", cmd, path, strerror(errnum));
+	return (ERROR);
 }

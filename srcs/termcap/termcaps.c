@@ -189,8 +189,12 @@ void    input_loop(t_line *line)
 		// ctrl-D exit(0)
 		// ctrl-C line.cmd = NULL
         if ((char)key == '\n')
-        	break ;
-    }
+        {
+			line->cmd[line->length] = '\n';
+			line->cmd[line->length + 1] = '\0';
+			break ;
+		}
+	}
 }
 
 void	get_cursor_start_pos(t_line *line)
@@ -221,14 +225,20 @@ char	*edit_line(void)
     input_loop(&line);
     // put_cursor_to_end + add \n + append_history + delstr
     default_term_mode();
+	if (line.cmd[0] == '\0')
+		return (ft_strdup(""));
     return (ft_strdup((char *)line.cmd));
 }
 
 int		line_edition(char **entry)
 {
-    default_term_mode();
-    init_terminal_data();
-    interrogate_terminal();
-	*entry = edit_line();
-	return (0);
+	char	*new_entry;
+
+	new_entry = NULL;
+    default_term_mode();	
+    init_terminal_data();	
+    // interrogate_terminal();	
+	new_entry = edit_line();
+	*entry = new_entry;
+	return (1);
 }
