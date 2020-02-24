@@ -4,12 +4,12 @@ Research :<br>
 [Parsing](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
 <br><br>
 Seq : 
-- 1 : command
-- 2 : flags
-- 3 : arguments
-- 4 : >
-- 5 : >>
-- 6 : <
-- 7 : |
-- 8 : &
-- 9 : ;
+- 0 : command
+- 1 : flags
+- 2 : arguments
+- 3 : >
+- 4 : >>
+- 5 : <
+- 6 : |
+- 7 : &
+- 8 : ;
