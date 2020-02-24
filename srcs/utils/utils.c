@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:27:25 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/20 19:01:04 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/24 09:09:52 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int		get_word(char *entry, char **word)
 		// printf("PLPO\n");
 	while (*entry)
 	{
-		if (*entry == ' ' && !(simple_q || double_q))
+		if ((*entry == ' ' || *entry == '>' || *entry == '<'
+			|| *entry == '|' || *entry == ';') && !(simple_q || double_q))
 			break ;
-
 		if (*entry == '\'' && simple_q == 0 && double_q == 0)
 			simple_q = 1;
 		else if (*entry == '\'' && double_q == 1)

@@ -11,6 +11,7 @@ SRC			=	minishell.c 		\
 				cmds/pwd.c			\
 				cmds/env.c			\
 				cmds/export.c		\
+				entry/sequence.c	\
 				entry/sanitize.c 	\
 				entry/sanitize_utils.c
 

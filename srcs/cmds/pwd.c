@@ -6,13 +6,13 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/20 14:44:00 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/21 09:15:07 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int get_pwd(char **pwd)
+int		get_pwd(char **pwd)
 {
 	if (!(*pwd = (char *)malloc(sizeof(char) * 1025)))
 		return (ERROR);
@@ -21,14 +21,14 @@ int get_pwd(char **pwd)
 	return (SUCCESS);
 }
 
-int get_pwd_short(char **pwd)
+int		get_pwd_short(char **pwd)
 {
-	int pwd_len;
-	int new_pwd_len; 
-	char *pwd_tmp;
-	char *pwd_s;
-	(void)pwd;
-	if(!get_pwd(&pwd_tmp))
+	int		pwd_len;
+	int		new_pwd_len;
+	char	*pwd_tmp;
+	char	*pwd_s;
+
+	if (!get_pwd(&pwd_tmp))
 		return (ERROR);
 	pwd_len = ft_secure_strlen(pwd_tmp);
 	while (pwd_tmp[pwd_len] != '/' && pwd_len != 0)

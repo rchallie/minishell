@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: thervieu <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/27 13:29:35 by thervieu          #+#    #+#              #
-#    Updated: 2019/11/27 13:29:36 by thervieu         ###   ########.fr        #
+#    Updated: 2020/02/21 11:34:50 by rchallie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ $(NAME): libft_recipe $(OBJ)
 	ar rcs $(NAME) $(OBJ) 
 
 libft_recipe:
-	make -C $(LIBFT_PATH) all
+	make -C $(LIBFT_PATH) bonus
 	cp $(LIBFT_PATH)$(LIBFT_NAME) ./$(NAME)
 clean:
 	@echo "Remove .o  ..."
