@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:46:46 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/24 11:53:38 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:21:27 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,12 @@ int get_sequence(char **treated, int **sequence)
 			sequ[i] = 2;
 		i++;
 	}
-	int j = 0;
-	while (j < i)
-	{
-		printf("{%d} %d\n", j, sequ[j]);
-		j++;
-	}
+	// int j = 0;
+	// while (j < i)
+	// {
+	// 	printf("{%d} %d\n", j, sequ[j]);
+	// 	j++;
+	// }
+	*sequence = sequ;
 	return (SUCCESS);
 }

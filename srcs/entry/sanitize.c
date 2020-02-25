@@ -6,16 +6,16 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/24 09:09:02 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/25 11:02:08 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-
 static int		add_word_to_tab(char *word, char ***treated)
 {
 	char	**new_tab;
+	char	**save_treated;
 	int		treated_len = 0;
 	int		i = 0;
 
@@ -28,6 +28,7 @@ static int		add_word_to_tab(char *word, char ***treated)
 		*treated = new_tab;
 		return (SUCCESS);
 	}
+	save_treated = *treated;
 	treated_len = get_double_char_tab_len(*treated);
 	i = 0;
 	if (!(new_tab = (char **)malloc(sizeof(char *) * (treated_len + 2))))
@@ -40,6 +41,7 @@ static int		add_word_to_tab(char *word, char ***treated)
 	}
 	new_tab[i] = ft_strdup(word);
 	*treated = new_tab;
+	free_double_char_tab(save_treated);
 	return (SUCCESS);
 }
 
@@ -87,8 +89,7 @@ int				sanitize(char *entry, char ***treated)
 	char	*word;
 	int		up;
 	
-	printf("\nbef san entry = |%s|\n", entry);
-	write(1, "aa\n", 3);
+	// printf("\nbef san entry = |%s|\n", entry);
 	if (!entry || !*entry || entry[0] == '\n')
 	{
 		if (!(word = (char *)malloc(sizeof(char) * 1)))
@@ -113,7 +114,6 @@ int				sanitize(char *entry, char ***treated)
 			up++;
 		free(word);
 	}
-	write(1, "bb\n", 3);
 	free(entry);
 	return (SUCCESS);
 }
