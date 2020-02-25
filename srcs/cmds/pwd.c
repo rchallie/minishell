@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/21 09:15:07 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/25 15:36:31 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,15 @@ int		get_pwd_short(char **pwd)
 	return (SUCCESS);
 }
 
-int		print_work_dir(void)
+int		print_work_dir(t_minishell *ms)
 {
 	char *pwd;
 
 	if (!get_pwd(&pwd))
 		return (ERROR);
-	ft_printf("%s\n", pwd);	//A term, le sortir avec echo
+	ms->output = pwd;
+	if (treat_output(ms) == 5)
+		ft_printf("PWD : %s\n", pwd);	//A term, le sortir avec echo
 	free(pwd);
 	return (SUCCESS);
 }

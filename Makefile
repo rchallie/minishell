@@ -7,10 +7,13 @@ SRCS_DIR 	= 	srcs/
 SRC			=	minishell.c 		\
 				utils/utils.c		\
 				err/error.c			\
+				cmds/check.c		\
 				cmds/cd.c			\
 				cmds/pwd.c			\
 				cmds/env.c			\
 				cmds/export.c		\
+				otps/output.c		\
+				specs/check.c		\
 				entry/sequence.c	\
 				entry/sanitize.c 	\
 				entry/sanitize_utils.c \
@@ -36,6 +39,8 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c
 		@mkdir -p $(OBJS_DIR)cmds
 		@mkdir -p $(OBJS_DIR)err
 		@mkdir -p $(OBJS_DIR)utils
+		@mkdir -p $(OBJS_DIR)otps
+		@mkdir -p $(OBJS_DIR)specs
 		@echo "Compiling: $<"
 		@gcc -Wall -Wextra -Werror -I./incs/ -c $< -o $@
 

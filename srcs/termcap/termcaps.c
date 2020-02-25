@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   termcap.c                                          :+:      :+:    :+:   */
+/*   termcaps.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:00:41 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/20 16:00:42 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/02/24 15:48:07 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,11 +189,10 @@ void    input_loop(t_line *line)
 		// ctrl-D exit(0)
 		// ctrl-C line.cmd = NULL
         if ((char)key == '\n')
-        {
-			line->cmd[line->length] = '\n';
-			line->cmd[line->length + 1] = '\0';
 			break ;
-		}
+        // {
+		// 	line->cmd[line->length] = '\n';
+		// 	line->cmd[line->length + 1] = '\0';
 	}
 }
 
