@@ -14,9 +14,18 @@ SRC			=	minishell.c 		\
 				entry/sequence.c	\
 				entry/sanitize.c 	\
 				entry/sanitize_utils.c \
+				termcap/termcaps.c		\
 				termcap/init_and_interr_term.c \
 				termcap/set_mode.c 			\
-				termcap/termcaps.c
+				termcap/move_cursor.c		\
+				termcap/move_cursor_2.c		\
+				termcap/match_inputs.c		\
+				termcap/utils_cursor.c		\
+				termcap/ins_del_char.c		\
+				termcap/ctrl_stuff.c		\
+				termcap/tc_putchar.c
+				
+
 
 OBJ 		= 	$(SRC:.c=.o)
 
@@ -45,13 +54,11 @@ clean:
 	rm -rf $(OBJS_DIR)
 	$(MAKE) clean -C $(SRCS_DIR)libft
 	$(MAKE) clean -C $(SRCS_DIR)ft_printf
-	$(MAKE) clean -C $(SRCS_DIR)termcap
 	
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) fclean -C $(SRCS_DIR)libft
 	$(MAKE) fclean -C $(SRCS_DIR)ft_printf
-	$(MAKE) fclean -C $(SRCS_DIR)termcap
 	
 re: fclean all
 

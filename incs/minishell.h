@@ -28,6 +28,7 @@
 # include <sys/ioctl.h>
 # include "../srcs/libft/libft.h"
 
+# define HISTORY_PATH "save_history"
 # define MAX_CMD_LEN 4096
 # define MAX_KEY_LEN 7
 # define SUCCESS 1
@@ -97,13 +98,8 @@ typedef struct		s_args
 	void			*content;
 }					t_args;
 
-void            init_terminal_data(void);
-void            interrogate_terminal(void);
-void	        default_term_mode(void);
-void	        raw_term_mode(void);
 int             ft_is_whitespace(char c);
 int				get_pwd(char **pwd);
-int				line_edition(char **entry);
 
 int					ft_printf(const char *str, ...);
 int					ft_secure_strlen(const char *str);
@@ -125,4 +121,34 @@ int					error_path(const char *cmd, const char *path,
 						int errnum);
 int					error_identifier(char *cmd, const char *identifier,
 						char *error);
+
+/* ______ termcaps ______ */
+
+int				line_edition(char **entry);
+void            init_terminal_data(void);
+void            interrogate_terminal(void);
+void	        default_term_mode(void);
+void	        raw_term_mode(void);
+int		tc_putchar(int c);
+void	cursor_to_left(t_line *line);
+void	cursor_to_right(t_line *line);
+int		is_spec(char c);
+int		is_not_spec(char c);
+void	left_word(t_line *line);
+void	right_word(t_line *line);
+void	cursor_to_home(t_line *line);
+void	cursor_to_end(t_line *line);
+void	up_row(t_line *line);
+void	down_row(t_line *line);
+void	get_cursor_start_pos(t_line *line);
+void	set_curpos(t_line *line);
+int		ft_getwinsz(t_winsz *winsz);
+void	insert_char(t_line *line, int key);
+void	delete_char(t_line *line, int key);
+int		match_key_curse(char *str);
+void	match_move(int key, t_line *line);
+void	match_ctrl(int key, t_line *line);
+void 	clear_screen_(t_line *line);
+void	exit_pgm(t_line *line);
+
 #endif
