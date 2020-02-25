@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:00:41 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/24 15:48:07 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/25 16:15:38 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,5 @@ int		line_edition(char **entry)
     // interrogate_terminal();
 	new_entry = edit_line();
 	*entry = new_entry;
-	return (0);
+	return (1);
 }

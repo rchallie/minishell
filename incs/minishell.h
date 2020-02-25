@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/25 15:24:42 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/25 16:13:19 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int					error_command(char *cmd);
 int					is_cmd(char *cmd);
 int					sanitize(char *entry, char ***treated);
 int					get_double_char_tab_len(char **tabl);
-int					is_spec(char *s);
+int					is_char_spec(char *s);
 
 int		treat_output(t_minishell *ms);
 
