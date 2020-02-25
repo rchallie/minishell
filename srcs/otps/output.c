@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 15:04:28 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/25 16:05:34 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/25 16:32:40 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		overwrite_in_file(t_minishell *ms)
 	(void)ms;
 	// ms->seq_cursor++;
 	// printf("Over : %s\n", ms->treated[ms->seq_cursor]);
-	// if(!ms->sequence[ms->seq_cursor] || is_spec(ms->treated[ms->seq_cursor]))
+	// if(!ms->sequence[ms->seq_cursor] || is_char_spec(ms->treated[ms->seq_cursor]))
 	// {
 	// 	printf("Error\n");
 	// 	exit(0);
