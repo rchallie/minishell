@@ -40,7 +40,7 @@ int main(int ac, char **av, char **envp)
 		int i = 0;
 		while (treated[i])
 		{
-			printf("\n[%d] : %s", i, treated[i]);
+			ft_printf("\n[%d] : %s", i, treated[i]);
 			i++;
 		}
 		get_sequence(treated, &sequence);
