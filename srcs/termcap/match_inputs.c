@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match_inputs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:48:53 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/25 12:48:57 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/02/25 17:57:07 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void	match_move(int key, t_line *line)
         	keymove[i - 1].funct(line);
 }
 
-void	match_ctrl(int key, t_line *line)
+void	match_ctrl(t_minishell *ms, int key, t_line *line)
 {
 	int						i;
-	static struct s_keymove	keymove[2] = {
+	static struct s_keymove_ms	keymove[2] = {
 		{KEY_CTRL_L, &clear_screen_},
 		{KEY_CTRL_D, &exit_pgm}
 	};
@@ -70,5 +70,5 @@ void	match_ctrl(int key, t_line *line)
 	i = 0;
 	while (i < 2)
         if (key == keymove[i++].key)
-        	keymove[i - 1].funct(line);
+        	keymove[i - 1].funct(ms, line);
 }
