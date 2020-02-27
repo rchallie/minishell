@@ -24,7 +24,9 @@ int     get_key(void)
 	ft_bzero(str, (sizeof(char) * MAX_KEY_LEN));
 	read(0, str, MAX_KEY_LEN);
 	str[6] = '\0';
-	// printf("str[0] = %d, str[1] = %d, str[2] = %d, str[3] = %d, str[4] = %d, str[5] = %d, str[6] = %d\n", (int)str[0], (int)str[1], (int)str[2], (int)str[3], (int)str[4], (int)str[5], (int)str[6]);
+    // ft_printf("\e[44m\e[45m");
+	// ft_printf("str[0] = %x, str[1] = %x, str[2] = %x, str[3] = %x, str[4] = %x, str[5] = %x, str[6] = %x\n", (int)str[0], (int)str[1], (int)str[2], (int)str[3], (int)str[4], (int)str[5], (int)str[6]);
+    // ft_printf("\e[49m");
     key = match_key_curse(str);
     free(str);
     return (key);
@@ -36,13 +38,13 @@ void    input_loop(t_minishell *ms, t_line *line)
     int save;
     
     save = line->cursor;
-    while (1)
+    while (42)
     {
         key = get_key();
         ft_getwinsz(&line->winsz);
 		match_move(key, line);
+        match_hist(key, line);
 		match_ctrl(ms, key, line);
-        // match_hist (up, down etc)
         if (key > 31 && key < 127)
         {
             insert_char(line, key);
@@ -68,18 +70,29 @@ void    input_loop(t_minishell *ms, t_line *line)
         if ((char)key == '\n')
 			break ;
 	}
+    return ;
 }
 
 char	*edit_line(t_minishell *ms)
 {
     t_line  line;
 
+    // write(1, "begin_loop\n", 11);
     raw_term_mode();
     ft_bzero(&line, sizeof(line));
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
     get_cursor_start_pos(&line);
-    input_loop(ms, &line);
-    // append_history + delstr
+    // write(1, "bef_geth\n", 9);
+    line.hist = get_history();
+    // write(1, "af_geth\n", 8);
+    line.hist_size = ft_dlst_size(line.hist);
+    input_loop(&line);
+    // write(1, "out_loop\n", 9);
+    append_history(line.cmd);
+    // write(1, "append_ok\n", 10);
+    // if (line.hist)
+    //     ft_dlst_del(&line.hist);
+    // write(1, "after_del\n", 10);
     default_term_mode();
 	if (line.cmd[0] == '\0')
 		return (ft_strdup(""));

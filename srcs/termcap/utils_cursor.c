@@ -26,7 +26,7 @@ void	get_cursor_start_pos(t_line *line)
 	while (ft_isdigit(answer[i]))
 		i++;
 	line->start.col = ft_atoi(answer + i + 1);
-    return ;
+	return ;
 }
 
 void	set_curpos(t_line *line)

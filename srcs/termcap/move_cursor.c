@@ -17,7 +17,7 @@ void	cursor_to_left(t_line *line)
 	if (!line->cursor)
 		return ;
 	line->cursor--;
-    set_curpos(line);
+	set_curpos(line);
 }
 
 void	cursor_to_right(t_line *line)

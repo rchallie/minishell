@@ -12,10 +12,9 @@
 
 #include "../../incs/minishell.h"
 
-int	match_key_curse(char *str)
+int								match_key_curse(char *str)
 {
-    int i;
-    i = 0;
+	int							i;
 	static struct s_keymatch	key_couple[12] = {
 		{KEY_CODE_UP, KEY_UP},
 		{KEY_CODE_DO, KEY_DOWN},
@@ -30,6 +29,8 @@ int	match_key_curse(char *str)
 		{KEY_CODE_HOME, KEY_HOME},
 		{KEY_CODE_END, KEY_END}
 	};
+
+	i = 0;
 	while (i < 12)
 	{
 		if (!ft_strcmp(key_couple[i].key_code, str))
@@ -39,10 +40,10 @@ int	match_key_curse(char *str)
 	return ((int)str[0]);
 }
 
-void	match_move(int key, t_line *line)
+void							match_move(int key, t_line *line)
 {
-	int						i;
-	static struct s_keymove	keymove[8] = {
+	int							i;
+	static struct s_keymove		keymove[8] = {
 		{KEY_RIGHT, &cursor_to_right},
 		{KEY_LEFT, &cursor_to_left},
 		{KEY_CTRL_LE, &left_word},
@@ -55,8 +56,8 @@ void	match_move(int key, t_line *line)
 
 	i = 0;
 	while (i < 8)
-        if (key == keymove[i++].key)
-        	keymove[i - 1].funct(line);
+		if (key == keymove[i++].key)
+			keymove[i - 1].funct(line);
 }
 
 void	match_ctrl(t_minishell *ms, int key, t_line *line)
@@ -69,6 +70,20 @@ void	match_ctrl(t_minishell *ms, int key, t_line *line)
 
 	i = 0;
 	while (i < 2)
-        if (key == keymove[i++].key)
-        	keymove[i - 1].funct(ms, line);
+		if (key == keymove[i++].key)
+			keymove[i - 1].funct(line);
+}
+
+void							match_hist(int key, t_line *line)
+{
+	int							i;
+	static struct s_keyhist		keyhist[2] = {
+		{KEY_UP, &old_history},
+		{KEY_DOWN, &new_history}
+	};
+
+	i = 0;
+	while (i < 2)
+		if (key == keyhist[i++].key)
+			keyhist[i - 1].funct(line, (&line->hist));
 }
