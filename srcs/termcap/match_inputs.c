@@ -15,7 +15,7 @@
 int								match_key_curse(char *str)
 {
 	int							i;
-	static struct s_keymatch	key_couple[12] = {
+	static struct s_keymatch	key_couple[14] = {
 		{KEY_CODE_UP, KEY_UP},
 		{KEY_CODE_DO, KEY_DOWN},
 		{KEY_CODE_RI, KEY_RIGHT},
@@ -24,6 +24,8 @@ int								match_key_curse(char *str)
 		{KEY_CODE_CTRL_RI, KEY_CTRL_RI},
 		{KEY_CODE_CTRL_UP, KEY_CTRL_UP},
 		{KEY_CODE_CTRL_DO, KEY_CTRL_DO},
+		{KEY_CODE_SHIFT_LE, KEY_SLEFT},
+		{KEY_CODE_SHIFT_RI, KEY_SRIGHT},
 		{KEY_CODE_CTRL_D, KEY_CTRL_D},
 		{KEY_CODE_CTRL_L, KEY_CTRL_L},
 		{KEY_CODE_HOME, KEY_HOME},
@@ -31,11 +33,10 @@ int								match_key_curse(char *str)
 	};
 
 	i = 0;
-	while (i < 12)
+	while (i < 14)
 	{
-		if (!ft_strcmp(key_couple[i].key_code, str))
-			return (key_couple[i].key_ret);
-		i++;
+		if (!ft_strcmp(key_couple[i++].key_code, str))
+			return (key_couple[i - 1].key_ret);
 	}
 	return ((int)str[0]);
 }
@@ -43,26 +44,29 @@ int								match_key_curse(char *str)
 void							match_move(int key, t_line *line)
 {
 	int							i;
-	static struct s_keymove		keymove[8] = {
+	static struct s_keymove		keymove[10] = {
 		{KEY_RIGHT, &cursor_to_right},
 		{KEY_LEFT, &cursor_to_left},
 		{KEY_CTRL_LE, &left_word},
 		{KEY_CTRL_RI, &right_word},
 		{KEY_CTRL_UP, &up_row},
 		{KEY_CTRL_DO, &down_row},
+		{KEY_SLEFT, &under_left},
+		{KEY_SRIGHT, &under_right},
 		{KEY_HOME, &cursor_to_home},
 		{KEY_END, &cursor_to_end}
 	};
 
 	i = 0;
-	while (i < 8)
+	while (i < 10)
 		if (key == keymove[i++].key)
 			keymove[i - 1].funct(line);
 }
 
-void	match_ctrl(t_minishell *ms, int key, t_line *line)
+void							match_ctrl(t_minishell *ms, int key,
+t_line *line)
 {
-	int						i;
+	int							i;
 	static struct s_keymove_ms	keymove[2] = {
 		{KEY_CTRL_L, &clear_screen_},
 		{KEY_CTRL_D, &exit_pgm}

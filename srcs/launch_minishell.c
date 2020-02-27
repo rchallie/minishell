@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   launch_minishell.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/27 20:59:58 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/27 21:00:00 by thervieu         ###   ########.fr       */
+/*   Created: 2020/02/27 21:00:18 by thervieu          #+#    #+#             */
+/*   Updated: 2020/02/27 21:00:20 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,57 @@ static void	init_minishell_var(t_minishell *ms, char **envp)
 	ms->has_spec_uf = 0;
 }
 
+void	launch(t_minishell *ms, int i, int j)
+{
+	t_line line;
+	char *str = NULL;
+	char *launching = "Launching minishell.exe ...";
+	int delay = 0;
+
+	(void)ms;
+    raw_term_mode();
+    ft_bzero(&line, sizeof(line));
+    get_cursor_start_pos(&line);
+	ft_getwinsz(&line.winsz);
+	tputs(tgoto(tgetstr("SF", NULL), 0, line.winsz.row - 1), 1, &tc_putchar);
+	while (ft_secure_strlen(str) < ft_secure_strlen(launching))
+	{
+		i = 0;
+		str = add_char_to_word(str, launching[ft_secure_strlen(str)]);
+		line.start.row = line.winsz.row / 2;
+		line.start.col = line.winsz.col / 2 - ft_secure_strlen(launching) / 2;
+		set_curpos(&line);
+		ft_putstr_fd(str, 0);
+		while (i++ < 100000)
+		{
+			j = 0;
+			if (ft_secure_strlen(str) < ft_secure_strlen(launching) - 3
+				&& str[ft_strlen(str) - 1] != ' ')
+				delay = 300;
+			else
+				delay = 3000;
+			while (j < delay)
+				j++;
+		}
+	}
+	launch_(line);
+}
+
 int main(int ac, char **av, char **envp)
 {
 	t_minishell		ms;
 	int				ret;
-    char            *pwd;
+
 	(void)ac;
 	(void)av;
 	(void)envp;
 	ret = 1;
+	init_minishell_var(&ms, envp);
+	launch(&ms, 0, 0);
 	default_term_mode();
 	int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
 	while (ret == SUCCESS)
 	{
-        init_minishell_var(&ms, envp);
-        if (!get_pwd_short(&pwd))
-			return (ERROR);
-	    ft_printf("[minishell] %s > ", pwd);
-	    free(pwd);
 		ret = line_edition(&ms);	
 		write(1, "\n", 1); //voir avec Thibault, pour mettre ça à la fin cd la line
 		if (!sanitize(ms.entry, &ms.treated))

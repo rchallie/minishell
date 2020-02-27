@@ -45,8 +45,10 @@ void	up_row(t_line *line)
 
 void	down_row(t_line *line)
 {
-	if (line->cursor <= (line->length - line->winsz.col))
+	if (line->length > line->winsz.col
+		&& line->cursor <= (line->length - line->winsz.col))
 	{
+		ft_printf("nn\n");
 		line->cursor += line->winsz.col;
 		set_curpos(line);
 	}
