@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:00:41 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/25 16:37:55 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/25 17:52:11 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int     get_key(void)
     return (key);
 }
 
-void    input_loop(t_line *line)
+void    input_loop(t_minishell *ms, t_line *line)
 {
     int     key;
     int save;
@@ -41,7 +41,7 @@ void    input_loop(t_line *line)
         key = get_key();
         ft_getwinsz(&line->winsz);
 		match_move(key, line);
-		match_ctrl(key, line);
+		match_ctrl(ms, key, line);
         // match_hist (up, down etc)
         if (key > 31 && key < 127)
         {
@@ -70,7 +70,7 @@ void    input_loop(t_line *line)
 	}
 }
 
-char	*edit_line(void)
+char	*edit_line(t_minishell *ms)
 {
     t_line  line;
 
@@ -78,7 +78,7 @@ char	*edit_line(void)
     ft_bzero(&line, sizeof(line));
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
     get_cursor_start_pos(&line);
-    input_loop(&line);
+    input_loop(ms, &line);
     // append_history + delstr
     default_term_mode();
 	if (line.cmd[0] == '\0')
@@ -86,7 +86,7 @@ char	*edit_line(void)
     return (ft_strdup((char *)line.cmd));
 }
 
-int		line_edition(char **entry)
+int		line_edition(t_minishell *ms)
 {
 	char	*new_entry;
 
@@ -94,7 +94,7 @@ int		line_edition(char **entry)
     default_term_mode();	
     init_terminal_data();	
     // interrogate_terminal();
-	new_entry = edit_line();
-	*entry = new_entry;
+	new_entry = edit_line(ms);
+	ms->entry = new_entry;
 	return (1);
 }
