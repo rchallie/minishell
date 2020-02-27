@@ -71,7 +71,7 @@ void	match_ctrl(t_minishell *ms, int key, t_line *line)
 	i = 0;
 	while (i < 2)
 		if (key == keymove[i++].key)
-			keymove[i - 1].funct(line);
+			keymove[i - 1].funct(ms, line);
 }
 
 void							match_hist(int key, t_line *line)
