@@ -86,7 +86,7 @@ char	*edit_line(t_minishell *ms)
     line.hist = get_history();
     // write(1, "af_geth\n", 8);
     line.hist_size = ft_dlst_size(line.hist);
-    input_loop(&line);
+    input_loop(ms, &line);
     // write(1, "out_loop\n", 9);
     append_history(line.cmd);
     // write(1, "append_ok\n", 10);

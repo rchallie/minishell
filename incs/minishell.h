@@ -106,6 +106,13 @@ typedef struct		s_keymove
 	void			(*funct)(t_line *line);
 }					t_keymove;
 
+typedef struct	s_keyhist
+{
+	int		key;
+	void	(*funct)(t_line *line, t_dlist **hist);
+}				t_keyhist;
+
+
 typedef struct		s_keymove_ms
 {
 	int				key;
@@ -178,8 +185,18 @@ void	insert_char(t_line *line, int key);
 void	delete_char(t_line *line, int key);
 int		match_key_curse(char *str);
 void	match_move(int key, t_line *line);
+void	match_hist(int key, t_line *line);
 void	match_ctrl(t_minishell *ms, int key, t_line *line);
 void 	clear_screen_(t_minishell *ms, t_line *line);
 void	exit_pgm(t_minishell *ms, t_line *line);
+t_dlist     *get_history(void);
+void        append_history(char *new_hist);
+void        old_history(t_line *line, t_dlist **hist);
+void        new_history(t_line *line, t_dlist **hist);
+int     ft_dlst_size(t_dlist *hist);
+void    ft_dlst_del(t_dlist **list);
+void   ft_dlst_remove_link(t_dlist **head);
+void    ft_dlst_add(t_dlist **head, t_dlist *new);
+t_dlist     *ft_dlst_new(void const *content, int content_size);
 
 #endif
