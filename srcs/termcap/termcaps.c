@@ -83,12 +83,12 @@ char	*edit_line(t_minishell *ms)
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
     get_cursor_start_pos(&line);
     // write(1, "bef_geth\n", 9);
-    line.hist = get_history();
+    // line.hist = get_history();
     // write(1, "af_geth\n", 8);
-    line.hist_size = ft_dlst_size(line.hist);
+    // line.hist_size = ft_dlst_size(line.hist);
     input_loop(ms, &line);
     // write(1, "out_loop\n", 9);
-    append_history(line.cmd);
+    // append_history(line.cmd);
     // write(1, "append_ok\n", 10);
     // if (line.hist)
     //     ft_dlst_del(&line.hist);

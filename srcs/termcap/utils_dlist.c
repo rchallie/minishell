@@ -31,7 +31,7 @@ t_dlist     *ft_dlst_new(void const *content, int content_size)
         new_link->content = ft_memcpy(new_link->content, content, content_size);
         new_link->content_size = content_size;
     }
-    write(1, "::end_new::\n", 12);
+    // write(1, "::end_new::\n", 12);
     return (new_link);
 }
 
@@ -39,7 +39,7 @@ void    ft_dlst_add(t_dlist **head, t_dlist *new)
 {
     t_dlist     *ptr;
 
-    write(1, "==beg_add==\n", 13);
+    // write(1, "==beg_add==\n", 13);
     ptr = NULL;
     if (!head || !new)
         return ;
@@ -49,15 +49,15 @@ void    ft_dlst_add(t_dlist **head, t_dlist *new)
         ptr = (*head)->prev;
         (*head)->prev = new;
     }
-    write(1, "==af_fif==\n", 12);
+    // write(1, "==af_fif==\n", 12);
     new->prev = ptr;
-    write(1, "==nprev = ptr==\n", 16);
+    // write(1, "==nprev = ptr==\n", 16);
     if (ptr)
     {
-        write(1, "AAA in if AAA\n", 13);
+        // write(1, "AAA in if AAA\n", 13);
         ptr->next = new;
     }
-    write(1, "==end_add==\n", 13);
+    // write(1, "==end_add==\n", 13);
     *head = new;
 }
 
