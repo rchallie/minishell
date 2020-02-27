@@ -47,6 +47,8 @@
 # define KEY_CODE_CTRL_RI "\x1b\x5b\x31\x3b\x35\x43"
 # define KEY_CODE_CTRL_UP "\x1b\x5b\x31\x3b\x35\x41"
 # define KEY_CODE_CTRL_DO "\x1b\x5b\x31\x3b\x35\x42"
+# define KEY_CODE_SHIFT_LE "\x1b\x5b\x31\x3b\x32\x44"
+# define KEY_CODE_SHIFT_RI "\x1b\x5b\x31\x3b\x32\x43"
 
 # define KEY_CTRL_LE -10
 # define KEY_CTRL_RI -11
@@ -92,6 +94,7 @@ typedef struct		s_line
 {
 	t_dlist			*hist;
 	size_t			cursor;
+	int				cursor_underl;
 	size_t			length;
 	size_t			hist_depth;
 	size_t			hist_size;
@@ -198,5 +201,9 @@ void    ft_dlst_del(t_dlist **list);
 void   ft_dlst_remove_link(t_dlist **head);
 void    ft_dlst_add(t_dlist **head, t_dlist *new);
 t_dlist     *ft_dlst_new(void const *content, int content_size);
+void    under_left(t_line *line);
+void    under_right(t_line *line);
+void    launch_(t_line line);
+void    welcome_to_minishell(char *launching, t_line line, char *str, int nb);
 
 #endif
