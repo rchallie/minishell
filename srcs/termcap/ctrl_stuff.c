@@ -12,16 +12,14 @@
 
 #include "../../incs/minishell.h"
 
-void 	clear_screen_(t_line *line)
+void	clear_screen_(t_line *line)
 {
 	tputs(tgoto(tgetstr("SF", NULL), 0, line->start.row - 1), 1, &tc_putchar);
 	line->start.row = 1;
 	set_curpos(line);
-} 	
+}
 
 void	exit_pgm(t_line *line)
 {
-	int a = line->length;
-	a++;
-	printf("ctrl-D");
+	ft_printf("ctrl-D");
 }

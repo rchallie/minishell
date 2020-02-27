@@ -53,4 +53,3 @@ void	down_row(t_line *line)
 	else
 		cursor_to_end(line);
 }
-
