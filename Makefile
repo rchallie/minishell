@@ -27,7 +27,9 @@ SRC			=	minishell.c 		\
 				termcap/utils_cursor.c		\
 				termcap/ins_del_char.c		\
 				termcap/ctrl_stuff.c		\
-				termcap/tc_putchar.c
+				termcap/tc_putchar.c		\
+				termcap/history.c			\
+				termcap/utils_dlist.c
 				
 
 
