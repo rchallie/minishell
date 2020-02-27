@@ -6,13 +6,14 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/25 16:31:06 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/26 13:50:30 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define TREAT 2
 # define SUCCESS 1
 # define ERROR 0
 
@@ -54,6 +55,19 @@
 # define KEY_CTRL_D -20
 # define KEY_CTRL_L -21
 
+typedef struct		s_minishell
+{
+	char			*entry;
+	char			**treated;
+	char			**envp;
+	char			*output;
+	int				*sequence;
+	int				seq_cursor;
+	int				iscmdret;
+	int				treated_len;
+	int				has_spec_uf;
+}					t_minishell;
+
 typedef struct		s_keymatch
 {
 	char			*key_code;
@@ -92,22 +106,18 @@ typedef struct		s_keymove
 	void			(*funct)(t_line *line);
 }					t_keymove;
 
+typedef struct		s_keymove_ms
+{
+	int				key;
+	void			(*funct)(t_minishell *ms, t_line *line);
+}					t_keymove_ms;
+
 typedef struct		s_args
 {
 	struct s_args	*next;
 	void			*content;
 }					t_args;
 
-typedef struct		s_minishell
-{
-	char			*entry;
-	char			**treated;
-	char			**envp;
-	int				*sequence;
-	int				seq_cursor;
-	int				iscmdret;
-	char			*output;
-}					t_minishell;
 
 void				init_terminal_data(void);
 void				interrogate_terminal(void);
@@ -122,13 +132,13 @@ int					ft_printf(const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);
 int					get_pwd(char **pwd);
-int					line_edition(char **entry);
+int					line_edition(t_minishell *ms);
 int					get_pwd_short(char **pwd);
 int					get_word(char *entry, char **word);
 int					get_sequence(char **treated, int **sequence);
 int					cd(t_minishell *ms);
 int					print_work_dir(t_minishell *ms);
-int					env(char **envp);
+int					env(t_minishell *ms);
 int					export(t_args *args);
 int					error_path(const char *cmd, const char *path,
 						int errnum);
@@ -140,15 +150,16 @@ int					sanitize(char *entry, char ***treated);
 int					get_double_char_tab_len(char **tabl);
 int					is_char_spec(char *s);
 
-int		treat_output(t_minishell *ms);
+int					treat_output(t_minishell *ms);
+int					exit_minishell(t_minishell *ms);
 
 /* ______ termcaps ______ */
 
-int				line_edition(char **entry);
-void            init_terminal_data(void);
-void            interrogate_terminal(void);
-void	        default_term_mode(void);
-void	        raw_term_mode(void);
+
+void    init_terminal_data(void);
+void    interrogate_terminal(void);
+void	default_term_mode(void);
+void	raw_term_mode(void);
 int		tc_putchar(int c);
 void	cursor_to_left(t_line *line);
 void	cursor_to_right(t_line *line);
@@ -167,8 +178,8 @@ void	insert_char(t_line *line, int key);
 void	delete_char(t_line *line, int key);
 int		match_key_curse(char *str);
 void	match_move(int key, t_line *line);
-void	match_ctrl(int key, t_line *line);
-void 	clear_screen_(t_line *line);
-void	exit_pgm(t_line *line);
+void	match_ctrl(t_minishell *ms, int key, t_line *line);
+void 	clear_screen_(t_minishell *ms, t_line *line);
+void	exit_pgm(t_minishell *ms, t_line *line);
 
 #endif
