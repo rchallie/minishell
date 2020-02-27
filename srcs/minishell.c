@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/26 13:09:49 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/26 17:42:28 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	ret = 1;
 	default_term_mode();
-	int (*cmd[3])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell};
+	int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
 	while (ret == SUCCESS)
 	{
 		init_minishell_var(&ms, envp);
@@ -54,7 +54,7 @@ int main(int ac, char **av, char **envp)
 			if (ms.sequence[ms.seq_cursor] == 0 && (ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
 			{
 				//write(1, "A\n", 2);
-				if (ms.iscmdret >= 0 && ms.iscmdret <= 2)
+				if (ms.iscmdret >= 0 && ms.iscmdret <= 3)
 				{
 					// has_pipe
 					int cmd_ret = 0;
