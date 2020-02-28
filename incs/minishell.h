@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/26 13:50:30 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/27 15:49:33 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct		s_minishell
 	int				*sequence;
 	int				seq_cursor;
 	int				iscmdret;
+	int				isexecret;
 	int				treated_len;
 	int				has_spec_uf;
 }					t_minishell;
@@ -121,7 +122,7 @@ typedef struct		s_args
 
 void				init_terminal_data(void);
 void				interrogate_terminal(void);
-void				default_term_mode(void);
+int	default_term_mode(void);
 void				raw_term_mode(void);
 void				free_double_char_tab(char **tab_to_free);
 
@@ -158,7 +159,7 @@ int					exit_minishell(t_minishell *ms);
 
 void    init_terminal_data(void);
 void    interrogate_terminal(void);
-void	default_term_mode(void);
+int	default_term_mode(void);
 void	raw_term_mode(void);
 int		tc_putchar(int c);
 void	cursor_to_left(t_line *line);
@@ -182,4 +183,6 @@ void	match_ctrl(t_minishell *ms, int key, t_line *line);
 void 	clear_screen_(t_minishell *ms, t_line *line);
 void	exit_pgm(t_minishell *ms, t_line *line);
 
+int		is_exec(t_minishell *ms);
+int		add_word_to_tab(char *word, char ***treated);
 #endif
