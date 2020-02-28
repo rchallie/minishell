@@ -97,7 +97,7 @@ void    highlight(int key, t_line *line)
     put_highline(high);
     line->cursor = save;
     set_curpos(line);
-    ft_printf("\nbeg = |%s|  hl = |%s|  end = |%s|  str = |%s|  cursor = |%d|  hl_nb = |%d|", high.beg, high.hlight, high.end, line->cmd, line->cursor, line->cursor_highl);
+    // ft_printf("\nbeg = |%s|  hl = |%s|  end = |%s|  str = |%s|  cursor = |%d|  hl_nb = |%d|", high.beg, high.hlight, high.end, line->cmd, line->cursor, line->cursor_highl);
     free(high.beg);
     free(high.hlight);
     free(high.end);
