@@ -41,53 +41,10 @@ int								match_key_curse(char *str)
 	return ((int)str[0]);
 }
 
-void							match_move(int key, t_line *line)
+void	find_match(t_minishell *ms, int key, t_line *line)
 {
-	int							i;
-	static struct s_keymove		keymove[10] = {
-		{KEY_RIGHT, &cursor_to_right},
-		{KEY_LEFT, &cursor_to_left},
-		{KEY_CTRL_LE, &left_word},
-		{KEY_CTRL_RI, &right_word},
-		{KEY_CTRL_UP, &up_row},
-		{KEY_CTRL_DO, &down_row},
-		{KEY_SLEFT, &under_left},
-		{KEY_SRIGHT, &under_right},
-		{KEY_HOME, &cursor_to_home},
-		{KEY_END, &cursor_to_end}
-	};
-
-	i = 0;
-	while (i < 10)
-		if (key == keymove[i++].key)
-			keymove[i - 1].funct(line);
-}
-
-void							match_ctrl(t_minishell *ms, int key,
-t_line *line)
-{
-	int							i;
-	static struct s_keymove_ms	keymove[2] = {
-		{KEY_CTRL_L, &clear_screen_},
-		{KEY_CTRL_D, &exit_pgm}
-	};
-
-	i = 0;
-	while (i < 2)
-		if (key == keymove[i++].key)
-			keymove[i - 1].funct(ms, line);
-}
-
-void							match_hist(int key, t_line *line)
-{
-	int							i;
-	static struct s_keyhist		keyhist[2] = {
-		{KEY_UP, &old_history},
-		{KEY_DOWN, &new_history}
-	};
-
-	i = 0;
-	while (i < 2)
-		if (key == keyhist[i++].key)
-			keyhist[i - 1].funct(line, (&line->hist));
+	match_move(key, line);
+	match_highlight(key, line);
+	match_ctrl(ms, key, line);
+	match_hist(key, line);
 }

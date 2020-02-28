@@ -18,18 +18,21 @@ void	right_word(t_line *line)
 		cursor_to_right(line);
 	while (is_spec(line->cmd[line->cursor]) && line->cursor != line->length)
 		cursor_to_right(line);
+	reset_line(line);
 }
 
 void	cursor_to_home(t_line *line)
 {
 	line->cursor = 0;
 	set_curpos(line);
+	reset_line(line);
 }
 
 void	cursor_to_end(t_line *line)
 {
 	line->cursor = line->length;
 	set_curpos(line);
+	reset_line(line);
 }
 
 void	up_row(t_line *line)
@@ -41,6 +44,7 @@ void	up_row(t_line *line)
 	}
 	else
 		cursor_to_home(line);
+	reset_line(line);
 }
 
 void	down_row(t_line *line)
@@ -54,4 +58,5 @@ void	down_row(t_line *line)
 	}
 	else
 		cursor_to_end(line);
+	reset_line(line);
 }
