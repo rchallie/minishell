@@ -94,7 +94,7 @@ typedef struct		s_line
 {
 	t_dlist			*hist;
 	size_t			cursor;
-	int				cursor_underl;
+	int				cursor_highl;
 	size_t			length;
 	size_t			hist_depth;
 	size_t			hist_size;
@@ -109,12 +109,24 @@ typedef struct		s_keymove
 	void			(*funct)(t_line *line);
 }					t_keymove;
 
+typedef struct	s_highlight
+{
+	char	*beg;
+	char	*hlight;
+	char	*end;
+}				t_highlight;
+
 typedef struct	s_keyhist
 {
 	int		key;
 	void	(*funct)(t_line *line, t_dlist **hist);
 }				t_keyhist;
 
+typedef struct		s_keymove_hl
+{
+	int				key;
+	void			(*funct)(int key, t_line *line);
+}					t_keymove_hl;
 
 typedef struct		s_keymove_ms
 {
@@ -187,7 +199,10 @@ int		ft_getwinsz(t_winsz *winsz);
 void	insert_char(t_line *line, int key);
 void	delete_char(t_line *line, int key);
 int		match_key_curse(char *str);
+void	find_match(t_minishell *ms, int key, t_line *line);
 void	match_move(int key, t_line *line);
+void    highlight(int key, t_line *line);
+void							match_highlight(int key, t_line *line);
 void	match_hist(int key, t_line *line);
 void	match_ctrl(t_minishell *ms, int key, t_line *line);
 void 	clear_screen_(t_minishell *ms, t_line *line);
@@ -201,9 +216,10 @@ void    ft_dlst_del(t_dlist **list);
 void   ft_dlst_remove_link(t_dlist **head);
 void    ft_dlst_add(t_dlist **head, t_dlist *new);
 t_dlist     *ft_dlst_new(void const *content, int content_size);
-void    under_left(t_line *line);
-void    under_right(t_line *line);
 void    launch_(t_line line);
 void    welcome_to_minishell(char *launching, t_line line, char *str, int nb);
+void    high_left(t_line *line);
+void    high_right(t_line *line);
+void    reset_line(t_line *line);
 
 #endif

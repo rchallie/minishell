@@ -42,12 +42,12 @@ void    input_loop(t_minishell *ms, t_line *line)
     {
         key = get_key();
         if (key != KEY_SLEFT && key != KEY_SRIGHT)
-		    line->cursor_underl = -1;
+		    line->cursor_highl = -1;
         ft_getwinsz(&line->winsz);
 		match_move(key, line);
         match_hist(key, line);
 		match_ctrl(ms, key, line);
-        // ft_printf("und = %d\n", line->cursor_underl);
+        // ft_printf("und = %d\n", line->cursor_highl);
         if (key > 31 && key < 127)
         {
             insert_char(line, key);
@@ -86,7 +86,7 @@ char	*edit_line(t_minishell *ms)
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
     ft_getwinsz(&line.winsz);
 	tputs(tgoto(tgetstr("SF", NULL), 0, line.winsz.row - 1), 1, &tc_putchar);
-    line.cursor_underl = -1;
+    line.cursor_highl = -1;
     line.start.row = 1;
     line.start.col = 1;
     set_curpos(&line);

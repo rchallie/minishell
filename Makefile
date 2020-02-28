@@ -26,9 +26,11 @@ SRC			=	minishell.c 		\
 				termcap/move_cursor.c		\
 				termcap/move_cursor_2.c		\
 				termcap/match_inputs.c		\
+				termcap/match_inputs_2.c		\
 				termcap/utils_cursor.c		\
 				termcap/ins_del_char.c		\
-				termcap/underline.c			\
+				termcap/reset_line.c		\
+				termcap/highlight.c			\
 				termcap/ctrl_stuff.c		\
 				termcap/tc_putchar.c		\
 				termcap/history.c			\
@@ -54,9 +56,11 @@ SRC_L			=	launch_minishell.c 		\
 				termcap/move_cursor.c		\
 				termcap/move_cursor_2.c		\
 				termcap/match_inputs.c		\
+				termcap/match_inputs_2.c		\
 				termcap/utils_cursor.c		\
 				termcap/ins_del_char.c		\
-				termcap/underline.c			\
+				termcap/reset_line.c		\
+				termcap/highlight.c			\
 				termcap/ctrl_stuff.c		\
 				termcap/tc_putchar.c		\
 				termcap/history.c			\
