@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-void 	clear_screen_(t_minishell *ms, t_line *line)
+void	clear_screen_(t_minishell *ms, t_line *line)
 {
 	(void)ms;
 	tputs(tgoto(tgetstr("SF", NULL), 0, line->start.row - 1), 1, &tc_putchar);
@@ -22,7 +22,8 @@ void 	clear_screen_(t_minishell *ms, t_line *line)
 
 void	exit_pgm(t_minishell *ms, t_line *line)
 {
-	int a = line->length;
-	a++;
+	int		a;
+
+	a = line->length;
 	exit_minishell(ms);
 }
