@@ -22,7 +22,6 @@ void	insert_char(t_line *line, int key)
 	line->length++;
 	line->cursor++;
 	tputs(tgetstr("im", NULL), 1, &tc_putchar);
-	ft_putchar_fd(key, 0);
 	tputs(tgetstr("cd", NULL), 0, &tc_putchar);
 	ft_putstr_fd(line->cmd + line->cursor, 0);
 	tputs(tgetstr("ei", NULL), 1, &tc_putchar);
