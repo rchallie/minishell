@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   termcaps.c                                         :+:      :+:    :+:   */
+/*   termcap_launch.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:00:41 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/25 17:52:11 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/28 09:48:13 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,12 @@ char	*edit_line(t_minishell *ms)
     set_curpos(&line);
     if (!get_pwd_short(&pwd))
 			return (ERROR);
-	ft_printf("[minishell] %s > ", pwd);
+	// ft_printf("[minishell] %s > ", pwd);
+	ft_printf("\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me\e[92ml\e[93ml\e[97m] \e[91m%s \e[97m> ", pwd);		
     line.start.col = 16 + ft_strlen(pwd);
 	free(pwd);
     set_curpos(&line);
-    exit(0);
+    // exit(0);
     // line.hist = get_history();
     // line.hist_size = ft_dlst_size(line.hist);
     input_loop(ms, &line);

@@ -6,13 +6,13 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/25 11:02:08 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/28 10:32:42 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-static int		add_word_to_tab(char *word, char ***treated)
+int		add_word_to_tab(char *word, char ***treated)
 {
 	char	**new_tab;
 	char	**save_treated;

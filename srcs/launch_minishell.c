@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launch_minishell.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:00:18 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/27 21:00:20 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/02/28 11:42:09 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,23 @@ int main(int ac, char **av, char **envp)
 {
 	t_minishell		ms;
 	int				ret;
-
+    char            *pwd;
+	
 	(void)ac;
 	(void)av;
 	(void)envp;
-	ret = 1;
+	ret = SUCCESS;
 	init_minishell_var(&ms, envp);
 	launch(&ms, 0, 0);
+	// write(1, "test", 4);
 	default_term_mode();
 	int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
 	while (ret == SUCCESS)
 	{
-		ret = line_edition(&ms);	
+		if (!get_pwd_short(&pwd))
+			return (ERROR);
+		ret = line_edition(&ms);
+		write(1, "PLOP\n", 5);
 		write(1, "\n", 1); //voir avec Thibault, pour mettre ça à la fin cd la line
 		if (!sanitize(ms.entry, &ms.treated))
 			return (0); 
@@ -113,5 +118,6 @@ int main(int ac, char **av, char **envp)
 		free_double_char_tab(ms.treated);
 		free(ms.sequence);
 	}
-	exit(0);
+	//exit(0);
+	while (1);
 }

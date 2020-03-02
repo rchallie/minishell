@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   set_mode.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 18:04:47 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/20 18:05:11 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/02/27 16:03:09 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-void	default_term_mode(void)
+int	default_term_mode(void)
 {
 	struct termios	tattr;
 
@@ -20,6 +20,7 @@ void	default_term_mode(void)
 	tattr.c_lflag |= (ECHO | ICANON | ISIG);
 	tattr.c_oflag |= (OPOST);
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &tattr);
+	return (SUCCESS);
 }
 
 void	raw_term_mode(void)

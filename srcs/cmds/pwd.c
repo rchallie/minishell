@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/27 11:20:36 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/27 14:54:47 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int		get_pwd(char **pwd)
 		return (ERROR);
 	ft_bzero(new_pwd, 1025);
 	getcwd(new_pwd, sizeof(char) * 1024);
-	*pwd = add_char_to_word(new_pwd, '\n');
+	*pwd = new_pwd;
+	// *pwd = add_char_to_word(new_pwd, '\n');
 	return (SUCCESS);
 }
 
@@ -67,7 +68,7 @@ int		get_pwd_short(char **pwd)
 		return (ERROR);
 	ft_bzero(pwd_s, sizeof(char) * (new_pwd_len + 1));
 	new_pwd_len = 0;
-	while (pwd_tmp[pwd_len + 1])
+	while (pwd_tmp[pwd_len/* + 1*/])
 	{
 		pwd_s[new_pwd_len] = pwd_tmp[pwd_len];
 		new_pwd_len++;

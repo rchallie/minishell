@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   termcap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:10:30 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/27 21:10:31 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/02/28 09:52:25 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void    input_loop(t_minishell *ms, t_line *line)
 char	*edit_line(t_minishell *ms)
 {
     t_line  line;
-
+    
     raw_term_mode();
     ft_bzero(&line, sizeof(line));
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
@@ -93,6 +93,7 @@ int		line_edition(t_minishell *ms)
 {
 	char	*new_entry;
 
+//    write()
 	new_entry = NULL;
     default_term_mode();		
     init_terminal_data();
