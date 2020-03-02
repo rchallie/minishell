@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_and_interr_term.c                             :+:      :+:    :+:   */
+/*   reset_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/20 19:37:14 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/20 19:37:15 by thervieu         ###   ########.fr       */
+/*   Created: 2020/02/28 01:23:02 by thervieu          #+#    #+#             */
+/*   Updated: 2020/02/28 01:23:04 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-void	init_terminal_data(void)
+void    reset_line(t_line *line)
 {
-	char		*termtype;
-	int			success;
-	static char	term_buffer[2046];
+    int     save;
 
-	termtype = getenv("TERM");
-	if (termtype == 0)
-		ft_putstr("Specify a terminal type with `setenv TERM <yourtype>'.\n");
-	success = tgetent(term_buffer, (const char *)termtype);
-	if (success < 0)
-		ft_putstr("Could not access the termcap data base.\n");
-	if (success == 0)
-		ft_putstr("Terminal type `%s' is not defined.\n");
+    save = line->cursor;
+    line->cursor = 0;
+    set_curpos(line);
+    tputs(tgetstr("cd", NULL), 0, &tc_putchar);
+    ft_putstr_fd(line->cmd, 0);
+    line->cursor = save;
+    set_curpos(line);
+
 }

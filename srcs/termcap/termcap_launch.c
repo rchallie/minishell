@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   termcaps.c                                         :+:      :+:    :+:   */
+/*   termcap_launch.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:00:41 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/25 17:52:11 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/02/28 09:48:13 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ int     get_key(void)
 	ft_bzero(str, (sizeof(char) * MAX_KEY_LEN));
 	read(0, str, MAX_KEY_LEN);
 	str[6] = '\0';
-	// printf("str[0] = %d, str[1] = %d, str[2] = %d, str[3] = %d, str[4] = %d, str[5] = %d, str[6] = %d\n", (int)str[0], (int)str[1], (int)str[2], (int)str[3], (int)str[4], (int)str[5], (int)str[6]);
+    // ft_printf("\e%s\e%s", "[43m", "[45m");
+	// ft_printf("str[0] = %x, str[1] = %x, str[2] = %x, str[3] = %x, str[4] = %x, str[5] = %x, str[6] = %x\n", (int)str[0], (int)str[1], (int)str[2], (int)str[3], (int)str[4], (int)str[5], (int)str[6]);
+    // ft_printf("\e[49m");
     key = match_key_curse(str);
     free(str);
     return (key);
@@ -36,13 +38,16 @@ void    input_loop(t_minishell *ms, t_line *line)
     int save;
     
     save = line->cursor;
-    while (1)
+    while (42)
     {
         key = get_key();
+        if (key != KEY_SLEFT && key != KEY_SRIGHT)
+		    line->cursor_highl = -1;
         ft_getwinsz(&line->winsz);
 		match_move(key, line);
+        match_hist(key, line);
 		match_ctrl(ms, key, line);
-        // match_hist (up, down etc)
+        // ft_printf("und = %d\n", line->cursor_highl);
         if (key > 31 && key < 127)
         {
             insert_char(line, key);
@@ -68,18 +73,37 @@ void    input_loop(t_minishell *ms, t_line *line)
         if ((char)key == '\n')
 			break ;
 	}
+    return ;
 }
 
 char	*edit_line(t_minishell *ms)
 {
     t_line  line;
+    char    *pwd;
 
     raw_term_mode();
     ft_bzero(&line, sizeof(line));
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
-    get_cursor_start_pos(&line);
+    ft_getwinsz(&line.winsz);
+	tputs(tgoto(tgetstr("SF", NULL), 0, line.winsz.row - 1), 1, &tc_putchar);
+    line.cursor_highl = -1;
+    line.start.row = 1;
+    line.start.col = 1;
+    set_curpos(&line);
+    if (!get_pwd_short(&pwd))
+			return (ERROR);
+	// ft_printf("[minishell] %s > ", pwd);
+	ft_printf("\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me\e[92ml\e[93ml\e[97m] \e[91m%s \e[97m> ", pwd);		
+    line.start.col = 16 + ft_strlen(pwd);
+	free(pwd);
+    set_curpos(&line);
+    // exit(0);
+    // line.hist = get_history();
+    // line.hist_size = ft_dlst_size(line.hist);
     input_loop(ms, &line);
-    // append_history + delstr
+    // append_history(line.cmd);
+    // if (line.hist)
+    //     ft_dlst_del(&line.hist);
     default_term_mode();
 	if (line.cmd[0] == '\0')
 		return (ft_strdup(""));

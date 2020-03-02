@@ -18,7 +18,7 @@ void 	clear_screen_(t_minishell *ms, t_line *line)
 	tputs(tgoto(tgetstr("SF", NULL), 0, line->start.row - 1), 1, &tc_putchar);
 	line->start.row = 1;
 	set_curpos(line);
-} 	
+}
 
 void	exit_pgm(t_minishell *ms, t_line *line)
 {

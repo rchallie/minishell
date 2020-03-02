@@ -15,17 +15,25 @@
 void	cursor_to_left(t_line *line)
 {
 	if (!line->cursor)
+	{
+		reset_line(line);
 		return ;
+	}
 	line->cursor--;
-    set_curpos(line);
+	set_curpos(line);
+	reset_line(line);
 }
 
 void	cursor_to_right(t_line *line)
 {
 	if (line->cursor == line->length)
+	{
+		reset_line(line);
 		return ;
+	}
 	line->cursor++;
 	set_curpos(line);
+	reset_line(line);
 }
 
 int		is_spec(char c)
@@ -54,4 +62,5 @@ void	left_word(t_line *line)
 	if (line->cursor || (is_spec(line->cmd[0]) && is_not_spec(line->cmd[1])
 		&& save != 1 && save != 0))
 		cursor_to_right(line);
+	reset_line(line);
 }
