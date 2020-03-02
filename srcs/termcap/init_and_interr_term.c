@@ -25,5 +25,5 @@ void	init_terminal_data(void)
 	if (success < 0)
 		ft_putstr("Could not access the termcap data base.\n");
 	if (success == 0)
-		ft_putstr("Terminal type `%s' is not defined.\n");
+		ft_printf("Terminal type `%s' is not defined.\n", termtype);
 }
