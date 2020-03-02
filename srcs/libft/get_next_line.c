@@ -46,14 +46,15 @@ int		get_next_line(int fd, char **line)
 	if (fd < 0 || !line)
 		return (-1);
 	buff = '\0';
-	while (reading != 0 && buff != '\n')
+	str = NULL;
+	while ((reading = read(fd, &buff, 1)) == 1 && buff != '\n')
 	{
-		if ((reading = read(fd, &buff, 1)) == -1)
-			return (-1);
 		to_free = str;
 		str = append_str(str, buff);
 		free(to_free);
 	}
+	if (reading == -1)
+		return (-1);
 	*line = str;
 	if (reading == 0)
 		return (0);

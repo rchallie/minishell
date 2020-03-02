@@ -61,17 +61,3 @@ t_line *line)
 		if (key == keymove[i++].key)
 			keymove[i - 1].funct(ms, line);
 }
-
-void							match_hist(int key, t_line *line)
-{
-	int							i;
-	static struct s_keyhist		keyhist[2] = {
-		{KEY_UP, &old_history},
-		{KEY_DOWN, &new_history}
-	};
-
-	i = 0;
-	while (i < 2)
-		if (key == keyhist[i++].key)
-			keyhist[i - 1].funct(line, (&line->hist));
-}
