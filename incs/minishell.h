@@ -29,7 +29,7 @@
 # include <sys/ioctl.h>
 # include "../srcs/libft/libft.h"
 
-# define HISTORY_PATH "save_history"
+# define HISTORY_PATH ".save_history"
 # define MAX_CMD_LEN 4096
 # define MAX_KEY_LEN 7
 # define SUCCESS 1

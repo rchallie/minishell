@@ -15,9 +15,7 @@
 int								match_key_curse(char *str)
 {
 	int							i;
-	static struct s_keymatch	key_couple[14] = {
-		{KEY_CODE_UP, KEY_UP},
-		{KEY_CODE_DO, KEY_DOWN},
+	static struct s_keymatch	key_couple[12] = {
 		{KEY_CODE_RI, KEY_RIGHT},
 		{KEY_CODE_LE, KEY_LEFT},
 		{KEY_CODE_CTRL_LE, KEY_CTRL_LE},
@@ -33,7 +31,7 @@ int								match_key_curse(char *str)
 	};
 
 	i = 0;
-	while (i < 14)
+	while (i < 12)
 	{
 		if (!ft_strcmp(key_couple[i++].key_code, str))
 			return (key_couple[i - 1].key_ret);
@@ -46,5 +44,4 @@ void	find_match(t_minishell *ms, int key, t_line *line)
 	match_move(key, line);
 	match_highlight(key, line);
 	match_ctrl(ms, key, line);
-	match_hist(key, line);
 }
