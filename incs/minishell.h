@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/27 15:49:33 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/03 14:44:32 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 # define MINISHELL_H
 
 # define TREAT 2
-# define SUCCESS 1
+# define SUCCESS 0x1
 # define ERROR 0
+
+# define ERROR_NEAR_UNEXPECTED_AT_NEXT_POS 0x8
+# define ERROR_NEAR_UNEXPECTED_AT_POS 0x9
 
 # include "../srcs/libft/libft.h"
 # include <stdlib.h>
@@ -32,8 +35,6 @@
 # define HISTORY_PATH ".save_history"
 # define MAX_CMD_LEN 4096
 # define MAX_KEY_LEN 7
-# define SUCCESS 1
-# define ERROR 0
 
 # define KEY_CODE_UP "\x1b\x5b\x41\0"
 # define KEY_CODE_DO "\x1b\x5b\x42\0"
@@ -57,11 +58,22 @@
 # define KEY_CTRL_D -20
 # define KEY_CTRL_L -21
 
+typedef struct		s_exec
+{
+	char			*exec;
+	char			*exec_path;
+	char			*env_path;
+	char			**path_list;
+	char			**argv;
+	int				save_seq_cursor;
+}					t_exec;
+
 typedef struct		s_minishell
 {
 	char			*entry;
 	char			**treated;
 	char			**envp;
+	char			**personal_env_var;
 	char			*output;
 	int				*sequence;
 	int				seq_cursor;
@@ -225,4 +237,7 @@ void    reset_line(t_line *line);
 
 int		is_exec(t_minishell *ms);
 int		add_word_to_tab(char *word, char ***treated);
+
+int reorder_sequence(t_minishell *ms);
+
 #endif
