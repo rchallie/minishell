@@ -19,6 +19,7 @@ SRC			=	minishell.c 		\
 				entry/sequence.c	\
 				entry/sanitize.c 	\
 				entry/sanitize_utils.c \
+				entry/reorder.c	\
 				termcap/termcap.c		\
 				termcap/init_and_interr_term.c \
 				termcap/set_mode.c 			\

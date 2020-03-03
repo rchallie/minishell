@@ -5,10 +5,12 @@ Research :<br>
 <br><br>
 Seq : 
 - 0 : command
-- 1 : flags
 - 2 : arguments
 - 3 : >
 - 4 : >>
 - 5 : <
 - 6 : |
 - 7 : ;
+- 8 : file
+- 9 : newline
+

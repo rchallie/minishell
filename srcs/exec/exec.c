@@ -6,21 +6,11 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/02 13:48:45 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:29:22 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
-
-typedef struct	s_exec
-{
-	char	*exec;
-	char	*exec_path;
-	char	*env_path;
-	char	**path_list;
-	char	**argv;
-	int		save_seq_cursor;
-}	t_exec;
 
 /*
 ** Function : init_exec
@@ -32,7 +22,7 @@ typedef struct	s_exec
 **		returns:	null
 */
 
-static void 	init_exec(t_exec *ex, t_minishell *ms)
+static void		init_exec(t_exec *ex, t_minishell *ms)
 {
 	ex->exec = NULL;
 	ex->exec_path = NULL;
@@ -42,11 +32,63 @@ static void 	init_exec(t_exec *ex, t_minishell *ms)
 	ex->save_seq_cursor = ms->seq_cursor;
 }
 
-static int		init_for_absolute_path(t_exec *ex, t_minishell *ms)
+/*
+** Function : exec_cmd
+** -------------------------
+**		Execute binarie from path was file
+**
+**		(char *)file		:	path to binarie
+**		(t_exec *)ex		:	a pointer to the exec structure
+**		(t_minishell *)ms	:	minishell global variables
+**
+**		returns:	return 0 :	if the binarie file was'nt found
+**					return 1 :	if the binaries was sucessfull executed
+*/
+
+static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 {
+	pid_t	pid;
+	int		ret;
+	int		status;
+
+	pid = 0;
+	if ((ret = open(ex->exec_path, O_RDONLY)) > 0)
+	{
+		printf("RET : %d\n", ret);
+		if ((pid = fork()) == 0)
+		{
+			close(ret);
+			default_term_mode();
+			printf("PLOP %d\n", ret);
+			ret = execve(file, ex->argv, ms->envp);
+		}
+		else
+		{
+			waitpid(pid, &status, 0);
+			return (SUCCESS);
+		}
+	}
+	return (ERROR);
+}
+
+/*
+** Function : init_for_exec
+** -------------------------
+**		Initialise (t_exec *)ex (like argv) to be used command for absolute path
+**
+**		(t_exec *)ex		:	a pointer to the exec structure
+**		(t_minishell *)ms	:	minishell global variables
+**
+**		returns:	return 0 :	if the malloc of argv array return NULL
+**					return 1 :	if everything was okay
+*/
+
+static int		init_for_exec(t_exec *ex, t_minishell *ms)
+{
+	char	*last_exec_path;
+
 	ex->exec = ms->treated[ex->save_seq_cursor];
 	add_word_to_tab(ms->treated[ex->save_seq_cursor], &ex->argv);
-	// printf("argv : %s\n", ex.argv[0]);
 	ex->save_seq_cursor++;
 	if (ms->sequence[ex->save_seq_cursor] > 2)
 	{
@@ -56,93 +98,88 @@ static int		init_for_absolute_path(t_exec *ex, t_minishell *ms)
 		*ex->argv = NULL;
 	}
 	else
-		while (ms->sequence[ex->save_seq_cursor] && ms->sequence[ex->save_seq_cursor] <= 2)
+		while (ms->sequence[ex->save_seq_cursor]
+			&& ms->sequence[ex->save_seq_cursor] <= 2)
 			add_word_to_tab(ms->treated[ex->save_seq_cursor++], &ex->argv);
-
 	get_pwd(&ex->exec_path);
+	last_exec_path = ex->exec_path;
 	ex->exec_path = add_char_to_word(ex->exec_path, '/');
+	free(last_exec_path);
+	last_exec_path = ex->exec_path;
 	ex->exec_path = ft_strjoin(ex->exec_path, ex->exec);
+	free(last_exec_path);
 	printf("Exec path : %s\n", ex->exec_path);
 	return (SUCCESS);
 }
 
-// static int		absolute_path(t_exec *ex, t_minishell *ms)
-// {
+/*
+** Function : exec_from_env
+** -------------------------
+**		Will try to execute binaries with path string stockedd in environement
+**		variable PATH, exclude /bin && /usr/bin
+**
+**		(t_exec *)ex		:	a pointer to the exec structure
+**		(t_minishell *)ms	:	minishell global variables
+**
+**		returns:	return 0 :	if the malloc of argv array return NULL
+**					return 1 :	if everything was okay
+*/
 
-// }
+static int		exec_from_env(t_exec *ex, t_minishell *ms)
+{
+	int		i;
+	char	*last_exec_path;
 
-int		is_exec(t_minishell *ms)
+	i = 0;
+	ex->env_path = get_env_var_by_name("path", ms->envp);
+	ex->path_list = ft_split(ex->env_path, ':');
+	free(ex->env_path);
+	while (i < get_double_char_tab_len(ex->path_list))
+	{
+		if (ft_strcmp(ex->path_list[i], "/usr/bin") != 0
+			&& ft_strcmp(ex->path_list[i], "/bin") != 0)
+		{
+			ex->exec_path = add_char_to_word(ex->path_list[i], '/');
+			last_exec_path = ex->exec_path;
+			ex->exec_path = ft_strjoin(ex->exec_path, ex->exec);
+			free(last_exec_path);
+			if (exec_cmd(ex->exec_path, ex, ms) == SUCCESS)
+				return (SUCCESS);
+		}
+		free(ex->exec_path);
+		ex->exec_path = NULL;
+		i++;
+	}
+	free_double_char_tab(ex->path_list);
+	return (ERROR);
+}
+
+/*
+** Function : is_exec
+** -------------------------
+**		Will try to execute binaries where seq_cursor was
+**
+**		(t_minishell *)ms	:	minishell global variables
+**
+**		returns:	return 0 :	if init as a problem, if len of the binarie name
+**								is NULL or is the binaries was not found
+**					return 1 :	if the binarie was found and executed
+*/
+
+int				is_exec(t_minishell *ms)
 {
 	t_exec	ex;
-	int		ret;
-	pid_t	pid;
 
 	init_exec(&ex, ms);
-	if (!init_for_absolute_path(&ex, ms))
+	if (!init_for_exec(&ex, ms))
 		return (ERROR);
-	// exec = ms->treated[ex.save_seq_cursor];
-	// add_word_to_tab(ms->treated[ex.save_seq_cursor], &ex.argv);
-	// // printf("argv : %s\n", ex.argv[0]);
-	// ex.save_seq_cursor++;
-	// faire un argv correct
-	
-	pid = 0;
-
-	if ((ret = open(ex.exec_path, O_RDONLY)) > 0)
-	{
-		if ((pid = fork()) == 0)
-		{
-			close(ret);
-			default_term_mode();
-			printf("PLOP %d\n", ret);
-			ret = execve(ex.exec, ex.argv, ms->envp);
-			exit(0);
-		} 
-		else
-		{
-			int status;
-			waitpid(pid, &status, 0);
-			return (SUCCESS);
-		}
-	}
-	
-	if (ret == -1){
-		ex.env_path = get_env_var_by_name("path", ms->envp);
-		ex.path_list = ft_split(ex.env_path, ':');
-		int i = 0;
-			int j = 0;
-		while (ex.path_list[j])
-			printf("path : %s\n", ex.path_list[j++]);
-		while (i < get_double_char_tab_len(ex.path_list))
-		{
-			if (ft_strcmp(ex.path_list[i], "/usr/bin") != 0 && ft_strcmp(ex.path_list[i], "/bin") != 0)
-			{
-				free(ex.exec_path);
-				ex.exec_path = NULL;
-				ex.exec_path = add_char_to_word(ex.path_list[i], '/');
-				ex.exec_path = ft_strjoin(ex.exec_path, ex.exec);
-				printf("Exec : %s\n", ex.exec_path);
-				
-				if ((ret = open(ex.exec_path, O_RDONLY)) > 0)
-				{
-					if ((pid = fork()) == 0)
-					{
-						close(ret);
-						default_term_mode();
-						printf("EXEC FINAL : %s\n", ex.exec_path);
-						ret = execve(ex.exec_path, ex.argv, ms->envp);
-					}
-					else
-					{
-						int status;
-						waitpid(pid, &status, 0);		/* code */
-						return (SUCCESS);
-					}
-				}
-			
-			}
-			i++;
-		}
-	}
+	if (ft_secure_strlen(ex.exec) == 0)
+		return (ERROR);
+	if (exec_cmd(ex.exec, &ex, ms) == SUCCESS)
+		return (SUCCESS);
+	free(ex.exec_path);
+	ex.exec_path = NULL;
+	if (exec_from_env(&ex, ms) == SUCCESS)
+		return (SUCCESS);
 	return (ERROR);
 }

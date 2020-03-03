@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/28 10:32:42 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/03 13:43:40 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int		add_word_to_tab(char *word, char ***treated)
 	int		treated_len = 0;
 	int		i = 0;
 
+	if (!word)
+		return (SUCCESS);
 	if (!treated || !*treated)
 	{
 		if (!(new_tab = (char **)malloc(sizeof(char *) * 2)))
@@ -40,6 +42,7 @@ int		add_word_to_tab(char *word, char ***treated)
 		i++;
 	}
 	new_tab[i] = ft_strdup(word);
+
 	*treated = new_tab;
 	free_double_char_tab(save_treated);
 	return (SUCCESS);
@@ -96,6 +99,7 @@ int				sanitize(char *entry, char ***treated)
 			return (ERROR);
 		word[0] = '\0';
 		add_word_to_tab(word, treated);
+		add_word_to_tab(ft_strdup("\n"), treated);
 		return (SUCCESS);
 	}
 	up = 0;
@@ -114,6 +118,7 @@ int				sanitize(char *entry, char ***treated)
 			up++;
 		free(word);
 	}
+	add_word_to_tab(ft_strdup("\n"), treated);
 	free(entry);
 	return (SUCCESS);
 }

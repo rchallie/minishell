@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:27:25 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/26 10:43:58 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/03 15:08:00 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ char		*add_char_to_word(char *word, char c)
 	}
 	word[i++] = c;
 	word[i] = '\0';
-	if (save_word)
-		free(save_word);
 	return (word);
 }
 
@@ -68,15 +66,27 @@ int		get_word(char *entry, char **word)
 	int simple_q;
 	int double_q;
 	int char_count;
+	char *env_var_name;
 
 	simple_q = 0;
 	double_q = 0;
 	char_count = 0;
+	env_var_name = NULL;
 	// printf("word : |%s|\n", *word);
 	// if (*word)
 		// printf("PLPO\n");
 	while (*entry)
 	{
+		if (*entry == '$')
+		{
+			entry++;
+			while (entry && ft_isalnum(*entry))
+			{
+				add_char_to_word(env_var_name, *entry);
+				entry++;
+			}
+			ft_printf("var name : |%s|\n", env_var_name);
+		}
 		if ((*entry == ' ' || *entry == '>' || *entry == '<'
 			|| *entry == '|' || *entry == ';') && !(simple_q || double_q))
 			break ;
