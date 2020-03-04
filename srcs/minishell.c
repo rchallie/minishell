@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/04 17:56:37 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 18:57:13 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,14 +197,19 @@ int main(int ac, char **av, char **envp)
 						// SORTIE 
 						dup2(tab_fpipe[nb_cmd_p][1], STDOUT_FILENO);
 						// READ
-						read(tab_fpipe[nb_cmd_p - 1][0], buffer, 3999);
+						// read(tab_fpipe[nb_cmd_p - 1][0], buffer, 3999);
 					}
 					else if (nb_cmd_p == has_pipe - 1)
 					{
 						// ENTREE
 						dup2(tab_fpipe[nb_cmd_p - 1][0], STDIN_FILENO);
 						close(tab_fpipe[nb_cmd_p][1]);
-						read(tab_fpipe[nb_cmd_p - 1][0], buffer2, 3999);
+						close(tab_fpipe[nb_cmd_p][0]);
+						close(tab_fpipe[nb_cmd_p - 1][1]);
+						// int ret = 0;
+						// ret = read(tab_fpipe[nb_cmd_p - 1][0], buffer2, 3999);
+						// printf("BUFFER : %s\nRET : %d\n", buffer2, ret);
+						// ms.output = "test\n";
 					}
 // 					nb_cmd_p != 0 ? read(fpipe[0], buffer, 3999) : 0;
 // // 					//close(fpipe[1]);      //close write pipe
@@ -238,16 +243,18 @@ int main(int ac, char **av, char **envp)
 								if (ms.sequence[o] >= 3 && ms.sequence[o] <= 5)
 									ms.has_spec_uf = 1;
 								// -------------------
-								if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
-									treat_output(&ms);
+								cmd_ret = cmd[ms.iscmdret](&ms);
+								write(1, ms.output, ft_strlen(ms.output));
+								// if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
+								// 	treat_output(&ms);
 								// else
 								// 	printf("CMD RET : %d\n", cmd_ret);
 							}
 						}
 						else if (ms.sequence[ms.seq_cursor] == 0 && ms.iscmdret == -1 && ms.treated[ms.seq_cursor][0])
 							error_command(ms.treated[ms.seq_cursor]);
-					ft_printf("nb = |%d|\n", nb_cmd_p);
-					
+					// ft_printf("nb = |%d|\n", nb_cmd_p);
+					}
 					if (nb_cmd_p == 0)
 						close(tab_fpipe[nb_cmd_p][1]);
 					else if (nb_cmd_p < has_pipe - 1)
