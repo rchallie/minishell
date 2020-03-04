@@ -211,6 +211,7 @@ void	set_curpos(t_line *line);
 int		ft_getwinsz(t_winsz *winsz);
 void	insert_char(t_line *line, int key);
 void	delete_char(t_line *line, int key);
+void	set_line(int save, t_line *line);
 int		match_key_curse(char *str);
 void	find_match(t_minishell *ms, int key, t_line *line);
 void	match_move(int key, t_line *line);

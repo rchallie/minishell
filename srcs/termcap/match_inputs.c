@@ -39,9 +39,44 @@ int								match_key_curse(char *str)
 	return ((int)str[0]);
 }
 
-void	find_match(t_minishell *ms, int key, t_line *line)
+void							match_move(int key, t_line *line)
+{
+	int							i;
+	static struct s_keymove		keymove[8] = {
+		{KEY_RIGHT, &cursor_to_right},
+		{KEY_LEFT, &cursor_to_left},
+		{KEY_CTRL_LE, &left_word},
+		{KEY_CTRL_RI, &right_word},
+		{KEY_CTRL_UP, &up_row},
+		{KEY_CTRL_DO, &down_row},
+		{KEY_HOME, &cursor_to_home},
+		{KEY_END, &cursor_to_end}
+	};
+
+	i = 0;
+	while (i < 8)
+		if (key == keymove[i++].key)
+			keymove[i - 1].funct(line);
+}
+
+void							match_ctrl(t_minishell *ms, int key,
+t_line *line)
+{
+	int							i;
+	static struct s_keymove_ms	keymove[2] = {
+		{KEY_CTRL_L, &clear_screen_},
+		{KEY_CTRL_D, &exit_pgm}
+	};
+
+	i = 0;
+	while (i < 2)
+		if (key == keymove[i++].key)
+			keymove[i - 1].funct(ms, line);
+}
+
+void							find_match(t_minishell *ms, int key,
+t_line *line)
 {
 	match_move(key, line);
-	match_highlight(key, line);
 	match_ctrl(ms, key, line);
 }

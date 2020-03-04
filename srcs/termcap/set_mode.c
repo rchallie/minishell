@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-int	default_term_mode(void)
+int		default_term_mode(void)
 {
 	struct termios	tattr;
 
