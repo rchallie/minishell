@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:46:46 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/03 14:26:37 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 09:25:09 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ static int		is_special(char *to_test, int *sequ, int i)
 **
 **		(char **)treated : treated entry
 **		(int *)  seq	 : sequence
-**		(int)	 has_cmd : a flag if the cmd word was set, so has_cmd = 1 else 0
+**		(int *)	 has_cmd : a flag if the cmd word was set, so has_cmd = 1 else 0
 **		(int)	 i		 : index in sequ
 **
 **		returns:	return 0x8 : ERROR_NEAR_UNEXPECTED_AT_NEXT_POS
 **					return 0x9 : ERROR_NEAR_UNEXPECTED_AT_POS
 */
 
-static int		seq_for_special(char **treated, int *sequ, int has_cmd, int *i)
+static int		seq_for_special(char **treated, int *sequ, int *has_cmd, int *i)
 {
 	if (sequ[*i] == 3 || sequ[*i] == 4 || sequ[*i] == 5)
 	{
@@ -71,10 +71,10 @@ static int		seq_for_special(char **treated, int *sequ, int has_cmd, int *i)
 	}
 	else if (sequ[*i] == 7 || sequ[*i] == 6)
 	{
-		if (has_cmd == 0)
+		if (*has_cmd == 0)
 			return (ERROR_NEAR_UNEXPECTED_AT_POS);
 		else
-			has_cmd = 0;
+			*has_cmd = 0;
 	}
 	return (SUCCESS);
 }
@@ -106,7 +106,7 @@ static int		seq_treated_tab(char **treated, int *sequ)
 		if (is_special(treated[i], sequ, i))
 		{
 			if (((ret_spe =
-				seq_for_special(treated, sequ, has_cmd, &i)) != SUCCESS))
+				seq_for_special(treated, sequ, &has_cmd, &i)) != SUCCESS))
 				return (ret_spe);
 		}
 		else if (has_cmd == 0)

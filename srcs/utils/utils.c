@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:27:25 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/03 15:08:00 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/03 15:33:09 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		free_double_char_tab(char **tab_to_free)
 	free(tab_to_free);
 }
 
-int		get_word(char *entry, char **word)
+int		get_word(t_minishell *ms, char *entry, char **word)
 {
 	int simple_q;
 	int double_q;
@@ -80,12 +80,18 @@ int		get_word(char *entry, char **word)
 		if (*entry == '$')
 		{
 			entry++;
+			char_count++;
 			while (entry && ft_isalnum(*entry))
 			{
-				add_char_to_word(env_var_name, *entry);
+				env_var_name = add_char_to_word(env_var_name, *entry);
 				entry++;
+				char_count++;
 			}
 			ft_printf("var name : |%s|\n", env_var_name);
+			env_var_name = get_env_var_by_name(env_var_name, ms->envp); // else env_perso else ""
+			*word = ft_strjoin(*word, env_var_name);
+			printf("WORD : |%s|\n", *word);
+			*word = add_char_to_word(*word, '\0');
 		}
 		if ((*entry == ' ' || *entry == '>' || *entry == '<'
 			|| *entry == '|' || *entry == ';') && !(simple_q || double_q))
@@ -108,7 +114,8 @@ int		get_word(char *entry, char **word)
 			*word = add_char_to_word(*word, *entry);
 		if (!word)
 			return (ERROR);
-		entry++;
+		if (entry)
+			entry++;
 		char_count++;
 	}
 	if (simple_q || double_q)
@@ -124,12 +131,12 @@ char *get_env_var_by_name(char *name, char **envp)
 	int i = 0;
 	char *rename = ft_strdup(name);
 	// printf("prename : %s\n", name);
-	while (rename[i])
-	{
-		// write(1,"a\n", 2);
-		rename[i] = ft_toupper(rename[i]);
-		i++;
-	}
+	// while (rename[i])
+	// {
+	// 	// write(1,"a\n", 2);
+	// 	rename[i] = ft_toupper(rename[i]);
+	// 	i++;
+	// }
 	// printf("Name : %s\n", rename);
 	i = 0;
 	int j = 0;

@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/02 18:29:22 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:55:01 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,18 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 	pid = 0;
 	if ((ret = open(ex->exec_path, O_RDONLY)) > 0)
 	{
-		printf("RET : %d\n", ret);
+		// printf("RET : %d\n", ret);
 		if ((pid = fork()) == 0)
 		{
 			close(ret);
 			default_term_mode();
-			printf("PLOP %d\n", ret);
-			ret = execve(file, ex->argv, ms->envp);
+			// printf("PLOP %d\n", ret);
+			execve(file, ex->argv, ms->envp);
+			// printf("LOL TROP DROLE");
 		}
 		else
 		{
+			// printf(1, "a\n", 2);
 			waitpid(pid, &status, 0);
 			return (SUCCESS);
 		}
@@ -108,7 +110,7 @@ static int		init_for_exec(t_exec *ex, t_minishell *ms)
 	last_exec_path = ex->exec_path;
 	ex->exec_path = ft_strjoin(ex->exec_path, ex->exec);
 	free(last_exec_path);
-	printf("Exec path : %s\n", ex->exec_path);
+	// printf("Exec path : %s\n", ex->exec_path);
 	return (SUCCESS);
 }
 
@@ -131,13 +133,12 @@ static int		exec_from_env(t_exec *ex, t_minishell *ms)
 	char	*last_exec_path;
 
 	i = 0;
-	ex->env_path = get_env_var_by_name("path", ms->envp);
+	ex->env_path = get_env_var_by_name("PATH", ms->envp);
 	ex->path_list = ft_split(ex->env_path, ':');
 	free(ex->env_path);
 	while (i < get_double_char_tab_len(ex->path_list))
 	{
-		if (ft_strcmp(ex->path_list[i], "/usr/bin") != 0
-			&& ft_strcmp(ex->path_list[i], "/bin") != 0)
+		if (is_cmd(ms->treated[ms->seq_cursor]) == -1)
 		{
 			ex->exec_path = add_char_to_word(ex->path_list[i], '/');
 			last_exec_path = ex->exec_path;

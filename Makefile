@@ -14,7 +14,6 @@ SRC			=	minishell.c 		\
 				cmds/pwd.c			\
 				cmds/exit.c			\
 				cmds/env.c			\
-				cmds/export.c		\
 				otps/output.c		\
 				specs/check.c		\
 				exec/exec.c			\
@@ -46,7 +45,6 @@ SRC_L			=	launch_minishell.c 		\
 				cmds/pwd.c			\
 				cmds/exit.c			\
 				cmds/env.c			\
-				cmds/export.c		\
 				otps/output.c		\
 				specs/check.c		\
 				entry/sequence.c	\
