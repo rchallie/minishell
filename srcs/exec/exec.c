@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/04 14:55:01 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 18:53:25 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,27 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 	int		status;
 
 	pid = 0;
+	// ft_printf("BUFFER : %s\n", ms->output);
 	if ((ret = open(ex->exec_path, O_RDONLY)) > 0)
 	{
 		// printf("RET : %d\n", ret);
 		if ((pid = fork()) == 0)
 		{
+			// write(1, ms->output, ft_strlen(ms->output));
 			close(ret);
 			default_term_mode();
 			// printf("PLOP %d\n", ret);
+			// write(1, ms->output, ft_strlen(ms->output));
+			printf("LOL TROP DROLE\n");
 			execve(file, ex->argv, ms->envp);
-			// printf("LOL TROP DROLE");
 		}
 		else
 		{
 			// printf(1, "a\n", 2);
+			printf("LOL TROP DROLE 2\n");
 			waitpid(pid, &status, 0);
+			printf("LOL TROP DROLE 3\n");
+		
 			return (SUCCESS);
 		}
 	}
