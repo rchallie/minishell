@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/04 17:49:39 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 17:56:37 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,10 +189,6 @@ int main(int ac, char **av, char **envp)
 						// SORTIE
 						dup2(tab_fpipe[nb_cmd_p][1], STDOUT_FILENO);
 						close(tab_fpipe[nb_cmd_p][0]);
-						//CMD / EXEC
-						write(1, "test2\n", 6);
-						close(tab_fpipe[nb_cmd_p][1]);
-						exit(0);
 					}
 					else if (nb_cmd_p < has_pipe - 1)
 					{
@@ -202,12 +198,6 @@ int main(int ac, char **av, char **envp)
 						dup2(tab_fpipe[nb_cmd_p][1], STDOUT_FILENO);
 						// READ
 						read(tab_fpipe[nb_cmd_p - 1][0], buffer, 3999);
-						//CMD / EXEC
-						write(1, buffer, ft_strlen(buffer));
-						close(tab_fpipe[nb_cmd_p - 1][0]);
-						close(tab_fpipe[nb_cmd_p][1]);
-						close(tab_fpipe[nb_cmd_p - 1][1]);
-						exit(0);
 					}
 					else if (nb_cmd_p == has_pipe - 1)
 					{
@@ -215,14 +205,6 @@ int main(int ac, char **av, char **envp)
 						dup2(tab_fpipe[nb_cmd_p - 1][0], STDIN_FILENO);
 						close(tab_fpipe[nb_cmd_p][1]);
 						read(tab_fpipe[nb_cmd_p - 1][0], buffer2, 3999);
-						//CMD / EXEC
-						ft_printf("LAST : ");
-						write(1, buffer2, ft_strlen(buffer2));
-						ft_printf("\n");
-						close(tab_fpipe[nb_cmd_p - 1][0]);
-						close(tab_fpipe[nb_cmd_p][0]);
-						close(tab_fpipe[nb_cmd_p - 1][1]);
-						exit(0);
 					}
 // 					nb_cmd_p != 0 ? read(fpipe[0], buffer, 3999) : 0;
 // // 					//close(fpipe[1]);      //close write pipe
@@ -233,39 +215,54 @@ int main(int ac, char **av, char **envp)
 // // //					perror("First program execution failed");
 // // 					exit(1);
 			
-// 					int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
+					int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
 // 					// objectif c'est que les forks se fasse ici
 // 					printf("Cursor : %d\n", ms.seq_cursor);
-// 					if (ms.sequence[ms.seq_cursor] == 0 && (ms.isexecret = is_exec(&ms)) == ERROR)
-// 					{
-// 					// objectif c'est que les forks se fasse ici
-// 						if ((ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
-// 						{
-// 							//write(1, "A\n", 2);
-// 							if (ms.iscmdret >= 0 && ms.iscmdret <= 3)
-// 							{
-// 								// has_pipe
-// 								// A REPRENDRE
-// 								int cmd_ret = 0;
-// 								int o = ms.seq_cursor + 1;
-// 								// while o < ms->treated len
-// 								while (ms.sequence[o]
-// 									&& !(ms.sequence[o] >= 3
-// 									&& ms.sequence[o] <= 6))
-// 									o++;
-// 								if (ms.sequence[o] >= 3 && ms.sequence[o] <= 5)
-// 									ms.has_spec_uf = 1;
-// 								// -------------------
-// 								if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
-// 									treat_output(&ms);
-// 								// else
-// 								// 	printf("CMD RET : %d\n", cmd_ret);
-// 							}
-// 						}
-// 						else if (ms.sequence[ms.seq_cursor] == 0 && ms.iscmdret == -1 && ms.treated[ms.seq_cursor][0])
-// 							error_command(ms.treated[ms.seq_cursor]);
+					if (ms.sequence[ms.seq_cursor] == 0 && (ms.isexecret = is_exec(&ms)) == ERROR)
+					{
+					// objectif c'est que les forks se fasse ici
+						if ((ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
+						{
+							//write(1, "A\n", 2);
+							if (ms.iscmdret >= 0 && ms.iscmdret <= 3)
+							{
+								// has_pipe
+								// A REPRENDRE
+								int cmd_ret = 0;
+								int o = ms.seq_cursor + 1;
+								// while o < ms->treated len
+								while (ms.sequence[o]
+									&& !(ms.sequence[o] >= 3
+									&& ms.sequence[o] <= 6))
+									o++;
+								if (ms.sequence[o] >= 3 && ms.sequence[o] <= 5)
+									ms.has_spec_uf = 1;
+								// -------------------
+								if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
+									treat_output(&ms);
+								// else
+								// 	printf("CMD RET : %d\n", cmd_ret);
+							}
+						}
+						else if (ms.sequence[ms.seq_cursor] == 0 && ms.iscmdret == -1 && ms.treated[ms.seq_cursor][0])
+							error_command(ms.treated[ms.seq_cursor]);
 					ft_printf("nb = |%d|\n", nb_cmd_p);
 					
+					if (nb_cmd_p == 0)
+						close(tab_fpipe[nb_cmd_p][1]);
+					else if (nb_cmd_p < has_pipe - 1)
+					{
+						close(tab_fpipe[nb_cmd_p - 1][0]);
+						close(tab_fpipe[nb_cmd_p][1]);
+						close(tab_fpipe[nb_cmd_p - 1][1]);
+					}
+					else if (nb_cmd_p == has_pipe - 1)
+					{
+						close(tab_fpipe[nb_cmd_p - 1][0]);
+						close(tab_fpipe[nb_cmd_p][0]);
+						close(tab_fpipe[nb_cmd_p - 1][1]);
+					}
+
 					exit(0);
 				}
 				else
@@ -298,4 +295,5 @@ int main(int ac, char **av, char **envp)
 		free(ms.sequence);
 	}
 	exit(0);
+	return (0);
 }
