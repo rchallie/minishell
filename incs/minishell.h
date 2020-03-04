@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/03 14:44:32 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/03 15:22:00 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int					ft_is_whitespace(char c);
 int					get_pwd(char **pwd);
 int					line_edition(t_minishell *ms);
 int					get_pwd_short(char **pwd);
-int					get_word(char *entry, char **word);
+int					get_word(t_minishell *ms, char *entry, char **word);
 int					get_sequence(char **treated, int **sequence);
 int					cd(t_minishell *ms);
 int					print_work_dir(t_minishell *ms);
@@ -181,7 +181,7 @@ int					error_identifier(char *cmd, const char *identifier,
 						char *error);
 int					error_command(char *cmd);
 int					is_cmd(char *cmd);
-int					sanitize(char *entry, char ***treated);
+int					sanitize(t_minishell *ms, char *entry, char ***treated);
 int					get_double_char_tab_len(char **tabl);
 int					is_char_spec(char *s);
 

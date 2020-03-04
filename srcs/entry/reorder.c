@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 10:18:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/03 14:39:55 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 09:25:49 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,36 @@ int reorder_sequence(t_minishell *ms)
 	save_x = 0;
 	save_value_char = NULL;
 	save_value_int = 0;
+
+	ft_printf("\n--- PREVIOUS REORDER ---\n");
+	int j = 0;
+	while (j < get_double_char_tab_len(ms->treated))
+	{
+		if (ms->sequence[j] == 0)
+			printf("{%d} %d | CMD		(%s)\n", j, ms->sequence[j], ms->treated[j]);
+		else if (ms->sequence[j] == 1)
+			printf("{%d} %d | FLAG		(%s)\n", j, ms->sequence[j], ms->treated[j]);
+		else if (ms->sequence[j] == 2)
+			printf("{%d} %d | ARG		(%s)\n", j, ms->sequence[j], ms->treated[j]);
+		else if (ms->sequence[j] == 3)
+			printf("{%d} %d | REDIR \">\"	(%s)\n", j, ms->sequence[j], ms->treated[j]);
+		else if (ms->sequence[j] == 4)
+			printf("{%d} %d | REDIR \">>\"	(%s)\n", j, ms->sequence[j], ms->treated[j]);
+		else if (ms->sequence[j] == 5)
+			printf("{%d} %d | REDIR  \"<\"	(%s)\n", j, ms->sequence[j], ms->treated[j]);
+		else if (ms->sequence[j] == 6)
+			printf("\n{%d} %d | PIPE\n\n", j, ms->sequence[j]);
+		else if (ms->sequence[j] == 7)
+			printf("{%d} %d | END\n", j, ms->sequence[j]);
+		else if (ms->sequence[j] == 8)
+			printf("{%d} %d | FILE		(%s)\n", j, ms->sequence[j], ms->treated[j]);
+		else if (ms->sequence[j] == 9)
+			printf("{%d} %d | NEWLINE\n", j, ms->sequence[j]);
+		else if (ms->sequence[j] == -1)
+			printf("{%d} %d | ERROR\n", j, ms->sequence[j]);
+		j++;
+	}
+
 	while (ms->treated[i])
 	{
 		// REDIR
@@ -78,14 +108,14 @@ int reorder_sequence(t_minishell *ms)
 		i++;
 	}
 
-	ft_printf("--- FINAL REORDER ---\n");
-	int j = 0;
+	ft_printf("\n--- FINAL REORDER ---\n");
+	j = 0;
 	while (j < get_double_char_tab_len(ms->treated))
 	{
 		if (ms->sequence[j] == 0)
-			printf("{%d} %d | CMD\n", j, ms->sequence[j]);
+			printf("{%d} %d | CMD		(%s)\n", j, ms->sequence[j], ms->treated[j]);
 		else if (ms->sequence[j] == 1)
-			printf("{%d} %d | FLAG\n", j, ms->sequence[j]);
+			printf("{%d} %d | FLAG		(%s)\n", j, ms->sequence[j], ms->treated[j]);
 		else if (ms->sequence[j] == 2)
 			printf("{%d} %d | ARG		(%s)\n", j, ms->sequence[j], ms->treated[j]);
 		else if (ms->sequence[j] == 3)
@@ -106,5 +136,6 @@ int reorder_sequence(t_minishell *ms)
 			printf("{%d} %d | ERROR\n", j, ms->sequence[j]);
 		j++;
 	}
+	ft_printf("\n");
 	return (SUCCESS);
 }

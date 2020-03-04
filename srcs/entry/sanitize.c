@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/03 13:43:40 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 15:48:16 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int		check_special_chars(char ***treated, char *entry, int up)
 	return (up);
 }
 
-int				sanitize(char *entry, char ***treated)
+int				sanitize(t_minishell *ms, char *entry, char ***treated)
 {
 	char	*word;
 	int		up;
@@ -108,7 +108,7 @@ int				sanitize(char *entry, char ***treated)
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
 		word = NULL;
-		up += get_word((entry + up), &word);
+		up += get_word(ms, (entry + up), &word);
 		add_word_to_tab(word, treated);
 		while (ft_is_whitespace(*(entry + up)))
 			up++;

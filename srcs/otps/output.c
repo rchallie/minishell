@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 15:04:28 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/27 10:14:48 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/04 14:55:33 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		treat_output(t_minishell *ms)
 		printf("Treat in : %s\n", ms->treated[ms->seq_cursor]);		
 		ms->seq_cursor++;
 	}
-	printf("Treat : %s\n", ms->treated[ms->seq_cursor]);
+	// printf("Treat : %s\n", ms->treated[ms->seq_cursor]);
 	if (ms->sequence[ms->seq_cursor] && ms->sequence[ms->seq_cursor] == 3)
 	{
 		if (overwrite_in_file(ms))

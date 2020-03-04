@@ -12,7 +12,6 @@ SRC			=	minishell.c 		\
 				cmds/pwd.c			\
 				cmds/exit.c			\
 				cmds/env.c			\
-				cmds/export.c		\
 				otps/output.c		\
 				specs/check.c		\
 				exec/exec.c			\
@@ -26,11 +25,15 @@ SRC			=	minishell.c 		\
 				termcap/move_cursor.c		\
 				termcap/move_cursor_2.c		\
 				termcap/match_inputs.c		\
+				termcap/match_inputs_2.c		\
 				termcap/utils_cursor.c		\
 				termcap/ins_del_char.c		\
 				termcap/reset_line.c		\
+				termcap/highlight.c			\
 				termcap/ctrl_stuff.c		\
-				termcap/tc_putchar.c
+				termcap/tc_putchar.c		\
+				termcap/history.c			\
+				termcap/utils_dlist.c
 
 OBJ 		= 	$(SRC:.c=.o)
 
