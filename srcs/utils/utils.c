@@ -14,6 +14,36 @@
 
 // int			is_spec
 
+/*
+** Function : is_special
+** -------------------------
+**		Init the value at i in sequ in function of passed string (to_test)
+**
+**		(char *)to_test : char to compare with special things
+**		(int *) seq		: sequence
+**		(int)	i		: index in sequ
+**
+**		returns:	return 1 : if to_test is a special thing
+**					return 0 : if not
+*/
+
+static int		is_special(char *to_test)
+{
+	if (!ft_strcmp(to_test, ">") && ft_strlen(to_test) == 1)
+		return (SUCCESS);
+	else if (!ft_strcmp(to_test, ">>") && ft_strlen(to_test) == 2)
+		return (SUCCESS);
+	else if (!ft_strcmp(to_test, "<") && ft_strlen(to_test) == 1)
+		return (SUCCESS);
+	else if (!ft_strcmp(to_test, "|") && ft_strlen(to_test) == 1)
+		return (SUCCESS);
+	else if (!ft_strcmp(to_test, ";") && ft_strlen(to_test) == 1)
+		return (SUCCESS);
+	else if (!ft_strcmp(to_test, "\n") && ft_strlen(to_test) == 1)
+		return (SUCCESS);
+	return (ERROR);
+}
+
 char		*add_char_to_word(char *word, char c)
 {
 	int		i;
@@ -73,8 +103,6 @@ int		get_word(t_minishell *ms, char *entry, char **word)
 	char_count = 0;
 	env_var_name = NULL;
 	// printf("word : |%s|\n", *word);
-	// if (*word)
-		// printf("PLPO\n");
 	while (*entry)
 	{
 		if (*entry == '$')
@@ -96,24 +124,38 @@ int		get_word(t_minishell *ms, char *entry, char **word)
 		if ((*entry == ' ' || *entry == '>' || *entry == '<'
 			|| *entry == '|' || *entry == ';') && !(simple_q || double_q))
 			break ;
+		if (*entry == '\\' && simple_q == 0 && double_q == 0 && *(entry + 1))
+		{
+			entry++;
+			*word = add_char_to_word(*word, *entry);
+			char_count++;
+		}
+		else if (double_q == 1 && *entry == '\\' && *(entry + 1) == '\"')
+		{
+			entry++;
+			char_count++;
+			*word = add_char_to_word(*word, *entry);
+			char_count++;
+			entry++;
+		}
 		if (*entry == '\'' && simple_q == 0 && double_q == 0)
 			simple_q = 1;
 		else if (*entry == '\'' && double_q == 1)
 			*word = add_char_to_word(*word, *entry);
 		else if (*entry == '\'')
 			simple_q = 0;
-			
+		
 		if (*entry == '\"' && double_q == 0 && simple_q == 0)
 			double_q = 1;
 		else if (*entry == '\"' && simple_q == 1)
 			*word = add_char_to_word(*word, *entry);
 		else if (*entry == '\"')
 			double_q = 0;
-			
 		if (*entry != '\'' && *entry != '\"')
 			*word = add_char_to_word(*word, *entry);
 		if (!word)
 			return (ERROR);
+		// ft_printf("word = |%s|\n", *word);
 		if (entry)
 			entry++;
 		char_count++;
@@ -123,6 +165,9 @@ int		get_word(t_minishell *ms, char *entry, char **word)
 		// printf("s_q : %d | d_q : %d\n", simple_q, double_q);
 		exit(1);
 	}
+	// ft_printf("\n-1 = |%c|\n", (char)(-1));
+	if (is_special(*word) == SUCCESS)
+		*word = add_char_to_word(*word, 3);
 	return (char_count);
 }
 

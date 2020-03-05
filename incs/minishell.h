@@ -175,6 +175,7 @@ int					cd(t_minishell *ms);
 int					print_work_dir(t_minishell *ms);
 int					env(t_minishell *ms);
 int					export(t_args *args);
+int					echo_(t_minishell *ms);
 int					error_path(const char *cmd, const char *path,
 						int errnum);
 int					error_identifier(char *cmd, const char *identifier,

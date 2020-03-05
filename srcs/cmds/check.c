@@ -23,11 +23,11 @@ int		is_cmd(char *cmd)
 		return (2);
 	if (!ft_strcmp(cmd, "env"))
 		return (3);
-	if (!ft_strcmp(cmd, "unset"))
+	if (!ft_strcmp(cmd, "echo"))
 		return (4);
 	if (!ft_strcmp(cmd, "export"))
 		return (5);
-	if (!ft_strcmp(cmd, "echo"))
+	if (!ft_strcmp(cmd, "unset"))
 		return (6);
 	return (-1);
 }
