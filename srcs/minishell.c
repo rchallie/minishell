@@ -113,16 +113,16 @@ int main(int ac, char **av, char **envp)
 		int cursor = 0;
 		while (ms.treated[cursor])
 			has_pipe += (ms.sequence[cursor++] == 6) ? 1 : 0; 
-		ft_printf("-------- CHILD ---------\n");
-		ft_printf("Haspipe : %d\n", has_pipe);
+		// ft_printf("-------- CHILD ---------\n");
+		// ft_printf("Haspipe : %d\n", has_pipe);
 		has_pipe += (has_pipe) ? 1 : 0; 
-		ft_printf("Nombre child : %d\n", has_pipe);
+		// ft_printf("Nombre child : %d\n", has_pipe);
 		if (has_pipe == 0)
 		{
 			printf("Seq_cur : %d < Treated_len : %d && Treated : %s\n", ms.seq_cursor, ms.treated_len, ms.treated[ms.seq_cursor]);
 			while (ms.seq_cursor < ms.treated_len && ms.treated[ms.seq_cursor])
 			{
-				int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
+				int (*cmd[5])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell, &env, &echo_};
 				// objectif c'est que les forks se fasse ici
 				printf("Cursor : %d\n", ms.seq_cursor);
 				if (ms.sequence[ms.seq_cursor] == 0 && (ms.isexecret = is_exec(&ms)) == ERROR)
@@ -131,7 +131,7 @@ int main(int ac, char **av, char **envp)
 					if ((ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
 					{
 						//write(1, "A\n", 2);
-						if (ms.iscmdret >= 0 && ms.iscmdret <= 3)
+						if (ms.iscmdret >= 0 && ms.iscmdret <= 4)
 						{
 							// has_pipe
 							// A REPRENDRE
@@ -174,8 +174,6 @@ int main(int ac, char **av, char **envp)
 			int		tab_fpipe[has_pipe][2];
 			int		fpipe[2];
 			// int ret = 0;
-			if (pipe(fpipe) == -1)
-				break ;
 			while (nb_cmd_p < has_pipe)
 			{
 				if (pipe(tab_fpipe[nb_cmd_p]) == -1)
@@ -189,6 +187,7 @@ int main(int ac, char **av, char **envp)
 						// SORTIE
 						dup2(tab_fpipe[nb_cmd_p][1], STDOUT_FILENO);
 						close(tab_fpipe[nb_cmd_p][0]);
+						close(tab_fpipe[nb_cmd_p][1]);
 					}
 					else if (nb_cmd_p < has_pipe - 1)
 					{
@@ -206,6 +205,10 @@ int main(int ac, char **av, char **envp)
 						close(tab_fpipe[nb_cmd_p][1]);
 						close(tab_fpipe[nb_cmd_p][0]);
 						close(tab_fpipe[nb_cmd_p - 1][1]);
+						close(tab_fpipe[nb_cmd_p - 1][0]);
+						close(tab_fpipe[nb_cmd_p - 1][0]);
+						close(tab_fpipe[nb_cmd_p][0]);
+						close(tab_fpipe[nb_cmd_p - 1][1]);
 						// int ret = 0;
 						// ret = read(tab_fpipe[nb_cmd_p - 1][0], buffer2, 3999);
 						// printf("BUFFER : %s\nRET : %d\n", buffer2, ret);
@@ -220,16 +223,15 @@ int main(int ac, char **av, char **envp)
 // // //					perror("First program execution failed");
 // // 					exit(1);
 			
-					int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
+					int (*cmd[5])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env, &echo_};
 // 					// objectif c'est que les forks se fasse ici
 // 					printf("Cursor : %d\n", ms.seq_cursor);
 					if (ms.sequence[ms.seq_cursor] == 0 && (ms.isexecret = is_exec(&ms)) == ERROR)
 					{
-					// objectif c'est que les forks se fasse ici
 						if ((ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
 						{
 							//write(1, "A\n", 2);
-							if (ms.iscmdret >= 0 && ms.iscmdret <= 3)
+							if (ms.iscmdret >= 0 && ms.iscmdret <= 4)
 							{
 								// has_pipe
 								// A REPRENDRE
@@ -243,10 +245,10 @@ int main(int ac, char **av, char **envp)
 								if (ms.sequence[o] >= 3 && ms.sequence[o] <= 5)
 									ms.has_spec_uf = 1;
 								// -------------------
-								cmd_ret = cmd[ms.iscmdret](&ms);
-								write(1, ms.output, ft_strlen(ms.output));
-								// if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
-								// 	treat_output(&ms);
+								// cmd_ret = cmd[ms.iscmdret](&ms);
+								// write(1, ms.output, ft_strlen(ms.output));
+								if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
+									treat_output(&ms);
 								// else
 								// 	printf("CMD RET : %d\n", cmd_ret);
 							}
@@ -255,30 +257,46 @@ int main(int ac, char **av, char **envp)
 							error_command(ms.treated[ms.seq_cursor]);
 					// ft_printf("nb = |%d|\n", nb_cmd_p);
 					}
-					if (nb_cmd_p == 0)
-						close(tab_fpipe[nb_cmd_p][1]);
-					else if (nb_cmd_p < has_pipe - 1)
-					{
-						close(tab_fpipe[nb_cmd_p - 1][0]);
-						close(tab_fpipe[nb_cmd_p][1]);
-						close(tab_fpipe[nb_cmd_p - 1][1]);
-					}
-					else if (nb_cmd_p == has_pipe - 1)
-					{
-						close(tab_fpipe[nb_cmd_p - 1][0]);
-						close(tab_fpipe[nb_cmd_p][0]);
-						close(tab_fpipe[nb_cmd_p - 1][1]);
-					}
-
+					// if (nb_cmd_p == 0)
+					// 	close(tab_fpipe[nb_cmd_p][1]);
+					// else if (nb_cmd_p < has_pipe - 1)
+					// {
+					// 	close(tab_fpipe[nb_cmd_p - 1][0]);
+					// 	close(tab_fpipe[nb_cmd_p][1]);
+					// 	close(tab_fpipe[nb_cmd_p - 1][1]);
+					// }
+					// else if (nb_cmd_p == has_pipe - 1)
+					// {
+					// 	close(tab_fpipe[nb_cmd_p - 1][0]);
+					// 	close(tab_fpipe[nb_cmd_p][0]);
+					// 	close(tab_fpipe[nb_cmd_p - 1][1]);
+					// }
 					exit(0);
 				}
 				else
 				{
-					
+					// if (nb_cmd_p == 0)
+					// {
+					// 	// close(tab_fpipe[nb_cmd_p][0]);
+					// 	close(tab_fpipe[nb_cmd_p][1]);
+					// }
+					// else if (nb_cmd_p < has_pipe - 1)
+					// {
+					// 	close(tab_fpipe[nb_cmd_p - 1][0]);
+					// 	close(tab_fpipe[nb_cmd_p][0]);
+					// 	close(tab_fpipe[nb_cmd_p][1]);
+					// 	close(tab_fpipe[nb_cmd_p - 1][1]);
+					// }
+					// else if (nb_cmd_p == has_pipe - 1)
+					// {
+					// 	close(tab_fpipe[nb_cmd_p - 1][0]);
+					// 	close(tab_fpipe[nb_cmd_p][0]);
+					// 	close(tab_fpipe[nb_cmd_p][1]);
+					// 	close(tab_fpipe[nb_cmd_p - 1][1]);
+					// }
+					close(tab_fpipe[nb_cmd_p][1]);
 					waitpid(fork_, &status, 0);
-				}	
-				
-
+				}
 				// if(fork() == 0)   // child 2
 				// {
 				// 	dup2(fpipe[0], STDIN_FILENO);   // Redirect STDIN to Input part of pipe         

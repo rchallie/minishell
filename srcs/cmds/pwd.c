@@ -96,12 +96,9 @@ int		print_work_dir(t_minishell *ms)
 {
 	char *pwd;
 
+	(void)ms;
 	if (!get_pwd(&pwd))
 		return (ERROR);
-	ms->output = pwd;
-	if (!ms->has_spec_uf)
-		ft_printf("%s\n", pwd);
-	else
-		return (TREAT);
+	write(1, pwd, ft_strlen(pwd));
 	return (SUCCESS);
 }

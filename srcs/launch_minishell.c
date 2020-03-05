@@ -44,9 +44,11 @@ void	launch(t_minishell *ms, int i, int j)
 		line.start.col = line.winsz.col / 2 - ft_secure_strlen(launching) / 2;
 		set_curpos(&line);
 		ft_putstr_fd(str, 0);
+		
 		while (i++ < 100000)
 		{
 			j = 0;
+			ft_printf("%c", (char)(7));
 			if (ft_secure_strlen(str) < ft_secure_strlen(launching) - 3
 				&& str[ft_strlen(str) - 1] != ' ')
 				delay = 300;
@@ -62,62 +64,62 @@ void	launch(t_minishell *ms, int i, int j)
 int main(int ac, char **av, char **envp)
 {
 	t_minishell		ms;
-	int				ret;
-    char            *pwd;
+	// int				ret;
+    // char            *pwd;
 	
 	(void)ac;
 	(void)av;
 	(void)envp;
-	ret = SUCCESS;
+	// ret = SUCCESS;
 	init_minishell_var(&ms, envp);
 	launch(&ms, 0, 0);
 	// write(1, "test", 4);
-	default_term_mode();
-	int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
-	while (ret == SUCCESS)
-	{
-		if (!get_pwd_short(&pwd))
-			return (ERROR);
-		ret = line_edition(&ms);
-		write(1, "PLOP\n", 5);
-		write(1, "\n", 1); //voir avec Thibault, pour mettre ça à la fin cd la line
-		if (!sanitize(ms.entry, &ms.treated))
-			return (0); 
-		ms.treated_len = get_double_char_tab_len(ms.treated);
-		get_sequence(ms.treated, &ms.sequence);
-		while (ms.seq_cursor < ms.treated_len && ms.treated[ms.seq_cursor])
-		{
-			//write(1, "d\n", 2);
-			printf("Cursor : %d\n", ms.seq_cursor);
-			if (ms.sequence[ms.seq_cursor] == 0 && (ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
-			{
-				//write(1, "A\n", 2);
-				if (ms.iscmdret >= 0 && ms.iscmdret <= 3)
-				{
-					// has_pipe
-					int cmd_ret = 0;
-					int o = ms.seq_cursor + 1;
-					while (ms.sequence[o]
-						&& !(ms.sequence[o] >= 3
-						&& ms.sequence[o] <= 6))
-						o++;
-					if (ms.sequence[o] >= 3 && ms.sequence[o] <= 6)
-						ms.has_spec_uf = 1;
-					if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
-						treat_output(&ms);
-					else
-						printf("CMD RET : %d\n", cmd_ret);
-				}
-			}
-			else if (ms.sequence[ms.seq_cursor] == 0 && ms.iscmdret == -1 && ms.treated[ms.seq_cursor][0])
-			{
-				error_command(ms.treated[ms.seq_cursor]);
-			}
-			ms.seq_cursor++;
-		}
-		free_double_char_tab(ms.treated);
-		free(ms.sequence);
-	}
-	//exit(0);
-	while (1);
+	// default_term_mode();
+	// int (*cmd[4])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env};
+	// while (ret == SUCCESS)
+	// {
+	// 	if (!get_pwd_short(&pwd))
+	// 		return (ERROR);
+	// 	ret = line_edition(&ms);
+	// 	write(1, "PLOP\n", 5);
+	// 	write(1, "\n", 1); //voir avec Thibault, pour mettre ça à la fin cd la line
+	// 	if (!sanitize(ms.entry, &ms.treated))
+	// 		return (0); 
+	// 	ms.treated_len = get_double_char_tab_len(ms.treated);
+	// 	get_sequence(ms.treated, &ms.sequence);
+	// 	while (ms.seq_cursor < ms.treated_len && ms.treated[ms.seq_cursor])
+	// 	{
+	// 		//write(1, "d\n", 2);
+	// 		printf("Cursor : %d\n", ms.seq_cursor);
+	// 		if (ms.sequence[ms.seq_cursor] == 0 && (ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
+	// 		{
+	// 			//write(1, "A\n", 2);
+	// 			if (ms.iscmdret >= 0 && ms.iscmdret <= 3)
+	// 			{
+	// 				// has_pipe
+	// 				int cmd_ret = 0;
+	// 				int o = ms.seq_cursor + 1;
+	// 				while (ms.sequence[o]
+	// 					&& !(ms.sequence[o] >= 3
+	// 					&& ms.sequence[o] <= 6))
+	// 					o++;
+	// 				if (ms.sequence[o] >= 3 && ms.sequence[o] <= 6)
+	// 					ms.has_spec_uf = 1;
+	// 				if((cmd_ret = cmd[ms.iscmdret](&ms)) == TREAT)
+	// 					treat_output(&ms);
+	// 				else
+	// 					printf("CMD RET : %d\n", cmd_ret);
+	// 			}
+	// 		}
+	// 		else if (ms.sequence[ms.seq_cursor] == 0 && ms.iscmdret == -1 && ms.treated[ms.seq_cursor][0])
+	// 		{
+	// 			error_command(ms.treated[ms.seq_cursor]);
+	// 		}
+	// 		ms.seq_cursor++;
+	// 	}
+	// 	free_double_char_tab(ms.treated);
+	// 	free(ms.sequence);
+	// }
+	// //exit(0);
+	// while (1);
 }

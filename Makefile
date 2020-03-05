@@ -12,6 +12,7 @@ SRC			=	minishell.c 		\
 				cmds/pwd.c			\
 				cmds/exit.c			\
 				cmds/env.c			\
+				cmds/echo.c			\
 				otps/output.c		\
 				specs/check.c		\
 				exec/exec.c			\
