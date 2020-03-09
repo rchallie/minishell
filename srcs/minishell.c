@@ -19,6 +19,7 @@ static void	init_minishell_var(t_minishell *ms, char **envp)
 	ms->entry = NULL;
 	ms->treated = NULL;
 	ms->envp = envp;
+	ms->envp_local = NULL;
 	ms->sequence = NULL;
 	ms->seq_cursor = 0;
 	ms->iscmdret = -1;
@@ -122,7 +123,7 @@ int main(int ac, char **av, char **envp)
 			printf("Seq_cur : %d < Treated_len : %d && Treated : %s\n", ms.seq_cursor, ms.treated_len, ms.treated[ms.seq_cursor]);
 			while (ms.seq_cursor < ms.treated_len && ms.treated[ms.seq_cursor])
 			{
-				int (*cmd[5])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell, &env, &echo_};
+				int (*cmd[6])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell, &env, &echo_, &export_};
 				// objectif c'est que les forks se fasse ici
 				printf("Cursor : %d\n", ms.seq_cursor);
 				if (ms.sequence[ms.seq_cursor] == 0 && (ms.isexecret = is_exec(&ms)) == ERROR)
@@ -131,7 +132,7 @@ int main(int ac, char **av, char **envp)
 					if ((ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
 					{
 						//write(1, "A\n", 2);
-						if (ms.iscmdret >= 0 && ms.iscmdret <= 4)
+						if (ms.iscmdret >= 0 && ms.iscmdret <= 5)
 						{
 							// has_pipe
 							// A REPRENDRE
@@ -223,7 +224,7 @@ int main(int ac, char **av, char **envp)
 // // //					perror("First program execution failed");
 // // 					exit(1);
 			
-					int (*cmd[5])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env, &echo_};
+					int (*cmd[6])(t_minishell *) = {&cd,&print_work_dir,&exit_minishell,&env, &echo_, &export_};
 // 					// objectif c'est que les forks se fasse ici
 // 					printf("Cursor : %d\n", ms.seq_cursor);
 					if (ms.sequence[ms.seq_cursor] == 0 && (ms.isexecret = is_exec(&ms)) == ERROR)
@@ -231,7 +232,7 @@ int main(int ac, char **av, char **envp)
 						if ((ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
 						{
 							//write(1, "A\n", 2);
-							if (ms.iscmdret >= 0 && ms.iscmdret <= 4)
+							if (ms.iscmdret >= 0 && ms.iscmdret <= 5)
 							{
 								// has_pipe
 								// A REPRENDRE

@@ -44,6 +44,69 @@ static int		is_special(char *to_test)
 	return (ERROR);
 }
 
+
+char		*add_char_to_word_front(char *word, char c)
+{
+	int		i;
+	char	*save_word;
+	int		new_word_len;
+
+	if (!word)
+	{
+		if (!(word = (char *)malloc(sizeof(char) * 2)))
+			return (ERROR);
+		word[0] = c;
+		word[1] = '\0';
+		return (word);
+	}
+	new_word_len = ft_secure_strlen(word) + 2;
+	save_word = word;
+	if (!(word = (char *)malloc(sizeof(char) * new_word_len)))
+		return (ERROR);
+	ft_bzero(word, new_word_len);
+	word[0] = c;
+	i = 1;
+	while (save_word[i - 1])
+	{
+		word[i] = save_word[i - 1];
+		i++;
+	}
+	word[i] = '\0';
+	return (word);
+}
+
+char		*add_char_to_word_ads(char *word, char c, int nb)
+{
+	int		i;
+	char	*save_word;
+	int		new_word_len;
+
+	if (!word)
+	{
+		if (!(word = (char *)malloc(sizeof(char) * 2)))
+			return (ERROR);
+		word[0] = c;
+		word[1] = '\0';
+		return (word);
+	}
+	i = -1;
+	new_word_len = ft_secure_strlen(word) + 2;
+	save_word = word;
+	if (!(word = (char *)malloc(sizeof(char) * new_word_len)))
+		return (ERROR);
+	ft_bzero(word, new_word_len);
+	while (++i <= nb)
+		word[i] = save_word[i];
+	word[i] = c;
+	i++;
+	while (save_word[i - 1])
+	{
+		word[i] = save_word[i - 1];
+		i++;
+	}
+	word[i] = '\0';
+	return (word);
+}
 char		*add_char_to_word(char *word, char c)
 {
 	int		i;
