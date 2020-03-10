@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/27 14:54:47 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/10 18:04:31 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ int		print_work_dir(t_minishell *ms)
 	if (!get_pwd(&pwd))
 		return (ERROR);
 	write(1, pwd, ft_strlen(pwd));
+	write(1, "\n", 1);
 	return (SUCCESS);
 }
