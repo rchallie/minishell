@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/09 15:58:47 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/10 18:48:40 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ typedef struct		s_args
 
 void				init_terminal_data(void);
 void				interrogate_terminal(void);
-int	default_term_mode(void);
+int					default_term_mode(void);
 void				raw_term_mode(void);
 void				free_double_char_tab(char **tab_to_free);
 
@@ -188,6 +188,8 @@ int					is_char_spec(char *s);
 
 int					treat_output(t_minishell *ms);
 int					exit_minishell(t_minishell *ms);
+void				clear_term(void);
+void				put_beg(void);
 
 /* ______ termcaps ______ */
 
