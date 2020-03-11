@@ -83,6 +83,8 @@ typedef struct		s_minishell
 	int				treated_len;
 	int				has_spec_uf;
 	int				nbr_pipe;
+	int				has_pipe;
+	int				cursor;
 }					t_minishell;
 
 typedef struct		s_keymatch
@@ -251,5 +253,8 @@ int		add_word_to_tab(char *word, char ***treated);
 int reorder_sequence(t_minishell *ms);
 int		has_redir_output(t_minishell *ms, int redir_type, int cursor, int fd);
 int		has_redir_input(t_minishell *ms, int redir_type, int cursor, int fd);
+void		cmd_has_pipe(t_minishell *ms, int gen_fork,
+	int fork_, int nb_cmd_p);
+void		treat_command(t_minishell *ms);
 
 #endif
