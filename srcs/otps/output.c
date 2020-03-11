@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 15:04:28 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/04 14:55:33 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:16:06 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ int		treat_output(t_minishell *ms)
 	// si | appel cmd et return 1
 	// si ; juste return 0
 	// check i
-	ms->seq_cursor++;
+	// while (ms->sequence[ms->seq_cursor] <= 2)
+	// 	ms->seq_cursor++;
 	// printf("Cursor 2 : %d\n", ms->seq_cursor);
-
+	ms->seq_cursor++;
 	while (ms->sequence[ms->seq_cursor]
 		&& !(ms->sequence[ms->seq_cursor] >= 3
 		&& ms->sequence[ms->seq_cursor] <= 7))

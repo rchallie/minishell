@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/04 13:30:33 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/09 16:02:34 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		cd(t_minishell *ms)
 	int			chdir_return;
 	extern int	errno;
 	char		*path;
+	int cursor;
 	DIR			*dir;
 	// check par rapport a la séquence
 	// If > (empty) error newline (bash: syntax error near unexpected token `newline')
@@ -34,22 +35,23 @@ int		cd(t_minishell *ms)
 	// check if treated[i + 1] est logic ou est un special
 	// printf("cd : %s\n", treated[i + 1]);
 	// printf("home : %s\n", get_env_var_by_name("home", envp));
-	if (!ms->treated[ms->seq_cursor + 1]
-		|| ms->treated[ms->seq_cursor + 1][0] == '~')
+	cursor = ms->seq_cursor;
+	if (!ms->treated[cursor + 1]
+		|| ms->treated[cursor + 1][0] == '~')
 	{
 		path = get_env_var_by_name("home", ms->envp);
-		if (ms->treated[ms->seq_cursor + 1])
+		if (ms->treated[cursor + 1])
 		{
 			path = ft_strjoin(path,
-				ft_strdup(&ms->treated[ms->seq_cursor + 1][1]));
-			ms->seq_cursor++;
+				ft_strdup(&ms->treated[cursor + 1][1]));
+			cursor++;
 		}
 	}
 	else
-		path = ft_strdup(ms->treated[ms->seq_cursor + 1]);
+		path = ft_strdup(ms->treated[cursor + 1]);
 	dir = opendir(path);
 	if (!dir)
-		return	 (error_path("cd", ms->treated[ms->seq_cursor + 1], errno));
+		return	 (error_path("cd", ms->treated[cursor + 1], errno));
 	else
 	{
 		closedir(dir);
@@ -61,7 +63,7 @@ int		cd(t_minishell *ms)
 		
 		chdir_return = chdir(path);
 		if (chdir_return == -1)
-			return (error_path("cd", ms->treated[ms->seq_cursor + 1], errno));
+			return (error_path("cd", ms->treated[cursor + 1], errno));
 	}
 	return (SUCCESS);
 }

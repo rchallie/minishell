@@ -5,6 +5,7 @@ OBJS_DIR 	= 	objs/
 SRCS_DIR 	= 	srcs/
 
 SRC			=	minishell.c 		\
+				minishell_2.c 		\
 				utils/utils.c		\
 				err/error.c			\
 				cmds/check.c		\
