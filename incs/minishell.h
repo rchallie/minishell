@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/10 18:48:40 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/11 16:18:18 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct		s_minishell
 	int				isexecret;
 	int				treated_len;
 	int				has_spec_uf;
+	int				nbr_pipe;
 }					t_minishell;
 
 typedef struct		s_keymatch
@@ -243,5 +244,7 @@ int		is_exec(t_minishell *ms);
 int		add_word_to_tab(char *word, char ***treated);
 
 int reorder_sequence(t_minishell *ms);
+int		has_redir_output(t_minishell *ms, int redir_type, int cursor, int fd);
+int		has_redir_input(t_minishell *ms, int redir_type, int cursor, int fd);
 
 #endif

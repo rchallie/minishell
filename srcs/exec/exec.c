@@ -6,7 +6,7 @@
 /*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/09 16:04:03 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/03/11 13:12:06 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 	int		status;
 
 	pid = 0;
-	if ((ret = open(ex->exec_path, O_RDONLY)) > 0)
+	ft_printf("FILE : |%s|\n", file);
+	if ((ret = open(file, O_RDONLY)) > 0)
 	{
 		if ((pid = fork()) == 0)
 			execve(file, ex->argv, ms->envp);
