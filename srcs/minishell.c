@@ -189,7 +189,8 @@ int		main(int ac, char **av, char **envp)
 					{
 						if ((ms.iscmdret = is_cmd(ms.treated[ms.seq_cursor])) != -1)
 						{
-							if (ms.iscmdret >= 0 && ms.iscmdret <= 4)
+							//write(1, "A\n", 2);
+							if (ms.iscmdret >= 0 && ms.iscmdret <= 5)
 							{
 								// A REPRENDRE
 								int cmd_ret = 0;

@@ -73,6 +73,7 @@ typedef struct		s_minishell
 	char			*entry;
 	char			**treated;
 	char			**envp;
+	char			**envp_local;
 	char			**personal_env_var;
 	char			*output;
 	int				*sequence;
@@ -167,6 +168,7 @@ int					ft_printf(const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);
 int					get_pwd(char **pwd);
+int     			export_(t_minishell *ms);
 int					line_edition(t_minishell *ms);
 int					get_pwd_short(char **pwd);
 int					get_word(t_minishell *ms, char *entry, char **word);
@@ -184,6 +186,9 @@ int					error_command(char *cmd);
 int					is_cmd(char *cmd);
 int					sanitize(t_minishell *ms, char *entry, char ***treated);
 int					get_double_char_tab_len(char **tabl);
+char		*add_char_to_word_front(char *word, char c);
+char		*add_char_to_word_ads(char *word, char c, int nb);
+
 int					is_char_spec(char *s);
 
 int					treat_output(t_minishell *ms);

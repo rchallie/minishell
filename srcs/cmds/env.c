@@ -12,12 +12,26 @@
 
 #include "../../incs/minishell.h"
 
+int		check_word(char *word)
+{
+	int		i;
+
+	i = 0;
+	while (word[i] != '=')
+		i++;
+	if (i == 0 || word[i] != '=')
+		return (ERROR);
+	return (SUCCESS);
+}
+
 int		env(t_minishell *ms)
 {
 	char	*env_list;
+	int		cursor;
 	int		i;
 	
 	i = 0;
+	cursor = ms->seq_cursor;
 	env_list = NULL;
 	while (ms->envp[i])
 	{
@@ -27,8 +41,11 @@ int		env(t_minishell *ms)
 	}
 	ms->output = env_list;
 	if(!ms->has_spec_uf)
-		ft_printf("Envlist : \n%s\n", env_list);
+		ft_printf("Envlist : \n%s", env_list);
 	else
 		return (TREAT);
+	while (ms->sequence[++cursor] == 2)
+		if (check_word(ms->treated[cursor]) >= 1)
+			ft_printf("%s\n", ms->treated[cursor]);
 	return (SUCCESS);
 }
