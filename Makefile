@@ -38,6 +38,8 @@ OBJ 		= 	$(SRC:.c=.o)
 
 OBJS 		= 	$(addprefix $(OBJS_DIR), $(OBJ))
 
+# A enlever plustard
+
 all:	$(NAME)
 
 $(NAME): $(OBJS)
@@ -61,6 +63,40 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c
 
 all: $(NAME)
 
+_GREEN=$'\x1b[32m
+_WHITE=$'\x1b[37m
+_RED=$'\x1b[31m
+_BOLD=$'\x1b[1m
+_NORMAL=$'\x1b[0m
+_UNDER=$'\x1b[4m
+_YELLOW=$'\x1b[33m
+
+check:
+	@echo
+	@echo "$(_YELLOW)$(_UNDER)Sujet :\n$(_NORMAL)"
+	@echo "$(_WHITE)Prompt		  : $(_GREEN)OK"
+	@echo "$(_WHITE)Executable	  : $(_GREEN)OK"
+	@echo "$(_WHITE)Built-in" 
+	@echo "$(_WHITE)	- echo    : $(_GREEN)OK"
+	@echo "$(_WHITE)	- cd      : $(_RED)PWD/OLDPWD à actualiser"
+	@echo "$(_WHITE)	- pwd     : $(_GREEN)OK"
+	@echo "$(_WHITE)	- export  : $(_RED)NOP"
+	@echo "$(_WHITE)	- unset   : $(_RED)NOP"
+	@echo "$(_WHITE)	- env     : $(_RED)NOP"
+	@echo "$(_WHITE)	- exit    : $(_GREEN)OK"
+	@echo "$(_WHITE)\";\"		  : $(_GREEN)OK"
+	@echo "$(_WHITE)'\"' \"'\"		  : $(_GREEN)OK"
+	@echo "$(_WHITE)\"<\" \">>\" \">\"	  : $(_GREEN)OK"
+	@echo "$(_WHITE)\"|\"		  : $(_GREEN)OK"
+	@echo "$(_WHITE)\"Var env\"	  : $(_RED)Segfault quand non trouvé, pb de mémoire / 0"
+	@echo "$(_WHITE)\"Rtn cmd\"	  : $(_RED)NOP"
+	@echo "$(_WHITE)\"C D \\\"		  : $(_RED)NOP"
+	@echo
+	@echo "$(_YELLOW)$(_UNDER)Correction :\n"
+	@echo "$(_WHITE)$(_NORMAL)$(_BOLD)Simple Command\n$(_NORMAL) - Execute a simple command with an absolute path like /bin/ls or any other command without options: $(_GREEN)Yes"
+	@echo "$(_WHITE)$(_NORMAL)$(_BOLD)Arguments\n$(_NORMAL) - Execute a simple command with an absolute path like /bin/ls or any other command with arguments but without quotes and double quotes: $(_GREEN)Yes\n$(_WHITE) - Repeat multiple times with different commands and arguments: $(_GREEN)Yes"
+	@echo "$(_WHITE)$(_NORMAL)$(_BOLD)echo\n$(_NORMAL) - Execute the echo command with or without arguments or options: $(_GREEN)Yes\n$(_NORMAL) - Repeat multiple times with different arguments: $(_GREEN)Yes"
+	@echo
 clean:
 	rm -rf $(OBJS_DIR)
 	$(MAKE) clean -C $(SRCS_DIR)libft
