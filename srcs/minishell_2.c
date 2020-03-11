@@ -12,7 +12,7 @@
 
 #include "../incs/minishell.h"
 
-void		clear_term(void)
+void			clear_term(void)
 {
 	t_line line;
 
@@ -28,10 +28,9 @@ void		clear_term(void)
 	default_term_mode();
 }
 
-
-static void	print_middle_term(char *str, int str_len, int row)
+static void		print_middle_term(char *str, int str_len, int row)
 {
-	t_line line;
+	t_line		line;
 
 	raw_term_mode();
 	ft_bzero(&line, sizeof(line));
@@ -47,18 +46,19 @@ static void	print_middle_term(char *str, int str_len, int row)
 	default_term_mode();
 }
 
-void		put_beg(void)
+void			put_beg(void)
 {
 	clear_term();
-	print_middle_term("\e[91m┌┬┐\e[92m┬┌┐\e[93m┌┬┌\e[94m─┐┬\e[95m ┬┌\e[96m─┐\e[91m┬  \e[92m┬  ", 24,1);
-	print_middle_term("\e[91m││\e[92m│││\e[93m│││\e[94m└─┐\e[95m├─┤\e[96m├┤ \e[91m│  \e[92m│  ", 24,2);
-	print_middle_term("\e[91m┴ \e[92m┴\e[93m┴┘└┘\e[94m┴└─\e[95m┘┴ \e[96m┴└─\e[91m┘┴─\e[92m┘┴─┘", 24,3);
+	print_middle_term("┌┬┐\e[92m┬┌┐┌┬┌─┐┬ ┬┌\e[96m─┐\e[91m┬  ┬  ", 24, 1);
+	print_middle_term("\e[91m││││││││└─┐\e[95m├─┤├┤ │  \e[92m│  ", 24, 2);
+	print_middle_term("\e[91m┴ ┴\e[93m┴┘└┘┴└─┘┴ ┴└─┘┴─\e[92m┘┴─┘", 24, 3);
 	print_middle_term("", 0, 4);
 	default_term_mode();
 	return ;
 }
 
-int		has_redir_output(t_minishell *ms, int redir_type, int cursor, int fd)
+int				has_redir_output(t_minishell *ms, int redir_type,
+	int cursor, int fd)
 {
 	int			o;
 	int			s;
@@ -83,7 +83,8 @@ int		has_redir_output(t_minishell *ms, int redir_type, int cursor, int fd)
 	return (has_redir_output(ms, redir_type, cursor + 1, fd));
 }
 
-int		has_redir_input(t_minishell *ms, int redir_type, int cursor, int fd)
+int				has_redir_input(t_minishell *ms, int redir_type,
+	int cursor, int fd)
 {
 	if (!ms->sequence[cursor] || ms->sequence[cursor] == 6
 		|| ms->sequence[cursor] == 7 || ms->sequence[cursor] == 9)

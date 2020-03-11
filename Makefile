@@ -6,6 +6,7 @@ SRCS_DIR 	= 	srcs/
 
 SRC			=	minishell.c 		\
 				minishell_2.c 		\
+				minishell_3.c 		\
 				utils/utils.c		\
 				err/error.c			\
 				cmds/check.c		\
