@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/11 16:18:18 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/19 15:29:22 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include <termios.h>
 # include <dirent.h>
 # include <sys/ioctl.h>
+# include <sys/wait.h>
+# include <errno.h>
 # include "../srcs/libft/libft.h"
 
 # define HISTORY_PATH ".save_history"
@@ -85,6 +87,7 @@ typedef struct		s_minishell
 	int				nbr_pipe;
 	int				has_pipe;
 	int				cursor;
+	int				last_cmd_rtn;
 }					t_minishell;
 
 typedef struct		s_keymatch
@@ -185,7 +188,7 @@ int					error_path(const char *cmd, const char *path,
 						int errnum);
 int					error_identifier(char *cmd, const char *identifier,
 						char *error);
-int					error_command(char *cmd);
+int					error_command(char *cmd, t_minishell *ms);
 int					is_cmd(char *cmd);
 int					sanitize(t_minishell *ms, char *entry, char ***treated);
 int					get_double_char_tab_len(char **tabl);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/19 12:50:35 by thervieu          #+#    #+#             */
-/*   Updated: 2019/10/21 13:04:23 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/04/18 15:18:50 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static size_t	word_length(const char *str, char c)
 
 static void		clean(char **arr, size_t size)
 {
-	size_t i;
+	// size_t i;
 
-	i = 0;
+	// i = 0;
 	while (size)
 		free(arr[size--]);
 	free(arr);

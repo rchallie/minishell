@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 15:04:28 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/09 16:16:06 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/18 15:17:15 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int		add_in_file(t_minishell *ms)
 {
 	int		fd;
 	char	buf[2];
-	char	*content;
+	// char	*content;
 
 	buf[0] = 0;
 	buf[1] = 0;
-	content = NULL;
+	// content = NULL;
 	ms->seq_cursor++;	
 	if(!ms->sequence[ms->seq_cursor]
 		|| is_char_spec(ms->treated[ms->seq_cursor]))

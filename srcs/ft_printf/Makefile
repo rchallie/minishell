@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+         #
+#    By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/27 13:29:35 by thervieu          #+#    #+#              #
-#    Updated: 2020/02/21 11:34:50 by rchallie         ###   ########.fr        #
+#    Updated: 2020/04/18 15:27:17 by excalibur        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_PATH = ../libft/
 
 LIBFT_NAME = libft.a
 
-SRC = ft_printf.c				\
+SRC = 	ft_printf.c				\
 		is_x.c					\
 		manage_char_and_str.c	\
 		manage_flags.c			\
@@ -32,7 +32,7 @@ SRC = ft_printf.c				\
 
 OBJ = $(SRC:.c=.o)
 
-%.o: $.c
+%.o: $.c 
 	$(CC) $(CFLAGS) $(LIBFT_PATH) -o $@ -c $<
 
 all: $(NAME)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:55:44 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/25 17:53:14 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/18 15:17:43 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void	exit_pgm(t_minishell *ms, t_line *line)
 	int		a;
 
 	a = line->length;
+	(void)a;
 	exit_minishell(ms);
 }

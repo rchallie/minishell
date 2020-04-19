@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/11 19:01:59 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/19 16:05:46 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,18 @@
 
 void			treat_command(t_minishell *ms)
 {
-	int			cmd_ret;
 	static int	(*cmd[5])(t_minishell *) = {
 		&cd, &print_work_dir, &exit_minishell, &env, &echo_};
 
-	cmd_ret = 0;
 	if (ms->sequence[ms->seq_cursor] == 0
 		&& (ms->isexecret = is_exec(ms)) == ERROR)
 	{
 		if ((ms->iscmdret = is_cmd(ms->treated[ms->seq_cursor])) != -1
 			&& (ms->iscmdret >= 0 && ms->iscmdret <= 4))
-			cmd_ret = cmd[ms->iscmdret](ms);
+			ms->last_cmd_rtn = cmd[ms->iscmdret](ms);
 		else if (ms->sequence[ms->seq_cursor] == 0
 			&& ms->iscmdret == -1 && ms->treated[ms->seq_cursor][0])
-			error_command(ms->treated[ms->seq_cursor]);
+				error_command(ms->treated[ms->seq_cursor], ms);
 	}
 }
 
@@ -87,7 +85,7 @@ int				main(int ac, char **av, char **envp)
 	put_beg();
 	while (ret == SUCCESS)
 	{
-		ms = (t_minishell){.envp = envp, .iscmdret = -1, .isexecret = -1};
+		ms = (t_minishell){.envp = envp, .iscmdret = -1, .isexecret = -1, .last_cmd_rtn = cmd_ret};
 		if (!get_pwd_short(&pwd))
 			return (ERROR);
 		ft_printf("\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
@@ -97,6 +95,8 @@ int				main(int ac, char **av, char **envp)
 		if (!sanitize(&ms, ms.entry, &ms.treated))
 			return (0);
 		treat_entry(&ms);
+		cmd_ret = ms.last_cmd_rtn;
 	}
+	(void)cmd_ret;
 	return (0);
 }

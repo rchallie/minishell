@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/11 14:43:25 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/18 15:16:23 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int				has_redir_output(t_minishell *ms, int redir_type,
 {
 	int			o;
 	int			s;
-	extern int	errno;
+	// extern int	errno;
 
 	s = S_IRWXG | S_IRWXU | S_IRWXO;
 	if (!ms->sequence[cursor] || ms->sequence[cursor] == 6

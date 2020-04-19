@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 10:23:19 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/11 14:39:16 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/19 16:04:46 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,5 @@ int				echo_(t_minishell *ms)
 	}
 	if (!has_opt)
 		write(1, "\n", 1);
-	return (SUCCESS);
+	return (0);
 }

@@ -1,9 +1,12 @@
+# SIMPLE ===================================================================================
+
 NAME 		= 	minishell
 
-OBJS_DIR 	= 	objs/
+# ==========================================================================================
+
+# SRCS =====================================================================================
 
 SRCS_DIR 	= 	srcs/
-
 SRC			=	minishell.c 		\
 				minishell_2.c 		\
 				minishell_3.c 		\
@@ -35,19 +38,50 @@ SRC			=	minishell.c 		\
 				termcap/ctrl_stuff.c		\
 				termcap/tc_putchar.c
 
-OBJ 		= 	$(SRC:.c=.o)
+# ==========================================================================================
 
+# INCLUDES =================================================================================
+
+INCS_DIR = ./incs
+
+# ==========================================================================================
+
+# FLAGS ====================================================================================
+
+INCLUDE = -I$(INCS_DIR)
+FLAGS = -ltermcap -Wall -Wextra -Werror
+
+# ==========================================================================================
+
+# OBJS =====================================================================================
+
+OBJS_DIR 	= 	objs/
+OBJ 		= 	$(SRC:.c=.o)
 OBJS 		= 	$(addprefix $(OBJS_DIR), $(OBJ))
 
-# A enlever plustard
+# ==========================================================================================
+
+# COLORS ===================================================================================
+
+_GREEN=$'\x1b[32m
+_WHITE=$'\x1b[37m
+_RED=$'\x1b[31m
+_BOLD=$'\x1b[1m
+_NORMAL=$'\x1b[0m
+_UNDER=$'\x1b[4m
+_YELLOW=$'\x1b[33m
+
+# ==========================================================================================
+
+# FROM SUBJECT =============================================================================
 
 all:	$(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(SRCS_DIR)ft_printf
-	gcc -ltermcap -Wall -Wextra -Werror $(SRCS_DIR)ft_printf/libftprintf.a -o $(NAME) $(OBJS)
+	clang $(FLAGS) $(INCLUDES) $(SRCS_DIR)ft_printf/libftprintf.a ./srcs/libft/*.o ./srcs/ft_printf/*.o $(OBJS) -o $(NAME) 
 
-$(OBJS_DIR)%.o :	$(SRCS_DIR)%.c
+$(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)
 		@mkdir -p $(OBJS_DIR)
 		@mkdir -p $(OBJS_DIR)entry
 		@mkdir -p $(OBJS_DIR)path
@@ -64,13 +98,24 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c
 
 all: $(NAME)
 
-_GREEN=$'\x1b[32m
-_WHITE=$'\x1b[37m
-_RED=$'\x1b[31m
-_BOLD=$'\x1b[1m
-_NORMAL=$'\x1b[0m
-_UNDER=$'\x1b[4m
-_YELLOW=$'\x1b[33m
+clean:
+	rm -rf $(OBJS_DIR)
+	$(MAKE) clean -C $(SRCS_DIR)libft
+	$(MAKE) clean -C $(SRCS_DIR)ft_printf
+	
+fclean: clean
+	rm -f $(NAME)
+	$(MAKE) fclean -C $(SRCS_DIR)libft
+	$(MAKE) fclean -C $(SRCS_DIR)ft_printf
+	
+re: fclean all
+
+run: all
+	@./$(NAME)
+
+# ==========================================================================================
+
+# SUP ======================================================================================
 
 check:
 	@echo
@@ -98,17 +143,5 @@ check:
 	@echo "$(_WHITE)$(_NORMAL)$(_BOLD)Arguments\n$(_NORMAL) - Execute a simple command with an absolute path like /bin/ls or any other command with arguments but without quotes and double quotes: $(_GREEN)Yes\n$(_WHITE) - Repeat multiple times with different commands and arguments: $(_GREEN)Yes"
 	@echo "$(_WHITE)$(_NORMAL)$(_BOLD)echo\n$(_NORMAL) - Execute the echo command with or without arguments or options: $(_GREEN)Yes\n$(_NORMAL) - Repeat multiple times with different arguments: $(_GREEN)Yes"
 	@echo
-clean:
-	rm -rf $(OBJS_DIR)
-	$(MAKE) clean -C $(SRCS_DIR)libft
-	$(MAKE) clean -C $(SRCS_DIR)ft_printf
-	
-fclean: clean
-	rm -f $(NAME)
-	$(MAKE) fclean -C $(SRCS_DIR)libft
-	$(MAKE) fclean -C $(SRCS_DIR)ft_printf
-	
-re: fclean all
 
-run: all
-	@./$(NAME)
+# ==========================================================================================

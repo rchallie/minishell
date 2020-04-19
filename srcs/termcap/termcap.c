@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   termcap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:10:30 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/28 09:52:25 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/18 18:08:41 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			get_key(void)
 	return (key);
 }
 
-void		input_loop(t_minishell *ms, t_line *line)
+int			input_loop(t_minishell *ms, t_line *line)
 {
 	int		key;
 	int		save;
@@ -47,28 +47,33 @@ void		input_loop(t_minishell *ms, t_line *line)
 			insert_char(line, key);
 			set_line(save, line);
 		}
-		if (key == 127)
+		else if (key == 127)
 			delete_char(line, key);
 		set_curpos(line);
-		if ((char)key == '\n')
+		if (key == 3)
+			return (ERROR);
+		else if ((char)key == '\n')
 			break ;
 	}
-	return ;
+	return (SUCCESS);
 }
 
 char		*edit_line(t_minishell *ms)
 {
 	t_line	line;
+	int		input_rtn;
 
 	raw_term_mode();
 	ft_bzero(&line, sizeof(line));
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
 	line.cursor_highl = -1;
 	get_cursor_start_pos(&line);
-	input_loop(ms, &line);
+	input_rtn = input_loop(ms, &line);
 	cursor_to_end(&line);
 	default_term_mode();
 	ft_putchar('\n');
+	if (input_rtn == ERROR)
+		return (ft_strdup(""));
 	return (ft_strdup((char *)line.cmd));
 }
 

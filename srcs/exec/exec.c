@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/11 13:12:06 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/19 15:39:10 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,17 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 	int		status;
 
 	pid = 0;
-	ft_printf("FILE : |%s|\n", file);
 	if ((ret = open(file, O_RDONLY)) > 0)
 	{
 		if ((pid = fork()) == 0)
-			execve(file, ex->argv, ms->envp);
+		{
+			if ((execve(file, ex->argv, ms->envp)) == -1)
+				exit(errno);
+		}
 		else
 		{
 			waitpid(pid, &status, 0);
+			ms->last_cmd_rtn = WEXITSTATUS(status);
 			return (SUCCESS);
 		}
 	}
@@ -165,16 +168,12 @@ int				is_exec(t_minishell *ms)
 	t_exec	ex;
 
 	init_exec(&ex, ms);
-	write(1, "A\n", 2);
 	if (!init_for_exec(&ex, ms))
 		return (ERROR);
-	write(1, "B\n", 2);
 	if (ft_secure_strlen(ex.exec) == 0)
 		return (ERROR);
-	write(1, "C\n", 2);
 	if (exec_cmd(ex.exec, &ex, ms) == SUCCESS)
 		return (SUCCESS);
-	write(1, "D\n", 2);
 	free(ex.exec_path);
 	ex.exec_path = NULL;
 	if (exec_from_env(&ex, ms) == SUCCESS)

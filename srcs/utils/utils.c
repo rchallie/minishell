@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:27:25 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/03 15:33:09 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/19 16:07:23 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,16 +172,19 @@ int		get_word(t_minishell *ms, char *entry, char **word)
 		{
 			entry++;
 			char_count++;
-			while (entry && ft_isalnum(*entry))
+			while (entry && (ft_isalnum(*entry) || *entry == '?'))
 			{
 				env_var_name = add_char_to_word(env_var_name, *entry);
 				entry++;
 				char_count++;
 			}
-			ft_printf("var name : |%s|\n", env_var_name);
-			env_var_name = get_env_var_by_name(env_var_name, ms->envp); // else env_perso else ""
+			// ft_printf("var name : |%s|\n", env_var_name);
+			if (ft_secure_strlen(env_var_name) == 1 && env_var_name[0] == '?')
+				env_var_name = ft_itoa(ms->last_cmd_rtn);
+			else
+				env_var_name = get_env_var_by_name(env_var_name, ms->envp); // else env_perso else ""
 			*word = ft_strjoin(*word, env_var_name);
-			printf("WORD : |%s|\n", *word);
+			// printf("WORD : |%s|\n", *word);
 			*word = add_char_to_word(*word, '\0');
 		}
 		if ((*entry == ' ' || *entry == '>' || *entry == '<'
@@ -238,14 +241,6 @@ char *get_env_var_by_name(char *name, char **envp)
 {
 	int i = 0;
 	char *rename = ft_strdup(name);
-	// printf("prename : %s\n", name);
-	// while (rename[i])
-	// {
-	// 	// write(1,"a\n", 2);
-	// 	rename[i] = ft_toupper(rename[i]);
-	// 	i++;
-	// }
-	// printf("Name : %s\n", rename);
 	i = 0;
 	int j = 0;
 	while (envp[i])
@@ -262,7 +257,6 @@ char *get_env_var_by_name(char *name, char **envp)
 		i++;
 	}
 	(void)envp;
-	printf("NOP\n");
 	free(rename);
 	return (NULL);
 }
