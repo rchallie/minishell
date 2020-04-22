@@ -6,11 +6,11 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/19 15:39:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/21 12:39:16 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "../incs/minishell.h"
 
 /*
 ** Function : init_exec

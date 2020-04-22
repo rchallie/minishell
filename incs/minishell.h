@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/19 15:29:22 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/21 19:14:57 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # define TREAT 2
 # define SUCCESS 0x1
 # define ERROR 0
+# define NEED_QUOTE -1
+# define NEED_DQUOTE -2
 
 # define ERROR_NEAR_UNEXPECTED_AT_NEXT_POS 0x8
 # define ERROR_NEAR_UNEXPECTED_AT_POS 0x9
@@ -201,6 +203,8 @@ int					treat_output(t_minishell *ms);
 int					exit_minishell(t_minishell *ms);
 void				clear_term(void);
 void				put_beg(void);
+int					is_special_token(char *to_test);
+
 
 /* ______ termcaps ______ */
 

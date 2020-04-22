@@ -7,35 +7,36 @@ NAME 		= 	minishell
 # SRCS =====================================================================================
 
 SRCS_DIR 	= 	srcs/
-SRC			=	minishell.c 		\
-				minishell_2.c 		\
-				minishell_3.c 		\
-				utils/utils.c		\
-				err/error.c			\
-				cmds/check.c		\
-				cmds/cd.c			\
-				cmds/pwd.c			\
-				cmds/exit.c			\
-				cmds/env.c			\
-				cmds/echo.c			\
-				cmds/export.c		\
-				otps/output.c		\
-				specs/check.c		\
-				exec/exec.c			\
-				entry/sequence.c	\
-				entry/sanitize.c 	\
-				entry/sanitize_utils.c \
-				entry/reorder.c	\
-				termcap/termcap.c		\
-				termcap/init_and_interr_term.c \
-				termcap/set_mode.c 			\
-				termcap/move_cursor.c		\
-				termcap/move_cursor_2.c		\
-				termcap/match_inputs.c		\
-				termcap/utils_cursor.c		\
-				termcap/ins_del_char.c		\
-				termcap/reset_line.c		\
-				termcap/ctrl_stuff.c		\
+SRC			=	minishell.c 					\
+				minishell_2.c 					\
+				minishell_3.c 					\
+				check.c							\
+				exec.c							\
+				error.c							\
+				utils/utils.c					\
+				utils/cutted_tree_forest.c		\
+				utils/utils_double_tabs.c		\
+				cmds/check.c					\
+				cmds/cd.c						\
+				cmds/pwd.c						\
+				cmds/exit.c						\
+				cmds/env.c						\
+				cmds/echo.c						\
+				cmds/export.c					\
+				entry/sequence.c				\
+				entry/sanitize.c 				\
+				entry/sanitize_utils.c 			\
+				entry/reorder.c					\
+				termcap/termcap.c				\
+				termcap/init_and_interr_term.c 	\
+				termcap/set_mode.c 				\
+				termcap/move_cursor.c			\
+				termcap/move_cursor_2.c			\
+				termcap/match_inputs.c			\
+				termcap/utils_cursor.c			\
+				termcap/ins_del_char.c			\
+				termcap/reset_line.c			\
+				termcap/ctrl_stuff.c			\
 				termcap/tc_putchar.c
 
 # ==========================================================================================
@@ -90,7 +91,6 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)
 		@mkdir -p $(OBJS_DIR)err
 		@mkdir -p $(OBJS_DIR)utils
 		@mkdir -p $(OBJS_DIR)otps
-		@mkdir -p $(OBJS_DIR)specs
 		@mkdir -p $(OBJS_DIR)exec
 		@mkdir -p $(OBJS_DIR)launch
 		@echo "Compiling: $<"
