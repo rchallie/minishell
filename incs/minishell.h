@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/25 12:39:18 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/25 17:26:15 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@
 # define KEY_CTRL_L -21
 
 char			**envp;
+char			**export_vars;
+
 
 typedef struct		s_exec
 {

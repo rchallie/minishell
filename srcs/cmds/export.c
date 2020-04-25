@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/25 15:36:29 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/25 17:33:03 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,11 @@
 ** ------------
 **		Print the list of commands to export "export variables".
 **
-**		(char **)	export_vars : list of export variables.
-**
 **		returns: return 1 : if no problem
 **				 return 0 : if an error appear
 */
 
-static int		print_export_vars(char **export_vars)
+static int		print_export_vars(void)
 {
 	int		i;
 	char	**sorted;
@@ -53,13 +51,11 @@ static int		print_export_vars(char **export_vars)
 **		(exepted path to actual binari executed) and call
 **		for print export variables.
 **
-**		(char **)	export_vars : list of export variables.
-**
 **		returns: return 1 : if no problem
 **				 return 0 : if an error appear
 */
 
-static int		export(char **export_vars)
+static int		export(void)
 {
 	int		i;
 	char	**sorted;
@@ -78,10 +74,21 @@ static int		export(char **export_vars)
 		i++;
 	}
 	free_double_char_tab(sorted);
-	return (print_export_vars(export_vars));
+	return (print_export_vars());
 }
 
-static int		is_set(char *var, char **export_vars)
+/*
+** Function: is_set
+** ------------
+**		Check a variable is setted.
+**
+**		(char *)	var : variable to check.
+**
+**		returns: return 1 : if the variable is set.
+**				 return 0 : if the variable is not set.
+*/
+
+static int		is_set(char *var)
 {
 	int		i;
 	char	*end_name;
@@ -90,13 +97,14 @@ static int		is_set(char *var, char **export_vars)
 	end_name = ft_strchr(var, '=');
 	if (end_name == NULL)
 		end_name = (var + ft_secure_strlen(var));
-	while (export_vars[i])
+	while (export_vars && export_vars[i])
 	{
 		if (!ft_strncmp(export_vars[i], var, end_name - var))
 			break ;
 		i++;
 	}
-	if (export_vars[i] != NULL && export_vars[i][end_name - var] == '=')
+	if (export_vars && export_vars[i] != NULL
+		&& export_vars[i][end_name - var] == '=')
 		return (SUCCESS);
 	return (ERROR);
 }
@@ -107,34 +115,32 @@ static int		is_set(char *var, char **export_vars)
 **		Add/update a variable to export variables.
 **
 **		(char *)	var : variable to add.
-**		(char ***)	export_vars: variables of export.
 **
 **		returns: return 1 : if no problem
 **				 return 0 : if an error appear
 */
 
-static int		add_var_to_export(char *var, char ***export_vars)
+static int		add_var_to_export(char *var)
 {
 	int		i;
 	char	*end_name;
 
 	i = 0;
 	end_name = ft_strchr(var, '=');
-	if (end_name == NULL && (is_set(var, *export_vars) == SUCCESS))
+	if (end_name == NULL && (is_set(var) == SUCCESS))
 		return (SUCCESS);
-	while (*export_vars && (*export_vars)[i] != NULL)
+	while (export_vars && export_vars[i] != NULL)
 	{
-		ft_printf("name = %.*s\n", end_name - var, var);
-		if (!ft_strncmp((*export_vars)[i], var, end_name - var))
+		if (!ft_strncmp(export_vars[i], var, end_name - var))
 			break ;
 		i++;
 	}
-	if (*export_vars == NULL || (*export_vars)[i] == NULL)
-		return (add_word_to_tab(var, export_vars));
+	if (export_vars == NULL || export_vars[i] == NULL)
+		return (add_word_to_tab(var, &export_vars));
 	else
 	{
-		ft_strdel((export_vars)[i]);
-		(*export_vars)[i] = ft_strdup(var);
+		ft_strdel(&export_vars[i]);
+		export_vars[i] = ft_strdup(var);
 	}
 	return (SUCCESS);
 }
@@ -157,7 +163,6 @@ static int		add_var_to_export(char *var, char ***export_vars)
 
 int				export_(int argc, char **argv, char **envp)
 {
-	static char	**export_vars;
 	int			cursor;
 	char		*end_name;
 
@@ -176,10 +181,10 @@ int				export_(int argc, char **argv, char **envp)
 			}
 			else if (end_name != NULL)
 				add_var_to_env(argv[cursor]);
-			add_var_to_export(argv[cursor], &export_vars);
+			add_var_to_export(argv[cursor]);
 		}
 	}
 	else
-		export(export_vars);
+		export();
 	return (0);
 }
