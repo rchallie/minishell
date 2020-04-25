@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/24 18:20:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/25 12:39:18 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,6 +206,7 @@ int					is_special_token(char *to_test);
 int		dup_double_char_tab(char **src, char ***new_tab);
 int		double_char_tab_contain(char *name, char **from);
 char			**double_tab_bubble_sort(char ***sort_me);
+int		add_var_to_env(char *var);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/22 16:53:56 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/25 12:44:36 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,17 @@ int		cd(int argc, char **argv, char **envp)
 		// int i = 0;
 		// while (!(ms->sequence[i] >= 3 && ms->sequence[i] <= 7))
 		// 	i++;
-		
+		char *old_pwd;
+		if (get_pwd(&old_pwd) == ERROR)
+			return (ERROR);
+		add_var_to_env(ft_strjoin("OLDPWD=", old_pwd));
 		chdir_return = chdir(path);
 		if (chdir_return == -1)
 			return (error_path("cd", argv[cursor + 1], errno));
 	}
+	char *pwd;
+	if (get_pwd(&pwd) == ERROR)
+		return (ERROR);
+	add_var_to_env(ft_strjoin("PWD=", pwd));
 	return (SUCCESS);
 }
