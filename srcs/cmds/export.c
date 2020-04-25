@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/25 17:33:03 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/25 18:45:26 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,23 +88,26 @@ static int		export(void)
 **				 return 0 : if the variable is not set.
 */
 
-static int		is_set(char *var)
+// Voir pour le transformer en is_set_in, ajouté le tableau a checker en param
+// et l'envoyer dans les utils
+// histoire de libérer la place pour remove_var_export
+static int		is_set(char *var_name)
 {
 	int		i;
 	char	*end_name;
 
 	i = 0;
-	end_name = ft_strchr(var, '=');
+	end_name = ft_strchr(var_name, '=');
 	if (end_name == NULL)
-		end_name = (var + ft_secure_strlen(var));
+		end_name = (var_name + ft_secure_strlen(var_name));
 	while (export_vars && export_vars[i])
 	{
-		if (!ft_strncmp(export_vars[i], var, end_name - var))
+		if (!ft_strncmp(export_vars[i], var_name, end_name - var_name))
 			break ;
 		i++;
 	}
 	if (export_vars && export_vars[i] != NULL
-		&& export_vars[i][end_name - var] == '=')
+		&& export_vars[i][end_name - var_name] == '=')
 		return (SUCCESS);
 	return (ERROR);
 }
@@ -120,27 +123,27 @@ static int		is_set(char *var)
 **				 return 0 : if an error appear
 */
 
-static int		add_var_to_export(char *var)
+static int		add_var_to_export(char *var_name)
 {
 	int		i;
 	char	*end_name;
 
 	i = 0;
-	end_name = ft_strchr(var, '=');
-	if (end_name == NULL && (is_set(var) == SUCCESS))
+	end_name = ft_strchr(var_name, '=');
+	if (end_name == NULL && (is_set(var_name) == SUCCESS))
 		return (SUCCESS);
 	while (export_vars && export_vars[i] != NULL)
 	{
-		if (!ft_strncmp(export_vars[i], var, end_name - var))
+		if (!ft_strncmp(export_vars[i], var_name, end_name - var_name))
 			break ;
 		i++;
 	}
 	if (export_vars == NULL || export_vars[i] == NULL)
-		return (add_word_to_tab(var, &export_vars));
+		return (add_word_to_tab(var_name, &export_vars));
 	else
 	{
 		ft_strdel(&export_vars[i]);
-		export_vars[i] = ft_strdup(var);
+		export_vars[i] = ft_strdup(var_name);
 	}
 	return (SUCCESS);
 }

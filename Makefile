@@ -20,6 +20,7 @@ SRC			=	minishell.c 					\
 				cmds/cd.c						\
 				cmds/pwd.c						\
 				cmds/exit.c						\
+				cmds/unset.c					\
 				cmds/env.c						\
 				cmds/echo.c						\
 				cmds/export.c					\
@@ -43,14 +44,14 @@ SRC			=	minishell.c 					\
 
 # INCLUDES =================================================================================
 
-INCS_DIR = ./incs
+INCS_DIR	 = ./incs
 
 # ==========================================================================================
 
 # FLAGS ====================================================================================
 
-INCLUDE = -I$(INCS_DIR)
-FLAGS = -ltermcap -Wall -Wextra -Werror
+INCLUDE 	= -I$(INCS_DIR)
+FLAGS 		= -ltermcap -Wall -Wextra -Werror
 
 # ==========================================================================================
 

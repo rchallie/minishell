@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/22 18:16:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/25 17:55:22 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static char		**get_cmd_arguments(t_minishell *ms)
 void			treat_command(t_minishell *ms)
 {
 	/** &cd, &print_work_dir, &exit_minishell, &env, **/
-	static int	(*cmd[6])(int argc, char **argv, char **envp) = {
-		&echo_, &print_work_dir, &exit_minishell, &env, &cd, &export_};
+	static int	(*cmd[7])(int argc, char **argv, char **envp) = {
+		&echo_, &print_work_dir, &exit_minishell, &env, &cd, &export_, &unset};
 	char **argv;
 
 	(void)cmd;
@@ -42,7 +42,7 @@ void			treat_command(t_minishell *ms)
 		&& (ms->isexecret = is_exec(ms)) == ERROR)
 	{
 		if ((ms->iscmdret = is_cmd(ms->treated[ms->seq_cursor])) != -1
-			&& (ms->iscmdret >= 0 && ms->iscmdret <= 5))
+			&& (ms->iscmdret >= 0 && ms->iscmdret <= 6))
 		{
 			argv = get_cmd_arguments(ms);
 			ms->last_cmd_rtn = cmd[ms->iscmdret](get_double_char_tab_len(argv), argv, envp);
