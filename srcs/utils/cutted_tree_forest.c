@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/04/21 19:15:09 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/22 16:48:53 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int		tree_named_env(t_minishell *ms, char **entry, char **word)
 		if (ft_secure_strlen(env_var_name) == 1 && env_var_name[0] == '?')
 			env_var_name = ft_itoa(ms->last_cmd_rtn);
 		else
-			env_var_name = get_env_var_by_name(env_var_name, ms->envp);
+			env_var_name = get_env_var_by_name(env_var_name, envp);
 		*word = ft_strjoin(*word, env_var_name);
 		*word = add_char_to_word(*word, '\0');
 	}

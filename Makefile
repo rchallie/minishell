@@ -82,7 +82,7 @@ $(NAME): $(OBJS)
 	$(MAKE) -C $(SRCS_DIR)ft_printf
 	clang $(FLAGS) $(INCLUDES) $(SRCS_DIR)ft_printf/libftprintf.a ./srcs/libft/*.o ./srcs/ft_printf/*.o $(OBJS) -o $(NAME) 
 
-$(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)
+$(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)/minishell.h
 		@mkdir -p $(OBJS_DIR)
 		@mkdir -p $(OBJS_DIR)entry
 		@mkdir -p $(OBJS_DIR)path
@@ -112,6 +112,9 @@ re: fclean all
 
 run: all
 	@./$(NAME)
+
+valgind: all
+	valgrind --leak-check=yes ./$(NAME)
 
 # ==========================================================================================
 

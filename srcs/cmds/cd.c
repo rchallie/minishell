@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/09 16:02:34 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/22 16:53:56 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+# include "../libft/libft.h"
+# include "../../incs/minishell.h"
 
 /*
 ** Function: cd
@@ -22,7 +23,7 @@
 **		returns: return 1
 */
 
-int		cd(t_minishell *ms)
+int		cd(int argc, char **argv, char **envp)
 {
 	int			chdir_return;
 	extern int	errno;
@@ -35,23 +36,24 @@ int		cd(t_minishell *ms)
 	// check if treated[i + 1] est logic ou est un special
 	// printf("cd : %s\n", treated[i + 1]);
 	// printf("home : %s\n", get_env_var_by_name("home", envp));
-	cursor = ms->seq_cursor;
-	if (!ms->treated[cursor + 1]
-		|| ms->treated[cursor + 1][0] == '~')
+	(void)argc;
+	cursor = 0;
+	if (!argv[cursor + 1]
+		|| argv[cursor + 1][0] == '~')
 	{
-		path = get_env_var_by_name("home", ms->envp);
-		if (ms->treated[cursor + 1])
+		path = get_env_var_by_name("home", envp);
+		if (argv[cursor + 1])
 		{
 			path = ft_strjoin(path,
-				ft_strdup(&ms->treated[cursor + 1][1]));
+				ft_strdup(&argv[cursor + 1][1]));
 			cursor++;
 		}
 	}
 	else
-		path = ft_strdup(ms->treated[cursor + 1]);
+		path = ft_strdup(argv[cursor + 1]);
 	dir = opendir(path);
 	if (!dir)
-		return	 (error_path("cd", ms->treated[cursor + 1], errno));
+		return	 (error_path("cd", argv[cursor + 1], errno));
 	else
 	{
 		closedir(dir);
@@ -63,7 +65,7 @@ int		cd(t_minishell *ms)
 		
 		chdir_return = chdir(path);
 		if (chdir_return == -1)
-			return (error_path("cd", ms->treated[cursor + 1], errno));
+			return (error_path("cd", argv[cursor + 1], errno));
 	}
 	return (SUCCESS);
 }

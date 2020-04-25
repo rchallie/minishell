@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/03/10 18:04:31 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/22 16:10:46 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,13 @@ int		get_pwd_short(char **pwd)
 **					return 2 : 	if a treatement is needed
 */
 
-int		print_work_dir(t_minishell *ms)
+int		print_work_dir(int argc, char **argv, char **envp)
 {
 	char *pwd;
 
-	(void)ms;
+	(void)argc;
+	(void)argv;
+	(void)envp;
 	if (!get_pwd(&pwd))
 		return (ERROR);
 	write(1, pwd, ft_strlen(pwd));

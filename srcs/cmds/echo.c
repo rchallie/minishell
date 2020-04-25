@@ -6,11 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 10:23:19 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/19 16:04:46 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/22 16:55:10 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+# include "../libft/libft.h"
+
+int		ft_secure_strlen(char *s);
 
 /*
 ** Function: echo_
@@ -23,21 +25,22 @@
 **		returns: return 1
 */
 
-int				echo_(t_minishell *ms)
+int				echo_(int argc, char **argv, char **envp)
 {
 	int		cursor;
-	int		len;
 	int		has_opt;
 
-	cursor = ms->seq_cursor + 1;
-	has_opt = (!ft_strcmp(ms->treated[cursor], "-n")) ? 1 : 0;
+	(void)argc;
+	(void)envp;
+	cursor = 1;
+	has_opt = 0;
+	if (argv[cursor])
+		has_opt = (!ft_strcmp(argv[cursor], "-n")) ? 1 : 0;
 	cursor += has_opt;
-	while (ms->sequence[cursor] == 2)
+	while (argv[cursor])
 	{
-		len = 0;
-		while (len < (int)ft_strlen(ms->treated[cursor]))
-			write(1, &ms->treated[cursor][len++], 1);
-		if (ms->sequence[cursor + 1] == 2)
+		write(1, argv[cursor], ft_secure_strlen(argv[cursor]));
+		if (argv[cursor + 1] != NULL)
 			write(1, " ", 1);
 		cursor++;
 	}

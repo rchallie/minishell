@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 16:42:18 by rchallie          #+#    #+#             */
-/*   Updated: 2020/02/26 17:41:21 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/22 16:00:55 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		is_cmd(char *cmd)
 {
 	// check pour absolute path etc
-	if (!ft_strcmp(cmd, "cd"))
+	if (!ft_strcmp(cmd, "echo"))
 		return (0); 
 	if (!ft_strcmp(cmd, "pwd"))
 		return (1);
@@ -23,7 +23,7 @@ int		is_cmd(char *cmd)
 		return (2);
 	if (!ft_strcmp(cmd, "env"))
 		return (3);
-	if (!ft_strcmp(cmd, "echo"))
+	if (!ft_strcmp(cmd, "cd"))
 		return (4);
 	if (!ft_strcmp(cmd, "export"))
 		return (5);

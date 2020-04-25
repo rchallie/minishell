@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/21 12:39:16 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/22 16:48:47 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 	{
 		if ((pid = fork()) == 0)
 		{
-			if ((execve(file, ex->argv, ms->envp)) == -1)
+			if ((execve(file, ex->argv, envp)) == -1)
 				exit(errno);
 		}
 		else
@@ -129,7 +129,7 @@ static int		exec_from_env(t_exec *ex, t_minishell *ms)
 	char	*last_exec_path;
 
 	i = 0;
-	ex->env_path = get_env_var_by_name("PATH", ms->envp);
+	ex->env_path = get_env_var_by_name("PATH", envp);
 	ex->path_list = ft_split(ex->env_path, ':');
 	free(ex->env_path);
 	while (i < get_double_char_tab_len(ex->path_list))

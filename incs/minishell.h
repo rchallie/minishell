@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/21 19:14:57 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/24 18:20:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@
 # define KEY_CTRL_D -20
 # define KEY_CTRL_L -21
 
+char			**envp;
+
 typedef struct		s_exec
 {
 	char			*exec;
@@ -76,9 +78,6 @@ typedef struct		s_minishell
 {
 	char			*entry;
 	char			**treated;
-	char			**envp;
-	char			**envp_local;
-	char			**personal_env_var;
 	char			*output;
 	int				*sequence;
 	int				seq_cursor;
@@ -176,16 +175,16 @@ int					ft_printf(const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);
 int					get_pwd(char **pwd);
-int     			export_(t_minishell *ms);
+int     export_(int argc, char **argv, char **envp);
+
 int					line_edition(t_minishell *ms);
 int					get_pwd_short(char **pwd);
 int					get_word(t_minishell *ms, char *entry, char **word);
 int					get_sequence(char **treated, int **sequence);
-int					cd(t_minishell *ms);
-int					print_work_dir(t_minishell *ms);
-int					env(t_minishell *ms);
-int					export(t_args *args);
-int					echo_(t_minishell *ms);
+int		cd(int argc, char **argv, char **envp);
+int					print_work_dir(int argc, char **argv, char **envp);
+int		env(int argc, char **argv, char **envp);
+int					echo_(int argc, char **argv, char **envp);
 int					error_path(const char *cmd, const char *path,
 						int errnum);
 int					error_identifier(char *cmd, const char *identifier,
@@ -200,10 +199,15 @@ char		*add_char_to_word_ads(char *word, char c, int nb);
 int					is_char_spec(char *s);
 
 int					treat_output(t_minishell *ms);
-int					exit_minishell(t_minishell *ms);
+int		exit_minishell(int argc, char **argv, char **envp);
 void				clear_term(void);
 void				put_beg(void);
 int					is_special_token(char *to_test);
+int		dup_double_char_tab(char **src, char ***new_tab);
+int		double_char_tab_contain(char *name, char **from);
+char			**double_tab_bubble_sort(char ***sort_me);
+
+
 
 
 /* ______ termcaps ______ */

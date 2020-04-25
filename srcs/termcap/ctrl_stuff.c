@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:55:44 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/18 15:17:43 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/22 16:50:13 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	exit_pgm(t_minishell *ms, t_line *line)
 
 	a = line->length;
 	(void)a;
-	exit_minishell(ms);
+	(void)ms;
+	exit_minishell(0, NULL, NULL);
 }

@@ -6,23 +6,47 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/19 16:05:46 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/22 18:16:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
+static char		**get_cmd_arguments(t_minishell *ms)
+{
+	char	**rtn;
+	int		cursor;
+
+	rtn = NULL;
+	cursor = ms->seq_cursor;
+	add_word_to_tab(ms->treated[cursor], &rtn);
+	if (ms->sequence[cursor + 1] == 2)
+	{
+		cursor++;
+		while (ms->sequence[cursor] == 2)
+			add_word_to_tab(ms->treated[cursor++], &rtn);
+	}
+	return (rtn);
+}
+
 void			treat_command(t_minishell *ms)
 {
-	static int	(*cmd[5])(t_minishell *) = {
-		&cd, &print_work_dir, &exit_minishell, &env, &echo_};
+	/** &cd, &print_work_dir, &exit_minishell, &env, **/
+	static int	(*cmd[6])(int argc, char **argv, char **envp) = {
+		&echo_, &print_work_dir, &exit_minishell, &env, &cd, &export_};
+	char **argv;
 
+	(void)cmd;
+	argv = NULL;
 	if (ms->sequence[ms->seq_cursor] == 0
 		&& (ms->isexecret = is_exec(ms)) == ERROR)
 	{
 		if ((ms->iscmdret = is_cmd(ms->treated[ms->seq_cursor])) != -1
-			&& (ms->iscmdret >= 0 && ms->iscmdret <= 4))
-			ms->last_cmd_rtn = cmd[ms->iscmdret](ms);
+			&& (ms->iscmdret >= 0 && ms->iscmdret <= 5))
+		{
+			argv = get_cmd_arguments(ms);
+			ms->last_cmd_rtn = cmd[ms->iscmdret](get_double_char_tab_len(argv), argv, envp);
+		}
 		else if (ms->sequence[ms->seq_cursor] == 0
 			&& ms->iscmdret == -1 && ms->treated[ms->seq_cursor][0])
 				error_command(ms->treated[ms->seq_cursor], ms);
@@ -70,7 +94,7 @@ void			treat_entry(t_minishell *ms)
 }
 
 // ctrl-\" a gérer?
-int				main(int ac, char **av, char **envp)
+int				main(int ac, char **av, char **env)
 {
 	t_minishell	ms;
 	int			ret;
@@ -83,9 +107,11 @@ int				main(int ac, char **av, char **envp)
 	(void)av;
 	ret = 1;
 	put_beg();
+	dup_double_char_tab(env, &envp);
+	// envp = env;
 	while (ret == SUCCESS)
 	{
-		ms = (t_minishell){.envp = envp, .iscmdret = -1, .isexecret = -1, .last_cmd_rtn = cmd_ret};
+		ms = (t_minishell){.iscmdret = -1, .isexecret = -1, .last_cmd_rtn = cmd_ret};
 		if (!get_pwd_short(&pwd))
 			return (ERROR);
 		ft_printf("\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
