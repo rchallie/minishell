@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/27 11:48:09 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/27 15:00:19 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static void		print_middle_term(char *str, int str_len, int row)
 void			put_beg(void)
 {
 	clear_term();
-	print_middle_term("┌┬┐\e[92m┬┌┐┌┬┌─┐┬ ┬┌\e[96m─┐\e[91m┬  ┬  ", 24, 1);
-	print_middle_term("\e[91m││││││││└─┐\e[95m├─┤├┤ │  \e[92m│  ", 24, 2);
-	print_middle_term("\e[91m┴ ┴\e[93m┴┘└┘┴└─┘┴ ┴└─┘┴─\e[92m┘┴─┘", 24, 3);
+	print_middle_term("\e[91m┌┬┐\e[92m┬┌┐\e[93m┌┬┌\e[94m─┐┬\e[95m ┬┌\e[96m─┐\e[91m┬  \e[92m┬  ", 24,1);
+	print_middle_term("\e[91m││\e[92m│││\e[93m│││\e[94m└─┐\e[95m├─┤\e[96m├┤ \e[91m│  \e[92m│  ", 24,2);
+	print_middle_term("\e[91m┴ \e[92m┴\e[93m┴┘└┘\e[94m┴└─\e[95m┘┴ \e[96m┴└─\e[91m┘┴─\e[92m┘┴─┘", 24,3);
 	print_middle_term("", 0, 4);
 	default_term_mode();
 	return ;
@@ -62,7 +62,6 @@ int				has_redir_output(t_minishell *ms, int redir_type,
 {
 	int			o;
 	int			s;
-	// extern int	errno;
 
 	s = S_IRWXG | S_IRWXU | S_IRWXO;
 	if (!ms->sequence[cursor] || ms->sequence[cursor] == 6
@@ -75,7 +74,8 @@ int				has_redir_output(t_minishell *ms, int redir_type,
 	else if (ms->sequence[cursor] == 8 && (redir_type == 4 || redir_type == 3))
 	{
 		(fd >= 3) ? close(fd) : 0;
-		o = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC : O_CREAT | O_RDWR;
+		o = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC 
+			: O_CREAT | O_RDWR | O_APPEND;
 		if (!(fd = open(ms->treated[cursor], o, s)))
 			return (-1); //Error path à gérer
 		redir_type = 0;
