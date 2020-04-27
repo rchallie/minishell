@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/27 12:01:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/27 16:43:07 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 # define ERROR_NEAR_UNEXPECTED_AT_NEXT_POS 0x8
 # define ERROR_NEAR_UNEXPECTED_AT_POS 0x9
+# define ERROR_SIGINT 0xA
 
 # include "../srcs/libft/libft.h"
 # include <stdlib.h>
@@ -35,6 +36,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <errno.h>
+# include <signal.h>
 # include "../srcs/libft/libft.h"
 
 # define HISTORY_PATH ".save_history"
@@ -45,6 +47,7 @@
 # define KEY_CODE_DO "\x1b\x5b\x42\0"
 # define KEY_CODE_RI "\x1b\x5b\x43\0"
 # define KEY_CODE_LE "\x1b\x5b\x44\0"
+# define KEY_CODE_CTRL_C "\x03"
 # define KEY_CODE_CTRL_D "\x04"
 # define KEY_CODE_CTRL_L "\x0c"
 # define KEY_CODE_HOME "\x1b\x5b\x48"
@@ -62,9 +65,7 @@
 # define KEY_CTRL_DO -13
 # define KEY_CTRL_D -20
 # define KEY_CTRL_L -21
-
-char			**envp;
-char			**export_vars;
+# define KEY_CTRL_C -22
 
 typedef struct		s_exec
 {
@@ -162,6 +163,10 @@ typedef struct		s_args
 	struct s_args	*next;
 	void			*content;
 }					t_args;
+
+char			**envp;
+char			**export_vars;
+t_minishell		ms;
 
 
 void				init_terminal_data(void);

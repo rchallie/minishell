@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:10:30 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/18 18:08:41 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/27 16:51:37 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,12 @@ int			input_loop(t_minishell *ms, t_line *line)
 			delete_char(line, key);
 		set_curpos(line);
 		if (key == 3)
+		{
+			ms->last_cmd_rtn = 130;
+			insert_char(line, '^');
+			insert_char(line, 'C');
 			return (ERROR);
+		}
 		else if ((char)key == '\n')
 			break ;
 	}

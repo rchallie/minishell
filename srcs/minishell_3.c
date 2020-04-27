@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/03/11 21:46:42 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/04/27 16:46:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int			child(t_minishell *ms, int *fork_, int nb_cmd_p,
 	return (1);
 }
 
+
 void		cmd_has_pipe(t_minishell *ms, int gen_fork,
 	int fork_, int nb_cmd_p)
 {
@@ -108,6 +109,7 @@ void		cmd_has_pipe(t_minishell *ms, int gen_fork,
 		tab_fpipe = malloc_tab_fpipe(ms, tab_fpipe);
 		while (nb_cmd_p < ms->has_pipe)
 		{
+			signal(SIGINT, NULL);
 			if (!child(ms, &fork_, nb_cmd_p, tab_fpipe))
 				break ;
 			nb_cmd_p++;

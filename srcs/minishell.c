@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/27 11:44:16 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/27 16:43:11 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,15 @@ int			treat_entry(t_minishell *ms)
 	return (SUCCESS);
 }
 
+static void		sigint_catcher()
+{
+	write(1, "\n", 1);
+	ms.last_cmd_rtn = 130;
+}
+
 // ctrl-\" a gérer?
 int				main(int ac, char **av, char **env)
 {
-	t_minishell	ms;
 	int			ret;
 	char		*pwd;
 	int			cmd_ret;
@@ -113,6 +118,9 @@ int				main(int ac, char **av, char **env)
 	put_beg();
 	dup_double_char_tab(env, &envp);
 	// envp = env;
+	if (signal(SIGINT, sigint_catcher) == SIG_ERR)
+		exit(ERROR_SIGINT);
+
 	while (ret == SUCCESS)
 	{
 		ms = (t_minishell){.iscmdret = -1, .isexecret = -1, .last_cmd_rtn = cmd_ret};
