@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/25 17:55:22 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/27 11:44:16 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,13 @@ static void		cmd_no_pipe(t_minishell *ms)
 	close(saved_stdin);
 }
 
-void			treat_entry(t_minishell *ms)
+int			treat_entry(t_minishell *ms)
 {
+	int seq_ret;
+
 	ms->treated_len = get_double_char_tab_len(ms->treated);
-	get_sequence(ms->treated, &ms->sequence);
+	if ((seq_ret = get_sequence(ms->treated, &ms->sequence)) != SUCCESS)
+		return (ERROR);
 /*
 ** REORDER DEVRA CHECKER LA VALIDITER DES FILES DE REDIR
 */
@@ -91,6 +94,7 @@ void			treat_entry(t_minishell *ms)
 	(ms->has_pipe == 0) ? cmd_no_pipe(ms) : cmd_has_pipe(ms, 0, 0, 0);
 	free_double_char_tab(ms->treated);
 	free(ms->sequence);
+	return (SUCCESS);
 }
 
 // ctrl-\" a gérer?

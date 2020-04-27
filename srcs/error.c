@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:54:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/21 12:47:00 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/27 11:47:07 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ int		error_command(char *cmd, t_minishell *ms)
 	return (ERROR);
 }
 
-int		error_identifier(char *cmd, const char *identifier, char *error)
+// ERROR NBR TMP a virer.
+int		error_identifier(char *msg, const char *identifier)
 {
-	ft_printf("minishell: %s: `%s': %s\n", cmd, identifier, error);
+	if (!ft_strcmp(identifier, "\n"))
+		ft_printf("minishell: %s `%s'\n", msg, "newline");
+	else
+		ft_printf("minishell: %s `%s'\n", msg, identifier);
 	return (ERROR);
 }
 

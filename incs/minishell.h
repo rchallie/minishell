@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/25 18:39:09 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/27 12:01:10 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <dirent.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <errno.h>
 # include "../srcs/libft/libft.h"
 
@@ -188,8 +189,8 @@ int		env(int argc, char **argv, char **envp);
 int					echo_(int argc, char **argv, char **envp);
 int					error_path(const char *cmd, const char *path,
 						int errnum);
-int					error_identifier(char *cmd, const char *identifier,
-						char *error);
+int		error_identifier(char *msg, const char *identifier);
+
 int					error_command(char *cmd, t_minishell *ms);
 int					is_cmd(char *cmd);
 int					sanitize(t_minishell *ms, char *entry, char ***treated);
