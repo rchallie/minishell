@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 15:31:01 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 16:06:40 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void			treat_command(t_minishell *ms)
 		{
 			argv = get_cmd_arguments(ms);
 			ms->last_cmd_rtn = cmd[ms->iscmdret](get_double_char_tab_len(argv), argv, envp);
+			free_double_char_tab(argv);
 		}
 		else if (ms->sequence[ms->seq_cursor] == 0
 			&& ms->iscmdret == -1 && ms->treated[ms->seq_cursor][0])
