@@ -115,7 +115,7 @@ run: all
 	@./$(NAME)
 
 valgind: all
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+	valgrind --leak-check=yes --errors-for-leak-kinds=all --show-leak-kinds=all ./$(NAME)
 
 # ==========================================================================================
 
