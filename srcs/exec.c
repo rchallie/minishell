@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 15:54:36 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 16:16:47 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ static int		exec_from_env(t_exec *ex, t_minishell *ms)
 		ex->exec_path = NULL;
 		i++;
 	}
+	free(ex->argv);
 	free_double_char_tab(ex->path_list);
 	return (ERROR);
 }
@@ -182,5 +183,6 @@ int				is_exec(t_minishell *ms)
 	ex.exec_path = NULL;
 	if (exec_from_env(&ex, ms) == SUCCESS)
 		return (SUCCESS);
+	free(ex.argv);
 	return (ERROR);
 }
