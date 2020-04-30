@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 16:44:06 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 18:18:01 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,8 @@ static int		init_for_exec(t_exec *ex, t_minishell *ms)
 	ex->exec = ms->treated[ex->save_seq_cursor];
 	add_word_to_tab(ms->treated[ex->save_seq_cursor], &ex->argv);
 	ex->save_seq_cursor++;
-	if (ms->sequence[ex->save_seq_cursor] > 2)
-	{
-		if (!(ex->argv = (char **)malloc(sizeof(char *) * 2)))
-			return (ERROR);
-		ft_bzero(ex->argv, sizeof(char *) * 2);
-		ex->argv[0] = "";
-		ex->argv[1] = NULL;
-	}
-	else
-		while (ms->sequence[ex->save_seq_cursor]
-			&& ms->sequence[ex->save_seq_cursor] <= 2)
+	while (ms->sequence[ex->save_seq_cursor]
+		&& ms->sequence[ex->save_seq_cursor] <= 2)
 			add_word_to_tab(ms->treated[ex->save_seq_cursor++], &ex->argv);
 	get_pwd(&ex->exec_path);
 	last_exec_path = ex->exec_path;
@@ -144,6 +135,7 @@ static int		exec_from_env(t_exec *ex, t_minishell *ms)
 			if (exec_cmd(ex->exec_path, ex, ms) == SUCCESS)
 			{
 				free_double_char_tab(ex->path_list);
+				free(ex->exec_path);
 				return (SUCCESS);
 			}
 		}

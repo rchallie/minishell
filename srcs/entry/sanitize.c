@@ -3,10 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   sanitize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*   By: rchallie </var/mail/rchallie>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
+/*   Updated: 2020/04/30 20:04:08 by rchallie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sanitize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 15:31:56 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 19:13:18 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +105,11 @@ int				sanitize(t_minishell *ms, char *entry, char ***treated)
 	int		up;
 	
 	// printf("\nbef san entry = |%s|\n", entry);
+	word = NULL;
 	if (!entry || !*entry || entry[0] == '\n')
 	{
-		if (!(word = (char *)malloc(sizeof(char) * 1)))
-			return (ERROR);
-		word[0] = '\0';
-		add_word_to_tab(word, treated);
-		add_word_to_tab(ft_strdup("\n"), treated);
+		add_word_to_tab("\n", treated);
+		free(entry);
 		return (SUCCESS);
 	}
 	up = 0;
@@ -118,19 +128,20 @@ int				sanitize(t_minishell *ms, char *entry, char ***treated)
 			{
 				char *tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER", envp));
 				word = ft_strjoin(tmp_word, (word + 1));
+				free(tmp_word);
 			}
 			free(home);			
 		}
 		add_word_to_tab(word, treated);
+		free(word);
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
 		if(!(up = check_special_chars(treated, entry, up)))
 			return (ERROR);
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
-		free(word);
 	}
-	add_word_to_tab(ft_strdup("\n"), treated);
 	free(entry);
+	add_word_to_tab("\n", treated);
 	return (SUCCESS);
 }
