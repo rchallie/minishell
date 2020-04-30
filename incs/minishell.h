@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 10:40:56 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 12:56:57 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ typedef struct		s_minishell
 {
 	char			*entry;
 	char			**treated;
-	char			*output;
 	int				*sequence;
 	int				seq_cursor;
 	int				iscmdret;
@@ -204,7 +203,6 @@ char		*add_char_to_word_ads(char *word, char c, int nb);
 
 int					is_char_spec(char *s);
 
-int					treat_output(t_minishell *ms);
 int		exit_minishell(int argc, char **argv, char **envp);
 void				clear_term(void);
 void				put_beg(void);

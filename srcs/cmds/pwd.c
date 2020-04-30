@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/28 16:47:33 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 14:57:26 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,18 @@ int		get_pwd_short(char **pwd)
 	int		new_pwd_len;
 	char	*pwd_tmp;
 	char	*pwd_s;
+	char	*home;
 
 	if (!get_pwd(&pwd_tmp))
 		return (ERROR);
-	if (!ft_strcmp(get_env_var_by_name("HOME", envp), pwd_tmp))
+	home = get_env_var_by_name("HOME", envp);
+	if (!ft_strcmp(home, pwd_tmp))
 	{
 		free(pwd_tmp);
 		if ((*pwd = ft_strdup("~/")) != NULL)
 			return (SUCCESS);
 	}
+	free(home);
 	pwd_len = ft_secure_strlen(pwd_tmp);
 	while (pwd_tmp[pwd_len] != '/' && pwd_len != 0)
 		pwd_len--;

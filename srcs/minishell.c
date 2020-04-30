@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 10:44:17 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 14:54:22 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int			treat_entry(t_minishell *ms)
 	ms->treated_len = get_double_char_tab_len(ms->treated);
 	if ((seq_ret = get_sequence(ms->treated, &ms->sequence)) != SUCCESS)
 		return (ERROR);
+	
 /*
 ** REORDER DEVRA CHECKER LA VALIDITER DES FILES DE REDIR
 */

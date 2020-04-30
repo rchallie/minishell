@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/22 16:48:47 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 15:00:11 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 		{
 			waitpid(pid, &status, 0);
 			ms->last_cmd_rtn = WEXITSTATUS(status);
+			free(ex->argv);
 			return (SUCCESS);
 		}
 	}
@@ -141,7 +142,10 @@ static int		exec_from_env(t_exec *ex, t_minishell *ms)
 			ex->exec_path = ft_strjoin(ex->exec_path, ex->exec);
 			free(last_exec_path);
 			if (exec_cmd(ex->exec_path, ex, ms) == SUCCESS)
+			{
+				free_double_char_tab(ex->path_list);
 				return (SUCCESS);
+			}
 		}
 		free(ex->exec_path);
 		ex->exec_path = NULL;
