@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:51:16 by excalibur         #+#    #+#             */
-/*   Updated: 2020/04/25 19:07:34 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/28 16:27:13 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,10 @@ int			unset(int argc, char **argv, char **env)
 	cursor = 0;
 	while (argv[++cursor])
 	{
-		remove_var_env(argv[cursor]);
-		remove_var_export(argv[cursor]);
+		if (envp)
+			remove_var_env(argv[cursor]);
+		if (export_vars)
+			remove_var_export(argv[cursor]);
 	}
 	return (0);
 }

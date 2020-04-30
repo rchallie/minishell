@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/22 16:10:46 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/28 16:47:33 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ int		get_pwd_short(char **pwd)
 
 	if (!get_pwd(&pwd_tmp))
 		return (ERROR);
+	if (!ft_strcmp(get_env_var_by_name("HOME", envp), pwd_tmp))
+	{
+		free(pwd_tmp);
+		if ((*pwd = ft_strdup("~/")) != NULL)
+			return (SUCCESS);
+	}
 	pwd_len = ft_secure_strlen(pwd_tmp);
 	while (pwd_tmp[pwd_len] != '/' && pwd_len != 0)
 		pwd_len--;
@@ -100,8 +106,8 @@ int		print_work_dir(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	if (!get_pwd(&pwd))
-		return (ERROR);
+		return (1);
 	write(1, pwd, ft_strlen(pwd));
 	write(1, "\n", 1);
-	return (SUCCESS);
+	return (0);
 }

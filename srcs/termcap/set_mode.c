@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_mode.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 18:04:47 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/27 16:03:09 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/04/30 11:48:51 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	raw_term_mode(void)
 	tattr.c_cc[VMIN] = 1;
 	tattr.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &tattr);
+
 	tgetent(NULL, getenv("TERM"));
 }

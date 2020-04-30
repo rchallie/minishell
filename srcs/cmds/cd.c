@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/25 12:44:36 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/28 17:13:09 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,11 @@ int		cd(int argc, char **argv, char **envp)
 	// printf("home : %s\n", get_env_var_by_name("home", envp));
 	(void)argc;
 	cursor = 0;
-	if (!argv[cursor + 1]
-		|| argv[cursor + 1][0] == '~')
+	if (!argv[cursor + 1])
 	{
-		path = get_env_var_by_name("home", envp);
-		if (argv[cursor + 1])
-		{
-			path = ft_strjoin(path,
-				ft_strdup(&argv[cursor + 1][1]));
-			cursor++;
-		}
+		path = get_env_var_by_name("HOME", envp);
+		if (!argv[cursor + 1] && ft_secure_strlen(path) == 0)
+			return (error_unidentified("cd", "HOME"));
 	}
 	else
 		path = ft_strdup(argv[cursor + 1]);
@@ -64,7 +59,7 @@ int		cd(int argc, char **argv, char **envp)
 		// 	i++;
 		char *old_pwd;
 		if (get_pwd(&old_pwd) == ERROR)
-			return (ERROR);
+			return (1);
 		add_var_to_env(ft_strjoin("OLDPWD=", old_pwd));
 		chdir_return = chdir(path);
 		if (chdir_return == -1)
@@ -72,7 +67,7 @@ int		cd(int argc, char **argv, char **envp)
 	}
 	char *pwd;
 	if (get_pwd(&pwd) == ERROR)
-		return (ERROR);
+		return (1);
 	add_var_to_env(ft_strjoin("PWD=", pwd));
-	return (SUCCESS);
+	return (0);
 }

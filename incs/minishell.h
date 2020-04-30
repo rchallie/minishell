@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/27 16:43:07 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 10:40:56 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ typedef struct		s_winsz
 
 typedef struct		s_line
 {
-	t_dlist			*hist;
 	size_t			cursor;
 	int				cursor_highl;
 	size_t			length;
@@ -217,7 +216,7 @@ int		add_var_to_env(char *var);
 int 	unset(int argc, char **argv, char **envp);
 int		double_char_tab_remove(char **to_remove, char ***array);
 int remove_var_env(char *var_name);
-
+int		error_unidentified(char *msg, const char *unidentified);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/25 19:11:03 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/28 16:35:39 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*get_env_var_by_name(char *name, char **envp)
 	}
 	(void)envp;
 	free(rename);
-	return (NULL);
+	return (ft_strdup(""));
 }
 
 int remove_var_env(char *var_name)
@@ -130,5 +130,5 @@ int		env(int argc, char **argv, char **envp)
 			*/
 		if (check_word(argv[cursor]) >= 1)
 			ft_printf("%s\n", argv[cursor]);
-	return (SUCCESS);
+	return (0);
 }

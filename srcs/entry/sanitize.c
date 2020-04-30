@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/22 15:46:49 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/28 17:21:29 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,18 @@ int				sanitize(t_minishell *ms, char *entry, char ***treated)
 			up++;
 		word = NULL;
 		up += get_word(ms, (entry + up), &word);
+		if (word && word[0] == '~' && ( !word[1] || word[1] == '/'))
+		{
+			char *home = get_env_var_by_name("HOME", envp);
+			if (ft_secure_strlen(home) != 0)
+				word = ft_strjoin(home, (word + 1));
+			else
+			{
+				char *tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER", envp));
+				word = ft_strjoin(tmp_word, (word + 1));
+			}
+			free(home);			
+		}
 		add_word_to_tab(word, treated);
 		while (ft_is_whitespace(*(entry + up)))
 			up++;

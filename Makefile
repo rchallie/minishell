@@ -95,7 +95,7 @@ $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)/minishell.h
 		@mkdir -p $(OBJS_DIR)exec
 		@mkdir -p $(OBJS_DIR)launch
 		@echo "Compiling: $<"
-		@gcc -Wall -Wextra -Werror -I./incs/ -c $< -o $@
+		@clang -Wall -Wextra -Werror -I./incs/ -c $< -o $@
 
 all: $(NAME)
 
