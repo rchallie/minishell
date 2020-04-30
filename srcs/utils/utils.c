@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:27:25 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 15:27:07 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 15:56:22 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,40 @@ char			*add_char_to_word(char *word, char c)
 		return (ERROR);
 	ft_memcpy(word, save_word, ft_secure_strlen(save_word));
 	word[ft_secure_strlen(save_word)] = c;
+	return (word);
+}
+
+/*
+** Function : add_char_to_word
+** -------------------------
+**		Add a char to the end of the string.
+**
+**		(char *)word	: the string.
+**		(char)	c		: the char.
+**
+**		return : A new string with the char in end of it.
+*/
+
+char			*add_char_to_word_free(char *word, char c)
+{
+	char	*save_word;
+	int		new_word_len;
+
+	if (!word)
+	{
+		if (!(word = (char *)ft_memalloc(sizeof(char) * 2)))
+			return (ERROR);
+		word[0] = c;
+		word[1] = '\0';
+		return (word);
+	}
+	new_word_len = ft_secure_strlen(word) + 2;
+	save_word = word;
+	if (!(word = (char *)ft_memalloc(sizeof(char) * new_word_len)))
+		return (ERROR);
+	ft_memcpy(word, save_word, ft_secure_strlen(save_word));
+	word[ft_secure_strlen(save_word)] = c;
+	free(save_word);
 	return (word);
 }
 

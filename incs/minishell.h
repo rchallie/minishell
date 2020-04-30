@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 12:56:57 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 15:58:12 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ int 	unset(int argc, char **argv, char **envp);
 int		double_char_tab_remove(char **to_remove, char ***array);
 int remove_var_env(char *var_name);
 int		error_unidentified(char *msg, const char *unidentified);
+char			*add_char_to_word_free(char *word, char c);
 
 
 
