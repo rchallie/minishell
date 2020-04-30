@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/28 17:21:29 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/04/30 15:23:57 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int				sanitize(t_minishell *ms, char *entry, char ***treated)
 		free(word);
 	}
 	add_word_to_tab(ft_strdup("\n"), treated);
+	while (1);
 	free(entry);
 	return (SUCCESS);
 }
