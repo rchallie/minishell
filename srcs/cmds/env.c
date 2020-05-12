@@ -6,13 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/28 16:35:39 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/02 12:24:37 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-char	*get_env_var_by_name(char *name, char **envp)
+char	*get_env_var_by_name(char *name)
 {
 	int		i;
 	char	*rename;

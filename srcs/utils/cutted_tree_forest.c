@@ -6,13 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/04/30 15:56:56 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/05 15:39:40 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-static int		tree_named_env(t_minishell *ms, char **entry, char **word)
+static int		tree_named_env(char **entry, char **word)
 {
 	int		rtn;
 	char	*env_var_name;
@@ -31,9 +31,9 @@ static int		tree_named_env(t_minishell *ms, char **entry, char **word)
 			rtn++;
 		}
 		if (ft_secure_strlen(env_var_name) == 1 && env_var_name[0] == '?')
-			env_var_name = ft_itoa(ms->last_cmd_rtn);
+			env_var_name = ft_itoa(ms.last_cmd_rtn);
 		else
-			env_var_name = get_env_var_by_name(env_var_name, envp);
+			env_var_name = get_env_var_by_name(env_var_name);
 		*word = ft_strjoin(*word, env_var_name);
 		*word = add_char_to_word_free(*word, '\0');
 	}
@@ -99,29 +99,47 @@ static int		tree_named_last(char **entry, char **word)
 	return (SUCCESS);
 }
 
-int				get_word(t_minishell *ms, char *entry, char **word)
+int				get_word(char *startword, char **entry_addr, char **word)
 {
 	int		simple_q;
 	int		double_q;
 	int		char_count;
+	char	*save_startword;
 
 	simple_q = 0;
 	double_q = 0;
 	char_count = 0;
-	while (*entry)
+	save_startword = startword;
+	while (*startword)
 	{
-		char_count += tree_named_env(ms, &entry, word);
-		if ((*entry == ' ' || *entry == '>' || *entry == '<'
-			|| *entry == '|' || *entry == ';') && !(simple_q || double_q))
+		char_count += tree_named_env(&startword, word);
+		if ((*startword == ' ' || *startword == '>' || *startword == '<'
+			|| *startword == '|' || *startword == ';') && !(simple_q || double_q))
 			break ;
-		char_count += tree_named_backslash(&entry, word, simple_q, double_q);
-		tree_named_quote(entry, word, &simple_q, &double_q);
-		if (!(tree_named_last(&entry, word)))
+		char_count += tree_named_backslash(&startword, word, simple_q, double_q);
+		tree_named_quote(startword, word, &simple_q, &double_q);
+		if (!(tree_named_last(&startword, word)))
 			return (ERROR);
 		char_count++;
+		if (*(startword) == '\0' && (simple_q || double_q))
+		{
+			/*** WIP ***/
+			// free à faire
+			if (simple_q)
+				ft_printf("squote > ");
+			else
+				ft_printf("dquote > ");
+			char *test = edit_line();
+			int startword_advencement = startword - save_startword;
+			test = ft_strjoin("\n", test);
+			startword = ft_strjoin(save_startword, test);
+			*entry_addr = ft_strjoin(*entry_addr, test);
+			save_startword = startword;
+			startword += startword_advencement;
+			continue;
+		}
 	}
-	if (simple_q || double_q)
-		exit(1);
+
 	if (word && *word && is_special_token(*word) == SUCCESS)
 		*word = add_char_to_word_free(*word, 3);
 	return (char_count);

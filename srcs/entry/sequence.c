@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:46:46 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/27 11:47:33 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/05 14:41:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ int				get_sequence(char **treated, int **sequence)
 	if (!(sequ = (int *)malloc(sizeof(int) * (treated_len + 2))))
 		return (ERROR);
 	ft_bzero(sequ, sizeof(int) * (treated_len + 2));
-	if ((ret_treat = seq_treated_tab(treated, sequ))== SUCCESS)
+	if ((ret_treat = seq_treated_tab(treated, sequ)) == SUCCESS)
 		*sequence = sequ;
 	return (ret_treat);
 }

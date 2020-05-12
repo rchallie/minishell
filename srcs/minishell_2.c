@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 10:51:50 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/02 10:58:57 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,48 +57,48 @@ void			put_beg(void)
 	return ;
 }
 
-int				has_redir_output(t_minishell *ms, int redir_type,
+int				has_redir_output(int redir_type,
 	int cursor, int fd)
 {
 	int			o;
 	int			s;
 
 	s = S_IRWXG | S_IRWXU | S_IRWXO;
-	if (!ms->sequence[cursor] || ms->sequence[cursor] == 6
-		|| ms->sequence[cursor] == 7 || ms->sequence[cursor] == 9)
+	if (!ms.sequence[cursor] || ms.sequence[cursor] == 6
+		|| ms.sequence[cursor] == 7 || ms.sequence[cursor] == 9)
 		return (fd);
-	else if (ms->sequence[cursor] == 2)
-		return (has_redir_output(ms, redir_type, cursor + 1, fd));
-	else if (ms->sequence[cursor] == 4 || ms->sequence[cursor] == 3)
-		return (has_redir_output(ms, ms->sequence[cursor], cursor + 1, fd));
-	else if (ms->sequence[cursor] == 8 && (redir_type == 4 || redir_type == 3))
+	else if (ms.sequence[cursor] == 2)
+		return (has_redir_output(redir_type, cursor + 1, fd));
+	else if (ms.sequence[cursor] == 4 || ms.sequence[cursor] == 3)
+		return (has_redir_output(ms.sequence[cursor], cursor + 1, fd));
+	else if (ms.sequence[cursor] == 8 && (redir_type == 4 || redir_type == 3))
 	{
 		(fd >= 3) ? close(fd) : 0;
 		o = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC 
 			: O_CREAT | O_RDWR | O_APPEND;
-		if (!(fd = open(ms->treated[cursor], o, s)))
+		if (!(fd = open(ms.treated[cursor], o, s)))
 			return (-1); //Error path à gérer
 		redir_type = 0;
 	}
-	return (has_redir_output(ms, redir_type, cursor + 1, fd));
+	return (has_redir_output(redir_type, cursor + 1, fd));
 }
 
-int				has_redir_input(t_minishell *ms, int redir_type,
+int				has_redir_input(int redir_type,
 	int cursor, int fd)
 {
-	if (!ms->sequence[cursor] || ms->sequence[cursor] == 6
-		|| ms->sequence[cursor] == 7 || ms->sequence[cursor] == 9)
+	if (!ms.sequence[cursor] || ms.sequence[cursor] == 6
+		|| ms.sequence[cursor] == 7 || ms.sequence[cursor] == 9)
 		return (fd);
-	else if (ms->sequence[cursor] == 2)
-		return (has_redir_input(ms, redir_type, cursor + 1, fd));
-	else if (ms->sequence[cursor] == 5)
-		return (has_redir_input(ms, ms->sequence[cursor], cursor + 1, fd));
-	else if (ms->sequence[cursor] == 8 && redir_type == 5)
+	else if (ms.sequence[cursor] == 2)
+		return (has_redir_input(redir_type, cursor + 1, fd));
+	else if (ms.sequence[cursor] == 5)
+		return (has_redir_input(ms.sequence[cursor], cursor + 1, fd));
+	else if (ms.sequence[cursor] == 8 && redir_type == 5)
 	{
 		(fd >= 3) ? close(fd) : 0;
-		if (!(fd = open(ms->treated[cursor], O_RDONLY)))
+		if (!(fd = open(ms.treated[cursor], O_RDONLY)))
 			return (-1); //Error path à gérer
 		redir_type = 0;
 	}
-	return (has_redir_input(ms, redir_type, cursor + 1, fd));
+	return (has_redir_input(redir_type, cursor + 1, fd));
 }

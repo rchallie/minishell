@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:10:30 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/30 10:44:54 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/02 11:20:11 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			get_key(void)
 	return (key);
 }
 
-int			input_loop(t_minishell *ms, t_line *line)
+int			input_loop(t_line *line)
 {
 	int		key;
 	int		save;
@@ -41,7 +41,7 @@ int			input_loop(t_minishell *ms, t_line *line)
 		if (key != KEY_SLEFT && key != KEY_SRIGHT)
 			line->cursor_highl = -1;
 		ft_getwinsz(&line->winsz);
-		find_match(ms, key, line);
+		find_match(key, line);
 		if (key > 31 && key < 127)
 		{
 			insert_char(line, key);
@@ -52,7 +52,7 @@ int			input_loop(t_minishell *ms, t_line *line)
 		set_curpos(line);
 		if (key == 3)
 		{
-			ms->last_cmd_rtn = 130;
+			ms.last_cmd_rtn = 130;
 			insert_char(line, '^');
 			insert_char(line, 'C');
 			return (ERROR);
@@ -63,7 +63,7 @@ int			input_loop(t_minishell *ms, t_line *line)
 	return (SUCCESS);
 }
 
-char		*edit_line(t_minishell *ms)
+char		*edit_line(void)
 {
 	t_line	line;
 	int		input_rtn;
@@ -75,7 +75,7 @@ char		*edit_line(t_minishell *ms)
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
 	line.cursor_highl = -1;
 	get_cursor_start_pos(&line);
-	input_rtn = input_loop(ms, &line);
+	input_rtn = input_loop(&line);
 	cursor_to_end(&line);
 	default_term_mode();
 	ft_putchar('\n');
@@ -87,14 +87,14 @@ char		*edit_line(t_minishell *ms)
 	return (ft_strdup((char *)line.cmd));
 }
 
-int			line_edition(t_minishell *ms)
+int			line_edition(void)
 {
 	char	*new_entry;
 
 	new_entry = NULL;
 	default_term_mode();
 	init_terminal_data();
-	new_entry = edit_line(ms);
-	ms->entry = new_entry;
+	new_entry = edit_line();
+	ms.entry = new_entry;
 	return (1);
 }

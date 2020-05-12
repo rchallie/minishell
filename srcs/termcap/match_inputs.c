@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:48:53 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/27 16:34:41 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/02 11:20:34 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void							match_move(int key, t_line *line)
 			keymove[i - 1].funct(line);
 }
 
-void							match_ctrl(t_minishell *ms, int key,
+void							match_ctrl(int key,
 t_line *line)
 {
 	int							i;
@@ -71,12 +71,12 @@ t_line *line)
 	i = 0;
 	while (i < 2)
 		if (key == keymove[i++].key)
-			keymove[i - 1].funct(ms, line);
+			keymove[i - 1].funct(line);
 }
 
-void							find_match(t_minishell *ms, int key,
+void							find_match(int key,
 t_line *line)
 {
 	match_move(key, line);
-	match_ctrl(ms, key, line);
+	match_ctrl(key, line);
 }

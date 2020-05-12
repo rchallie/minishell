@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 15:31:56 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/05 15:35:15 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int		add_word_to_tab(char *word, char ***treated)
 		i++;
 	}
 	new_tab[i] = ft_strdup(word);
-
 	*treated = new_tab;
 	free_double_char_tab(save_treated);
 	return (SUCCESS);
@@ -87,7 +86,7 @@ static int		check_special_chars(char ***treated, char *entry, int up)
 	return (up);
 }
 
-int				sanitize(t_minishell *ms, char *entry, char ***treated)
+int				sanitize(char *entry, char ***treated)
 {
 	char	*word;
 	int		up;
@@ -100,23 +99,24 @@ int				sanitize(t_minishell *ms, char *entry, char ***treated)
 		word[0] = '\0';
 		add_word_to_tab(word, treated);
 		add_word_to_tab(ft_strdup("\n"), treated);
+		free(word);
 		return (SUCCESS);
 	}
 	up = 0;
 	while (*(entry + up))
 	{
+		word = NULL;
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
-		word = NULL;
-		up += get_word(ms, (entry + up), &word);
+		up += get_word((entry + up), &entry, &word);
 		if (word && word[0] == '~' && ( !word[1] || word[1] == '/'))
 		{
-			char *home = get_env_var_by_name("HOME", envp);
+			char *home = get_env_var_by_name("HOME");
 			if (ft_secure_strlen(home) != 0)
 				word = ft_strjoin(home, (word + 1));
 			else
 			{
-				char *tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER", envp));
+				char *tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER"));
 				word = ft_strjoin(tmp_word, (word + 1));
 			}
 			free(home);			

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 16:44:06 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/02 12:31:04 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 **		returns:	null
 */
 
-static void		init_exec(t_exec *ex, t_minishell *ms)
+static void		init_exec(t_exec *ex)
 {
 	ex->exec = NULL;
 	ex->exec_path = NULL;
 	ex->env_path = NULL;
 	ex->path_list = NULL;
 	ex->argv = NULL;
-	ex->save_seq_cursor = ms->seq_cursor;
+	ex->save_seq_cursor = ms.seq_cursor;
 }
 
 /*
@@ -45,15 +45,19 @@ static void		init_exec(t_exec *ex, t_minishell *ms)
 **					return 1 :	if the binaries was sucessfull executed
 */
 
-static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
+static int		exec_cmd(char *file, t_exec *ex)
 {
 	pid_t	pid;
 	int		ret;
 	int		status;
+	char	*execute_env_path;
 
 	pid = 0;
 	if ((ret = open(file, O_RDONLY)) > 0)
 	{
+		execute_env_path = ft_strjoin("_=", file);
+		add_var_to_env(execute_env_path);
+		free(execute_env_path);
 		if ((pid = fork()) == 0)
 		{
 			if ((execve(file, ex->argv, envp)) == -1)
@@ -62,7 +66,7 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 		else
 		{
 			waitpid(pid, &status, 0);
-			ms->last_cmd_rtn = WEXITSTATUS(status);
+			ms.last_cmd_rtn = WEXITSTATUS(status);
 			free(ex->argv);
 			return (SUCCESS);
 		}
@@ -82,15 +86,17 @@ static int		exec_cmd(char *file, t_exec *ex, t_minishell *ms)
 **					return 1 :	if everything was okay
 */
 
-static int		init_for_exec(t_exec *ex, t_minishell *ms)
+static int		init_for_exec(t_exec *ex)
 {
 	char	*last_exec_path;
 
-	ex->exec = ms->treated[ex->save_seq_cursor];
-	add_word_to_tab(ms->treated[ex->save_seq_cursor], &ex->argv);
+	ex->exec = ms.treated[ex->save_seq_cursor];
+	add_word_to_tab(ms.treated[ex->save_seq_cursor], &ex->argv);
 	ex->save_seq_cursor++;
-	if (ms->sequence[ex->save_seq_cursor] > 2)
+	if (ms.sequence[ex->save_seq_cursor] > 2)
 	{
+		if (ex->argv)
+			free(ex->argv);
 		if (!(ex->argv = (char **)malloc(sizeof(char *) * 2)))
 			return (ERROR);
 		ft_bzero(ex->argv, sizeof(char *) * 2);
@@ -98,9 +104,9 @@ static int		init_for_exec(t_exec *ex, t_minishell *ms)
 		ex->argv[1] = NULL;
 	}
 	else
-		while (ms->sequence[ex->save_seq_cursor]
-			&& ms->sequence[ex->save_seq_cursor] <= 2)
-			add_word_to_tab(ms->treated[ex->save_seq_cursor++], &ex->argv);
+		while (ms.sequence[ex->save_seq_cursor]
+			&& ms.sequence[ex->save_seq_cursor] <= 2)
+			add_word_to_tab(ms.treated[ex->save_seq_cursor++], &ex->argv);
 	get_pwd(&ex->exec_path);
 	last_exec_path = ex->exec_path;
 	ex->exec_path = add_char_to_word(ex->exec_path, '/');
@@ -124,25 +130,26 @@ static int		init_for_exec(t_exec *ex, t_minishell *ms)
 **					return 1 :	if everything was okay
 */
 
-static int		exec_from_env(t_exec *ex, t_minishell *ms)
+static int		exec_from_env(t_exec *ex)
 {
 	int		i;
 	char	*last_exec_path;
 
 	i = 0;
-	ex->env_path = get_env_var_by_name("PATH", envp);
+	ex->env_path = get_env_var_by_name("PATH");
 	ex->path_list = ft_split(ex->env_path, ':');
 	free(ex->env_path);
 	while (i < get_double_char_tab_len(ex->path_list))
 	{
-		if (is_cmd(ms->treated[ms->seq_cursor]) == -1)
+		if (is_cmd(ms.treated[ms.seq_cursor]) == -1)
 		{
 			ex->exec_path = add_char_to_word(ex->path_list[i], '/');
 			last_exec_path = ex->exec_path;
 			ex->exec_path = ft_strjoin(ex->exec_path, ex->exec);
 			free(last_exec_path);
-			if (exec_cmd(ex->exec_path, ex, ms) == SUCCESS)
+			if (exec_cmd(ex->exec_path, ex) == SUCCESS)
 			{
+				free(ex->exec_path);
 				free_double_char_tab(ex->path_list);
 				return (SUCCESS);
 			}
@@ -168,20 +175,20 @@ static int		exec_from_env(t_exec *ex, t_minishell *ms)
 **					return 1 :	if the binarie was found and executed
 */
 
-int				is_exec(t_minishell *ms)
+int				is_exec()
 {
 	t_exec	ex;
 
-	init_exec(&ex, ms);
-	if (!init_for_exec(&ex, ms))
+	init_exec(&ex);
+	if (!init_for_exec(&ex))
 		return (ERROR);
 	if (ft_secure_strlen(ex.exec) == 0)
 		return (ERROR);
-	if (exec_cmd(ex.exec, &ex, ms) == SUCCESS)
+	if (exec_cmd(ex.exec, &ex) == SUCCESS)
 		return (SUCCESS);
 	free(ex.exec_path);
 	ex.exec_path = NULL;
-	if (exec_from_env(&ex, ms) == SUCCESS)
+	if (exec_from_env(&ex) == SUCCESS)
 		return (SUCCESS);
 	return (ERROR);
 }

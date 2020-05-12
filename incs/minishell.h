@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/30 15:58:12 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/12 15:06:17 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ typedef struct		s_keymove_hl
 typedef struct		s_keymove_ms
 {
 	int				key;
-	void			(*funct)(t_minishell *ms, t_line *line);
+	void			(*funct)(t_line *line);
 }					t_keymove_ms;
 
 typedef struct		s_args
@@ -174,7 +174,7 @@ void				raw_term_mode(void);
 void				free_double_char_tab(char **tab_to_free);
 
 char				*add_char_to_word(char *word, char c);
-char				*get_env_var_by_name(char *name, char **envp);
+char				*get_env_var_by_name(char *name);
 
 int					ft_printf(const char *str, ...);
 int					ft_secure_strlen(const char *str);
@@ -182,9 +182,9 @@ int					ft_is_whitespace(char c);
 int					get_pwd(char **pwd);
 int     export_(int argc, char **argv, char **envp);
 
-int					line_edition(t_minishell *ms);
+int					line_edition();
 int					get_pwd_short(char **pwd);
-int					get_word(t_minishell *ms, char *entry, char **word);
+int				get_word(char *startword, char **entry_addr, char **word);
 int					get_sequence(char **treated, int **sequence);
 int		cd(int argc, char **argv, char **envp);
 int					print_work_dir(int argc, char **argv, char **envp);
@@ -194,9 +194,9 @@ int					error_path(const char *cmd, const char *path,
 						int errnum);
 int		error_identifier(char *msg, const char *identifier);
 
-int					error_command(char *cmd, t_minishell *ms);
+int					error_command(char *cmd);
 int					is_cmd(char *cmd);
-int					sanitize(t_minishell *ms, char *entry, char ***treated);
+int				sanitize(char *entry, char ***treated);
 int					get_double_char_tab_len(char **tabl);
 char		*add_char_to_word_front(char *word, char c);
 char		*add_char_to_word_ads(char *word, char c, int nb);
@@ -223,6 +223,7 @@ char			*add_char_to_word_free(char *word, char c);
 /* ______ termcaps ______ */
 
 
+char		*edit_line(void);
 void    init_terminal_data(void);
 void    interrogate_terminal(void);
 int	default_term_mode(void);
@@ -245,14 +246,14 @@ void	insert_char(t_line *line, int key);
 void	delete_char(t_line *line, int key);
 void	set_line(int save, t_line *line);
 int		match_key_curse(char *str);
-void	find_match(t_minishell *ms, int key, t_line *line);
+void	find_match(int key, t_line *line);
 void	match_move(int key, t_line *line);
 void    highlight(int key, t_line *line);
 void							match_highlight(int key, t_line *line);
 void	match_hist(int key, t_line *line);
-void	match_ctrl(t_minishell *ms, int key, t_line *line);
-void 	clear_screen_(t_minishell *ms, t_line *line);
-void	exit_pgm(t_minishell *ms, t_line *line);
+void	match_ctrl(int key, t_line *line);
+void 	clear_screen_(t_line *line);
+void	exit_pgm(t_line *line);
 t_dlist     *get_history(void);
 void        append_history(char *new_hist);
 void        old_history(t_line *line, t_dlist **hist);
@@ -268,14 +269,13 @@ void    high_left(t_line *line);
 void    high_right(t_line *line);
 void    reset_line(t_line *line);
 
-int		is_exec(t_minishell *ms);
+int		is_exec();
 int		add_word_to_tab(char *word, char ***treated);
 
-int reorder_sequence(t_minishell *ms);
-int		has_redir_output(t_minishell *ms, int redir_type, int cursor, int fd);
-int		has_redir_input(t_minishell *ms, int redir_type, int cursor, int fd);
-void		cmd_has_pipe(t_minishell *ms, int gen_fork,
-	int fork_, int nb_cmd_p);
-void		treat_command(t_minishell *ms);
+int 	reorder_sequence(void);
+int		has_redir_output(int redir_type, int cursor, int fd);
+int		has_redir_input(int redir_type, int cursor, int fd);
+void		cmd_has_pipe(int gen_fork, int fork_, int nb_cmd_p);
+int		treat_command();
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/25 18:45:26 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/02 12:25:04 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ static int		add_var_to_export(char *var_name)
 **
 **		(int)		argc : number of arguments of the command line.
 **		(char **)	argv : arguments array.
-**		(char **)	envp : environement variable array.
+**		(char **)	ms.envp : environement variable array.
 **
 **		returns: return 0
 */
