@@ -6,51 +6,16 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 13:02:22 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 18:06:54 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int		add_word_to_tab(char *word, char ***treated)
-{
-	char	**new_tab;
-	char	**save_treated;
-	int		treated_len = 0;
-	int		i = 0;
-
-	if (!word)
-		return (SUCCESS);
-	if (!treated || !*treated)
-	{
-		if (!(new_tab = (char **)malloc(sizeof(char *) * 2)))
-			return (ERROR);
-		ft_bzero(new_tab, sizeof(char *) * 2);
-		*new_tab = ft_strdup(word);
-		*treated = new_tab;
-		return (SUCCESS);
-	}
-	save_treated = *treated;
-	treated_len = get_double_char_tab_len(*treated);
-	i = 0;
-	if (!(new_tab = (char **)malloc(sizeof(char *) * (treated_len + 2))))
-		return (ERROR);
-	ft_bzero(new_tab, sizeof(char *) * (treated_len + 2));
-	while (i < treated_len)
-	{
-		new_tab[i] = ft_strdup(treated[0][i]);
-		i++;
-	}
-	new_tab[i] = ft_strdup(word);
-	*treated = new_tab;
-	free_double_char_tab(save_treated);
-	return (SUCCESS);
-}
-
 static int		special_char(char ***treated, char *entry, int up, char c)
 {
 	char	*word;
-	
+
 	word = NULL;
 	if (*(entry + up) == c)
 	{
@@ -64,13 +29,14 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 		}
 		if (ft_secure_strlen(word) > 2)
 		{
-			ft_printf("minishell: syntax error near unexpected token `%c%c'\n", c, c); // ||| = 1, >>/<</>/< = 2
+			ft_printf("minishell: syntax error near unexpected token `%c'\n",
+				c); //Need Output sur l'error
 			return (ERROR);
 		}
 		else
 			add_word_to_tab(word, treated);
 		while (ft_is_whitespace(*(entry + up)))
-		up++;
+			up++;
 	}
 	return (up);
 }
@@ -82,56 +48,68 @@ static int		check_special_chars(char ***treated, char *entry, int up)
 		|| !(up = special_char(treated, entry, up, '|'))
 		|| !(up = special_char(treated, entry, up, '>'))
 		|| !(up = special_char(treated, entry, up, ';')))
-			return (ERROR);
+		return (ERROR);
 	return (up);
+}
+
+static char		*sanitize_home(char *word)
+{
+	char *home;
+	char *tmp_word;
+
+	home = get_env_var_by_name("HOME");
+	if (ft_secure_strlen(home) != 0)
+		word = ft_strjoin(home, (word + 1));
+	else
+	{
+		tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER"));
+		word = ft_strjoin(tmp_word, (word + 1));
+		free(tmp_word);
+	}
+	free(home);
+	return (word);
+}
+
+static int		sanitize_loop(int *up, char *entry, char ***treated)
+{
+	char *word;
+
+	word = NULL;
+	while (ft_is_whitespace(*(entry + *up)))
+		(*up)++;
+	*up += get_word((entry + *up), &entry, &word);
+	if (word && word[0] == '~' && (!word[1] || word[1] == '/'))
+		word = sanitize_home(word);
+	add_word_to_tab(word, treated);
+	free(word);
+	while (ft_is_whitespace(*(entry + *up)))
+		(*up)++;
+	if (!(*up = check_special_chars(treated, entry, *up)))
+		return (ERROR);
+	while (ft_is_whitespace(*(entry + *up)))
+		(*up)++;
+	return (SUCCESS);
 }
 
 int				sanitize(char *entry, char ***treated)
 {
 	char	*word;
 	int		up;
-	
-	// printf("\nbef san entry = |%s|\n", entry);
+
 	word = NULL;
 	if (!entry || !*entry || entry[0] == '\n')
 	{
-		if (!(word = (char *)malloc(sizeof(char) * 1)))
+		if (!(word = (char *)ft_strnew(sizeof(char) * 1)))
 			return (ERROR);
-		word[0] = '\0';
 		add_word_to_tab(word, treated);
-		add_word_to_tab(ft_strdup("\n"), treated);
+		add_word_to_tab("\n", treated);
 		free(word);
 		return (SUCCESS);
 	}
 	up = 0;
 	while (*(entry + up))
-	{
-		word = NULL;
-		while (ft_is_whitespace(*(entry + up)))
-			up++;
-		up += get_word((entry + up), &entry, &word);
-		if (word && word[0] == '~' && ( !word[1] || word[1] == '/'))
-		{
-			char *home = get_env_var_by_name("HOME");
-			if (ft_secure_strlen(home) != 0)
-				word = ft_strjoin(home, (word + 1));
-			else
-			{
-				char *tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER"));
-				word = ft_strjoin(tmp_word, (word + 1));
-				free(tmp_word);
-			}
-			free(home);			
-		}
-		add_word_to_tab(word, treated);
-		free(word);
-		while (ft_is_whitespace(*(entry + up)))
-			up++;
-		if(!(up = check_special_chars(treated, entry, up)))
+		if (sanitize_loop(&up, entry, treated) == ERROR)
 			return (ERROR);
-		while (ft_is_whitespace(*(entry + up)))
-			up++;
-	}
 	free(entry);
 	add_word_to_tab("\n", treated);
 	return (SUCCESS);

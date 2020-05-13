@@ -6,26 +6,31 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 10:23:19 by rchallie          #+#    #+#             */
-/*   Updated: 2020/04/22 16:55:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 16:24:50 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../libft/libft.h"
-
-int		ft_secure_strlen(char *s);
+#include "../libft/libft.h"
+#include "../../incs/minishell.h"
 
 /*
 ** Function: echo_
 ** ------------
 ** 		Write arguments to the standard output.
-**		Display the ARGs on the standard output followed by a newline
+**		Display the ARGs on the standard output followed by a newline.
 **
-**		(t_minishell *)ms : minishell global variables
+**		(int)		argc : argument count.
+**		(char **)	argv : arguments.
+**		(char **)	envp : environment variables.
 **
 **		returns: return 1
 */
 
-int				echo_(int argc, char **argv, char **envp)
+int				echo_(
+	int argc,
+	char **argv,
+	char **envp
+)
 {
 	int		cursor;
 	int		has_opt;
