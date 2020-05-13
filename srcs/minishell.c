@@ -6,13 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 13:01:58 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 15:11:28 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
-static char		**get_cmd_arguments(void)
+static char	**get_cmd_arguments(void)
 {
 	char	**rtn;
 	int		cursor;
@@ -44,7 +44,8 @@ int			treat_command(void)
 			&& (ms.iscmdret >= 0 && ms.iscmdret <= 6))
 		{
 			argv = get_cmd_arguments();
-			ms.last_cmd_rtn = cmd[ms.iscmdret](get_double_char_tab_len(argv), argv, envp);
+			ms.last_cmd_rtn = cmd[ms.iscmdret](get_double_char_tab_len(argv),
+				argv, envp);
 			free_double_char_tab(argv);
 		}
 		else if (ms.sequence[ms.seq_cursor] == 0
@@ -85,13 +86,10 @@ int			treat_entry(void)
 
 	ms.treated_len = get_double_char_tab_len(ms.treated);
 	if ((seq_ret = get_sequence(ms.treated, &ms.sequence)) != SUCCESS)
-
-	
 /*
 ** REORDER DEVRA CHECKER LA VALIDITER DES FILES DE REDIR
 */
 	reorder_sequence();
-
 	while (ms.treated[ms.cursor])
 		ms.has_pipe += (ms.sequence[ms.cursor++] == 6) ? 1 : 0;
 	ms.has_pipe += (ms.has_pipe) ? 1 : 0;
@@ -126,7 +124,8 @@ int				main(int ac, char **av, char **env)
 		exit(ERROR_SIGINT);
 	while (ret == SUCCESS)
 	{
-		ms = (t_minishell){.iscmdret = -1, .isexecret = -1, .last_cmd_rtn = cmd_ret};
+		ms = (t_minishell){.iscmdret = -1, .isexecret = -1,
+			.last_cmd_rtn = cmd_ret};
 		if (!get_pwd_short(&pwd))
 			return (ERROR);
 		ft_printf("\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
