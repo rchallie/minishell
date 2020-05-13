@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/12 15:09:48 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 15:08:21 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int			child(int *fork_, int nb_cmd_p,
 	return (1);
 }
 
-
 void		cmd_has_pipe(int gen_fork,
 	int fork_, int nb_cmd_p)
 {
@@ -122,5 +121,4 @@ void		cmd_has_pipe(int gen_fork,
 	}
 	else
 		waitpid(gen_fork, &gen_status, 0);
-	return ;
 }
