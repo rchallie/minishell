@@ -94,8 +94,7 @@ static int		init_for_exec(t_exec *ex)
 	add_word_to_tab(ms.treated[ex->save_seq_cursor], &ex->argv);
 	if (ms.sequence[ex->save_seq_cursor] > 2)
 	{
-		if (ex->argv)
-			free(ex->argv);
+		ex->argv ? free(ex->argv) : 0;
 		if (!(ex->argv = (char **)malloc(sizeof(char *) * 2)))
 			return (ERROR);
 		ft_bzero(ex->argv, sizeof(char *) * 2);
@@ -129,16 +128,12 @@ static int		init_for_exec(t_exec *ex)
 **					return 1 :	if everything was okay
 */
 
-static int		exec_from_env(t_exec *ex)
+static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 {
-	int		i;
-	char	*last_exec_path;
-
-	i = 0;
 	ex->env_path = get_env_var_by_name("PATH");
 	ex->path_list = ft_split(ex->env_path, ':');
 	free(ex->env_path);
-	while (i < get_double_char_tab_len(ex->path_list))
+	while (++i < get_double_char_tab_len(ex->path_list))
 	{
 		if (is_cmd(ms.treated[ms.seq_cursor]) == -1)
 		{
@@ -156,7 +151,6 @@ static int		exec_from_env(t_exec *ex)
 		}
 		free(ex->exec_path);
 		ex->exec_path = NULL;
-		i++;
 	}
 	free(ex->argv);
 	free_double_char_tab(ex->path_list);
@@ -175,7 +169,7 @@ static int		exec_from_env(t_exec *ex)
 **					return 1 :	if the binarie was found and executed
 */
 
-int				is_exec()
+int				is_exec(void)
 {
 	t_exec	ex;
 
@@ -188,7 +182,7 @@ int				is_exec()
 		return (SUCCESS);
 	free(ex.exec_path);
 	ex.exec_path = NULL;
-	if (exec_from_env(&ex) == SUCCESS)
+	if (exec_from_env(&ex, -1, NULL) == SUCCESS)
 		return (SUCCESS);
 	return (ERROR);
 }

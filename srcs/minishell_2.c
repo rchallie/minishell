@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/02 10:58:57 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 15:14:32 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void			clear_term(void)
 	default_term_mode();
 }
 
-static void		print_middle_term(char *str, int str_len, int row)
+static void		print_middle_term(char *str1, char *str2, int str_len, int row)
 {
 	t_line		line;
 
@@ -39,7 +39,8 @@ static void		print_middle_term(char *str, int str_len, int row)
 	line.start.row = row;
 	line.start.col = line.winsz.col / 2 - str_len / 2;
 	set_curpos(&line);
-	ft_printf(str);
+	ft_printf(str1);
+	ft_printf(str2);
 	line.start.row = row + 1;
 	line.start.col = 0;
 	set_curpos(&line);
@@ -49,10 +50,13 @@ static void		print_middle_term(char *str, int str_len, int row)
 void			put_beg(void)
 {
 	clear_term();
-	print_middle_term("\e[91m┌┬┐\e[92m┬┌┐\e[93m┌┬┌\e[94m─┐┬\e[95m ┬┌\e[96m─┐\e[91m┬  \e[92m┬  ", 24,1);
-	print_middle_term("\e[91m││\e[92m│││\e[93m│││\e[94m└─┐\e[95m├─┤\e[96m├┤ \e[91m│  \e[92m│  ", 24,2);
-	print_middle_term("\e[91m┴ \e[92m┴\e[93m┴┘└┘\e[94m┴└─\e[95m┘┴ \e[96m┴└─\e[91m┘┴─\e[92m┘┴─┘", 24,3);
-	print_middle_term("", 0, 4);
+	print_middle_term("\e[91m┌┬┐\e[92m┬┌┐\e[93m┌┬┌\e[94m─┐┬",
+		"\e[95m ┬┌\e[96m─┐\e[91m┬  \e[92m┬  ", 24, 1);
+	print_middle_term("\e[91m││\e[92m│││\e[93m│││\e[94m└─┐",
+		"\e[95m├─┤\e[96m├┤ \e[91m│  \e[92m│  ", 24, 2);
+	print_middle_term("\e[91m┴ \e[92m┴\e[93m┴┘└┘\e[94m┴└─",
+		"\e[95m┘┴ \e[96m┴└─\e[91m┘┴─\e[92m┘┴─┘", 24, 3);
+	print_middle_term("", "", 0, 4);
 	default_term_mode();
 	return ;
 }
@@ -74,7 +78,7 @@ int				has_redir_output(int redir_type,
 	else if (ms.sequence[cursor] == 8 && (redir_type == 4 || redir_type == 3))
 	{
 		(fd >= 3) ? close(fd) : 0;
-		o = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC 
+		o = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
 			: O_CREAT | O_RDWR | O_APPEND;
 		if (!(fd = open(ms.treated[cursor], o, s)))
 			return (-1); //Error path à gérer
