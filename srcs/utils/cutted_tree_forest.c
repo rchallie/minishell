@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/05 15:39:40 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 20:37:44 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static void		tree_named_quote(
 	int *double_q
 )
 {
+	if ((*entry - 1) != '\\' && *simple_q == 0 && *double_q == 0)
+		return ;
 	if (*entry == '\'' && *simple_q == 0 && *double_q == 0)
 		*simple_q = 1;
 	else if (*entry == '\'' && *double_q == 1)
