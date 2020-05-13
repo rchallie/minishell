@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 14:50:51 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/13 15:39:59 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 **					return 1 :	if the binarie was found and executed
 */
 
-int				is_exec()
+int				is_exec(void)
 {
 	t_exec	ex;
 
