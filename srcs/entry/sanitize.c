@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/19 16:30:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/05 15:35:15 by excalibur        ###   ########.fr       */
+/*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
+/*   Updated: 2020/05/13 13:02:22 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int				sanitize(char *entry, char ***treated)
 	int		up;
 	
 	// printf("\nbef san entry = |%s|\n", entry);
+	word = NULL;
 	if (!entry || !*entry || entry[0] == '\n')
 	{
 		if (!(word = (char *)malloc(sizeof(char) * 1)))
@@ -118,19 +119,20 @@ int				sanitize(char *entry, char ***treated)
 			{
 				char *tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER"));
 				word = ft_strjoin(tmp_word, (word + 1));
+				free(tmp_word);
 			}
 			free(home);			
 		}
 		add_word_to_tab(word, treated);
+		free(word);
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
 		if(!(up = check_special_chars(treated, entry, up)))
 			return (ERROR);
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
-		free(word);
 	}
-	add_word_to_tab(ft_strdup("\n"), treated);
 	free(entry);
+	add_word_to_tab("\n", treated);
 	return (SUCCESS);
 }

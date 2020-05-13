@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/02 12:31:04 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 13:02:11 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ static int		init_for_exec(t_exec *ex)
 
 	ex->exec = ms.treated[ex->save_seq_cursor];
 	add_word_to_tab(ms.treated[ex->save_seq_cursor], &ex->argv);
-	ex->save_seq_cursor++;
 	if (ms.sequence[ex->save_seq_cursor] > 2)
 	{
 		if (ex->argv)
@@ -151,6 +150,7 @@ static int		exec_from_env(t_exec *ex)
 			{
 				free(ex->exec_path);
 				free_double_char_tab(ex->path_list);
+				free(ex->exec_path);
 				return (SUCCESS);
 			}
 		}
