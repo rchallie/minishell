@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:54:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/12 15:46:12 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/12 16:05:38 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int		error_command(char *cmd)
 	return (1);
 }
 
-// ERROR NBR TMP a virer.
 int		error_identifier(char *msg, const char *identifier)
 {
 	if (!ft_strcmp(identifier, "\n"))
