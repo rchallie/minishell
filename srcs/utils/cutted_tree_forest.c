@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/15 14:36:59 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 18:03:14 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ char **save_startword, int simple_q)
 	char		*test;
 	int			startword_advencement;
 
-	(simple_q == 1) ? ft_printf("squote > ") : ft_printf("dquote > ");
+	(simple_q == 1) ? ft_printf(STDOUT_FILENO, "squote > ")
+		: ft_printf(STDOUT_FILENO, "dquote > ");
 	test = edit_line();
 	startword_advencement = *startword - *save_startword;
 	test = ft_strjoin("\n", test);
