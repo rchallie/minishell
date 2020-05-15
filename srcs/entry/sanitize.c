@@ -6,11 +6,27 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 18:06:54 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 15:35:25 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
+
+/*
+**	Function: special_char
+**	--------------------
+**		Check for all for special char can be converted to
+**		token. Check error.
+**
+**		(char ***)	treated : a pointer to the double array
+**							  of tokens.
+**		(char *)	entry : the command line.
+**		(int)		int : up (cursor) value in entry.
+**		(char)		c : char to check.
+**
+**		returns:	return : the number of how many treatement cursor
+**							 evolved.
+*/
 
 static int		special_char(char ***treated, char *entry, int up, char c)
 {
@@ -29,8 +45,8 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 		}
 		if (ft_secure_strlen(word) > 2)
 		{
-			ft_printf("minishell: syntax error near unexpected token `%c'\n",
-				c); //Need Output sur l'error
+			ft_printf(STDERR_FILENO,
+				"minishell: syntax error near unexpected token `%c'\n", c);
 			return (ERROR);
 		}
 		else
@@ -40,6 +56,20 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 	}
 	return (up);
 }
+
+/*
+**	Function: check_special_chars
+**	--------------------
+**		Check for all possible special characters. 
+**
+**		(char *)	entry : the command line.
+**		(char ***)	treated : a pointer to the double array
+**							  of tokens.
+**		(int)		int : up (cursor) value in entry.
+**
+**		returns:	return : the number of how many treatement cursor
+**							 evolved.
+*/
 
 static int		check_special_chars(char ***treated, char *entry, int up)
 {
@@ -51,6 +81,16 @@ static int		check_special_chars(char ***treated, char *entry, int up)
 		return (ERROR);
 	return (up);
 }
+
+/*
+**	Function: sanitize_home
+**	--------------------
+**		Modify '~' to home directory in and create new word. 
+**
+**		(char *)	word : the word to treat.
+**
+**		returns:	return : a word with treated '~'.
+*/
 
 static char		*sanitize_home(char *word)
 {
@@ -69,6 +109,21 @@ static char		*sanitize_home(char *word)
 	free(home);
 	return (word);
 }
+
+/*
+**	Function: sanitize_loop
+**	--------------------
+**		Evolve in commande line and add token to treated
+**		double array of tokens. 
+**
+**		(int *)		int : a pointer to the up (cursor) value.
+**		(char *)	entry : the command line.
+**		(char ***)	treated : a pointer to the double array
+**							  of tokens.
+**
+**		returns:	return 0 : an error appear.
+**					return 1 : no problem.
+*/
 
 static int		sanitize_loop(int *up, char *entry, char ***treated)
 {
@@ -90,6 +145,20 @@ static int		sanitize_loop(int *up, char *entry, char ***treated)
 		(*up)++;
 	return (SUCCESS);
 }
+
+/*
+**	Function: sanitize
+**	--------------------
+**		Sanitize the command line and fill it into a treated
+**		double array of tokens. 
+**
+**		(char *)	entry : the command line.
+**		(char ***)	treated : a pointer to the double array
+**							  of tokens.
+**
+**		returns:	return 0 : an error appear.
+**					return 1 : no problem.
+*/
 
 int				sanitize(char *entry, char ***treated)
 {

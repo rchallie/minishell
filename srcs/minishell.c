@@ -129,8 +129,8 @@ int				main(int ac, char **av, char **env)
 			.last_cmd_rtn = cmd_ret};
 		if (!get_pwd_short(&pwd))
 			return (ERROR);
-		ft_printf("\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
-		ft_printf("\e[92ml\e[93ml\e[97m] \e[91m%s \e[97m: ", pwd);
+		ft_printf(STDOUT_FILENO, "\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
+		ft_printf(STDOUT_FILENO, "\e[92ml\e[93ml\e[97m] \e[91m%s \e[97m: ", pwd);
 		free(pwd);
 		if (!get_pwd(&pwd))
 			return (ERROR);

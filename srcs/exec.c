@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 15:39:52 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/14 14:54:56 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static int		init_for_exec(t_exec *ex)
 
 	ex->exec = ms.treated[ex->save_seq_cursor];
 	add_word_to_tab(ms.treated[ex->save_seq_cursor], &ex->argv);
+	ex->save_seq_cursor++;
 	if (ms.sequence[ex->save_seq_cursor] > 2)
 	{
 		ex->argv ? free(ex->argv) : 0;
@@ -104,7 +105,7 @@ static int		init_for_exec(t_exec *ex)
 	else
 		while (ms.sequence[ex->save_seq_cursor]
 			&& ms.sequence[ex->save_seq_cursor] <= 2)
-			add_word_to_tab(ms.treated[ex->save_seq_cursor++], &ex->argv);
+				add_word_to_tab(ms.treated[ex->save_seq_cursor++], &ex->argv);
 	get_pwd(&ex->exec_path);
 	last_exec_path = ex->exec_path;
 	ex->exec_path = add_char_to_word(ex->exec_path, '/');
@@ -133,9 +134,9 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 	ex->env_path = get_env_var_by_name("PATH");
 	ex->path_list = ft_split(ex->env_path, ':');
 	free(ex->env_path);
-	while (++i < get_double_char_tab_len(ex->path_list))
+	if (is_cmd(ms.treated[ms.seq_cursor]) == -1)
 	{
-		if (is_cmd(ms.treated[ms.seq_cursor]) == -1)
+		while (++i < get_double_char_tab_len(ex->path_list))
 		{
 			ex->exec_path = add_char_to_word(ex->path_list[i], '/');
 			last_exec_path = ex->exec_path;
@@ -143,16 +144,14 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 			free(last_exec_path);
 			if (exec_cmd(ex->exec_path, ex) == SUCCESS)
 			{
-				free(ex->exec_path);
 				free_double_char_tab(ex->path_list);
 				free(ex->exec_path);
 				return (SUCCESS);
 			}
 		}
-		free(ex->exec_path);
-		ex->exec_path = NULL;
 	}
-	free(ex->argv);
+	free(ex->exec_path);
+	ex->exec_path = NULL;
 	free_double_char_tab(ex->path_list);
 	return (ERROR);
 }
@@ -184,5 +183,6 @@ int				is_exec(void)
 	ex.exec_path = NULL;
 	if (exec_from_env(&ex, -1, NULL) == SUCCESS)
 		return (SUCCESS);
+	free(ex.argv);
 	return (ERROR);
 }

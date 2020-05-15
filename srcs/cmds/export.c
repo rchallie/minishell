@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/13 16:22:34 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 15:45:31 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ static int		print_export_vars(void)
 	while (sorted && sorted[i])
 	{
 		if (ft_strchr(sorted[i], '=') != NULL)
-			ft_printf("declare -x %.*s\"%s\"\n", (ft_strchr(sorted[i], '=')
-				- sorted[i]) + 1, sorted[i], ft_strchr(sorted[i], '=') + 1);
+			ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n",
+				(ft_strchr(sorted[i], '=') - sorted[i]) + 1, sorted[i],
+				ft_strchr(sorted[i], '=') + 1);
 		else
-			ft_printf("declare -x %.*s\n", (ft_strchr(sorted[i], '=')
-				- sorted[i]) + 1, sorted[i]);
+			ft_printf(STDOUT_FILENO, "declare -x %.*s\n",
+				(ft_strchr(sorted[i], '=') - sorted[i]) + 1, sorted[i]);
 		i++;
 	}
 	free_double_char_tab(sorted);
@@ -69,7 +70,7 @@ static int		export(void)
 		if (double_char_tab_contain(sorted[i], export_vars) == ERROR
 			&& ft_strncmp(sorted[i], "_", (ft_strchr(sorted[i], '=')
 				- sorted[i])))
-			ft_printf("declare -x %.*s\"%s\"\n", (ft_strchr(sorted[i], '=')
+			ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n", (ft_strchr(sorted[i], '=')
 				- sorted[i]) + 1, sorted[i], ft_strchr(sorted[i], '=') + 1);
 		i++;
 	}
@@ -183,7 +184,7 @@ int				export_(
 			end_name = ft_strchr(argv[cursor], '=');
 			if (end_name == argv[cursor])
 			{
-				ft_printf("minishell: export: « %s » : %s\n",
+				ft_printf(STDERR_FILENO, "minishell: export: « %s » : %s\n",
 					argv[cursor], "invalid identifier");
 				continue;
 			}

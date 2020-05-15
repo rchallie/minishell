@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 10:18:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 16:31:14 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/14 14:54:44 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static void	reorder_args(
 int			reorder_sequence(void)
 {
 	int i;
-
+	
 	i = 0;
 	while (ms.treated[i])
 	{

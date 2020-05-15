@@ -80,7 +80,7 @@ _YELLOW=$'\x1b[33m
 all:	$(NAME)
 
 $(NAME): $(OBJS)
-	$(MAKE) -C $(SRCS_DIR)ft_printf
+	$(MAKE) -C $(SRCS_DIR)ft_printf 
 	clang $(FLAGS) $(INCLUDES) $(SRCS_DIR)ft_printf/libftprintf.a ./srcs/libft/*.o ./srcs/ft_printf/*.o $(OBJS) -o $(NAME) 
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)/minishell.h
