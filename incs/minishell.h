@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/15 17:43:45 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 18:04:28 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ int					error_unidentified(char *msg, const char *unidentified);
 
 void				init_terminal_data(void);
 void				interrogate_terminal(void);
-int					default_term_mode(void);
+void				default_term_mode(void);
 void				raw_term_mode(void);
 int					line_edition();
 void				clear_term(void);
