@@ -16,6 +16,7 @@ SRC			=	minishell.c 					\
 				utils/utils.c					\
 				utils/cutted_tree_forest.c		\
 				utils/utils_double_tabs.c		\
+				utils/utils_double_tabs_2.c		\
 				cmds/check.c					\
 				cmds/cd.c						\
 				cmds/pwd.c						\
@@ -26,7 +27,6 @@ SRC			=	minishell.c 					\
 				cmds/export.c					\
 				entry/sequence.c				\
 				entry/sanitize.c 				\
-				entry/sanitize_utils.c 			\
 				entry/reorder.c					\
 				termcap/termcap.c				\
 				termcap/init_and_interr_term.c 	\
