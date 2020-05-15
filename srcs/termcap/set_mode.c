@@ -6,13 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 18:04:47 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/30 11:48:51 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 17:44:15 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int		default_term_mode(void)
+void	default_term_mode(void)
 {
 	struct termios	tattr;
 
@@ -20,7 +20,6 @@ int		default_term_mode(void)
 	tattr.c_lflag |= (ECHO | ICANON | ISIG);
 	tattr.c_oflag |= (OPOST);
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &tattr);
-	return (SUCCESS);
 }
 
 void	raw_term_mode(void)
@@ -35,4 +34,5 @@ void	raw_term_mode(void)
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &tattr);
 
 	tgetent(NULL, getenv("TERM"));
+	atexit(&default_term_mode);
 }
