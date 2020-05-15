@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/15 15:45:02 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 14:36:59 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,63 +40,64 @@ static int		tree_named_env(char **entry, char **word)
 	return (rtn);
 }
 
-static int		tree_named_backslash(
-	char **entry,
-	char **word,
-	int simple_q,
-	int double_q
-)
+static int		no_quotes(char **entry, char **word, int *simple_q,
+	int *double_q)
 {
-	int rtn;
-
-	rtn = 0;
-	if (**entry == '\\' && simple_q == 0 && double_q == 0 && *(*entry + 1))
-	{
-		(*entry)++;
-		*word = add_char_to_word_free(*word, **entry);
-		rtn++;
-	}
-	else if (double_q == 1 && **entry == '\\' && *(*entry + 1) == '\"')
-	{
-		(*entry)++;
-		rtn++;
-		*word = add_char_to_word_free(*word, **entry);
-		(*entry)++;
-		rtn++;
-	}
-	return (rtn);
-}
-
-static void		tree_named_quote(
-	char *entry,
-	char **word,
-	int *simple_q,
-	int *double_q
-)
-{
-	if (*entry == '\'' && *simple_q == 0 && *double_q == 0)
+	if (**entry == '\'')
 		*simple_q = 1;
-	else if (*entry == '\'' && *double_q == 1)
-		*word = add_char_to_word_free(*word, *entry);
-	else if (*entry == '\'')
-		*simple_q = 0;
-	if (*entry == '\"' && *double_q == 0 && *simple_q == 0)
+	else if (**entry == '\"')
 		*double_q = 1;
-	else if (*entry == '\"' && *simple_q == 1)
-		*word = add_char_to_word_free(*word, *entry);
-	else if (*entry == '\"')
-		*double_q = 0;
+	else if (**entry == '\\')
+	{
+		(*entry)++;
+		*word = add_char_to_word_free(*word, **entry);
+		return (1);
+	}
+	else
+		*word = add_char_to_word_free(*word, **entry);
+	return (0);
 }
 
-static int		tree_named_last(char **entry, char **word)
+int				if_quotes(char **entry, char **word, int *simple_q,
+	int *double_q)
 {
-	if (**entry != '\'' && **entry != '\"')
-		*word = add_char_to_word_free(*word, **entry);
-	if (!word)
-		return (ERROR);
-	if (*entry)
-		(*entry)++;
-	return (SUCCESS);
+	if (*simple_q == 0 && *double_q == 0)
+		return (no_quotes(entry, word, simple_q, double_q));
+	else if (*simple_q == 1)
+		if (**entry == '\'')
+			*simple_q = 0;
+		else
+			*word = add_char_to_word_free(*word, **entry);
+	else if (*double_q == 1)
+	{
+		if (**entry == '\\' && *(*entry + 1) == '\"')
+		{
+			(*entry)++;
+			*word = add_char_to_word_free(*word, **entry);
+			return (1);
+		}
+		else if (**entry == '\"')
+			*double_q = 0;
+		else
+			*word = add_char_to_word_free(*word, **entry);
+	}
+	return (0);
+}
+
+static void		quote_error(char **startword, char **entry_addr,
+char **save_startword, int simple_q)
+{
+	char		*test;
+	int			startword_advencement;
+
+	(simple_q == 1) ? ft_printf("squote > ") : ft_printf("dquote > ");
+	test = edit_line();
+	startword_advencement = *startword - *save_startword;
+	test = ft_strjoin("\n", test);
+	*startword = ft_strjoin(*save_startword, test);
+	*entry_addr = ft_strjoin(*entry_addr, test);
+	*save_startword = *startword;
+	*startword += startword_advencement;
 }
 
 int				get_word(char *startword, char **entry_addr, char **word)
@@ -114,32 +115,15 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	{
 		char_count += tree_named_env(&startword, word);
 		if ((*startword == ' ' || *startword == '>' || *startword == '<'
-			|| *startword == '|' || *startword == ';') && !(simple_q || double_q))
+			|| *startword == '|' || *startword == ';')
+			&& !(simple_q || double_q))
 			break ;
-		char_count += tree_named_backslash(&startword, word, simple_q, double_q);
-		tree_named_quote(startword, word, &simple_q, &double_q);
-		if (!(tree_named_last(&startword, word)))
-			return (ERROR);
+		char_count += if_quotes(&startword, word, &simple_q, &double_q);
+		startword++;
 		char_count++;
-		if (*(startword) == '\0' && (simple_q || double_q))
-		{
-			/*** WIP ***/
-			// free à faire
-			if (simple_q)
-				ft_printf(STDOUT_FILENO, "squote > ");
-			else
-				ft_printf(STDOUT_FILENO, "dquote > ");
-			char *test = edit_line();
-			int startword_advencement = startword - save_startword;
-			test = ft_strjoin("\n", test);
-			startword = ft_strjoin(save_startword, test);
-			*entry_addr = ft_strjoin(*entry_addr, test);
-			save_startword = startword;
-			startword += startword_advencement;
-			continue;
-		}
+		if (*startword == '\0' && (simple_q || double_q))
+			quote_error(&startword, entry_addr, &save_startword, simple_q);
 	}
-
 	if (word && *word && is_special_token(*word) == SUCCESS)
 		*word = add_char_to_word_free(*word, 3);
 	return (char_count);
