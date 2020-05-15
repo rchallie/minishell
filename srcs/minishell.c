@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 19:15:22 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 15:50:00 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ int				main(int ac, char **av, char **env)
 			.last_cmd_rtn = cmd_ret};
 		if (!get_pwd_short(&pwd))
 			return (ERROR);
-		ft_printf("\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
-		ft_printf("\e[92ml\e[93ml\e[97m] \e[91m%s \e[97m: ", pwd);
+		ft_printf(STDOUT_FILENO, "\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
+		ft_printf(STDOUT_FILENO, "\e[92ml\e[93ml\e[97m] \e[91m%s \e[97m: ", pwd);
 		free(pwd);
 		if (!get_pwd(&pwd))
 			return (ERROR);

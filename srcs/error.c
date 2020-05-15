@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:54:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 14:43:54 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:33:15 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		error_command(char *cmd)
 {
-	ft_printf("minishell: %s: command not found\n", cmd);
+	ft_printf(STDERR_FILENO, "minishell: %s: command not found\n", cmd);
 	ms.last_cmd_rtn = 127;
 	return (1);
 }
@@ -22,22 +22,23 @@ int		error_command(char *cmd)
 int		error_identifier(char *msg, const char *identifier)
 {
 	if (!ft_strcmp(identifier, "\n"))
-		ft_printf("minishell: %s `%s'\n", msg, "newline");
+		ft_printf(STDERR_FILENO, "minishell: %s `%s'\n", msg, "newline");
 	else
-		ft_printf("minishell: %s `%s'\n", msg, identifier);
+		ft_printf(STDERR_FILENO, "minishell: %s `%s'\n", msg, identifier);
 	ms.last_cmd_rtn = 2;
 	return (ERROR);
 }
 
 int		error_unidentified(char *msg, const char *unidentified)
 {
-	ft_printf("minishell: %s: %s not set\n", msg, unidentified);
+	ft_printf(STDERR_FILENO, "minishell: %s: %s not set\n", msg, unidentified);
 	return (1);
 }
 
 int		error_path(const char *cmd, const char *path, int errnum)
 {
-	ft_printf("minishell: %s: %s: %s\n", cmd, path, strerror(errnum));
+	ft_printf(STDERR_FILENO, "minishell: %s: %s: %s\n",
+		cmd, path, strerror(errnum));
 	ms.last_cmd_rtn = errnum;
 	return (1);
 }

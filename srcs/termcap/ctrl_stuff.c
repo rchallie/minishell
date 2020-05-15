@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:55:44 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/02 11:20:45 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/14 15:38:10 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	clear_screen_(t_line *line)
 {
-	(void)ms;
 	tputs(tgoto(tgetstr("SF", NULL), 0, line->start.row - 1), 1, &tc_putchar);
 	line->start.row = 1;
 	set_curpos(line);

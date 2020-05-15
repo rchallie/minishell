@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/13 20:37:44 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 15:45:02 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ static void		tree_named_quote(
 	int *double_q
 )
 {
-	if ((*entry - 1) != '\\' && *simple_q == 0 && *double_q == 0)
-		return ;
 	if (*entry == '\'' && *simple_q == 0 && *double_q == 0)
 		*simple_q = 1;
 	else if (*entry == '\'' && *double_q == 1)
@@ -128,9 +126,9 @@ int				get_word(char *startword, char **entry_addr, char **word)
 			/*** WIP ***/
 			// free à faire
 			if (simple_q)
-				ft_printf("squote > ");
+				ft_printf(STDOUT_FILENO, "squote > ");
 			else
-				ft_printf("dquote > ");
+				ft_printf(STDOUT_FILENO, "dquote > ");
 			char *test = edit_line();
 			int startword_advencement = startword - save_startword;
 			test = ft_strjoin("\n", test);
