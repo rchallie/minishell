@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_and_interr_term.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 19:37:14 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/20 19:37:15 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:35:59 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ void	init_terminal_data(void)
 	if (success < 0)
 		ft_putstr("Could not access the termcap data base.\n");
 	if (success == 0)
-		ft_printf("Terminal type `%s' is not defined.\n", termtype);
+		ft_printf(STDERR_FILENO, "Terminal type `%s' is not defined.\n", termtype);
 }

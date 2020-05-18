@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/12 16:35:36 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 16:15:30 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,19 @@
 **	--------------------
 **		Change working directory.
 **
+**		(char *)	path : final path to directory.
+**		(int)		curosr : arguments cursor.
+**		(char **)	argv : arguments.
+**
 **		returns:	return 0 : no problem.
 **					return 1 : an error appear.
 */
 
-static int	change_dir(char *path, int cursor, char **argv)
+static int	change_dir(
+	char *path,
+	int cursor,
+	char **argv
+)
 {
 	DIR			*dir;
 	int			chdir_return;
@@ -51,11 +59,19 @@ static int	change_dir(char *path, int cursor, char **argv)
 **	in command line, call for change directory, and
 **	update pwd environnement variable.
 **
+**		(int)		argc : argument count.
+**		(char **)	argv : arguments.
+**		(char **)	envp : environment variables.
+**
 **		returns: 	return 0 : no problem.
 **					return 1 : an error appear.
 */
 
-int			cd(int argc, char **argv, char **envp)
+int			cd(
+	int argc,
+	char **argv,
+	char **envp
+)
 {
 	char		*path;
 	int			cursor;

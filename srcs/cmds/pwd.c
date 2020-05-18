@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/02 12:03:23 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 15:44:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int		get_pwd(char **pwd)
 	ft_bzero(new_pwd, 1025);
 	getcwd(new_pwd, sizeof(char) * 1024);
 	*pwd = new_pwd;
-	// *pwd = add_char_to_word(new_pwd, '\n');
 	return (SUCCESS);
 }
 
@@ -54,7 +53,6 @@ int		get_pwd(char **pwd)
 int		get_pwd_short(char **pwd)
 {
 	int		pwd_len;
-	int		new_pwd_len;
 	char	*pwd_tmp;
 	char	*pwd_s;
 	char	*home;
@@ -75,17 +73,7 @@ int		get_pwd_short(char **pwd)
 	pwd_len = ft_secure_strlen(pwd_tmp);
 	while (pwd_tmp[pwd_len] != '/' && pwd_len != 0)
 		pwd_len--;
-	new_pwd_len = ft_secure_strlen(pwd_tmp + pwd_len);
-	if (!(pwd_s = (char *)malloc(sizeof(char) * (new_pwd_len + 1))))
-		return (ERROR);
-	ft_bzero(pwd_s, sizeof(char) * (new_pwd_len + 1));
-	new_pwd_len = 0;
-	while (pwd_tmp[pwd_len/* + 1*/])
-	{
-		pwd_s[new_pwd_len] = pwd_tmp[pwd_len];
-		new_pwd_len++;
-		pwd_len++;
-	}
+	pwd_s = ft_strdup(&pwd_tmp[pwd_len]);
 	free(pwd_tmp);
 	*pwd = pwd_s;
 	return (SUCCESS);
@@ -96,7 +84,9 @@ int		get_pwd_short(char **pwd)
 ** -------------------------
 **		Print actual working directory
 **
-**		(t_minishell *)ms : minishell global variables
+**		(int)		argc : argument count.
+**		(char **)	argv : arguments.
+**		(char **)	envp : environment variables.
 **
 **		returns:	return 0 :	if an error has catch during the
 **								recuperation of the pwd

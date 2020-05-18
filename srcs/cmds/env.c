@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/02 12:24:37 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 15:45:20 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ char	*get_env_var_by_name(char *name)
 		i++;
 	}
 	(void)envp;
-	free(rename);
+	if (rename)
+		free(rename);
 	return (ft_strdup(""));
 }
 
@@ -92,19 +93,6 @@ int				add_var_to_env(char *var)
 	return (SUCCESS);
 }
 
-// REMOVE IT
-int		check_word(char *word)
-{
-	int		i;
-
-	i = 0;
-	while (word[i] != '=')
-		i++;
-	if (i == 0 || word[i] != '=')
-		return (ERROR);
-	return (SUCCESS);
-}
-
 int		env(int argc, char **argv, char **envp)
 {
 	char	*env_list;
@@ -112,6 +100,7 @@ int		env(int argc, char **argv, char **envp)
 	int		i;
 	
 	(void)argc;
+	(void)argv;
 	i = 0;
 	cursor = 0;
 	env_list = NULL;
@@ -121,14 +110,6 @@ int		env(int argc, char **argv, char **envp)
 		env_list = add_char_to_word(env_list, '\n');
 		i++;
 	}
-	ft_printf("%s", env_list);
-	while (argv[++cursor])
-		/* Voir pour remplace un truc comme 
-	end_name = ft_strchr(argv[i], '=');
-		if (end_name == NULL)
-			end_name = (argv[i] + ft_secure_strlen(argv[i]));
-			*/
-		if (check_word(argv[cursor]) >= 1)
-			ft_printf("%s\n", argv[cursor]);
+	ft_printf(STDOUT_FILENO, "%s", env_list);
 	return (0);
 }

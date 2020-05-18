@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 14:00:20 by thervieu          #+#    #+#             */
-/*   Updated: 2019/10/29 09:49:40 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:29:09 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_flags	init_flags(t_flags flags)
 
 size_t	write_c(char c)
 {
-	write(1, &c, 1);
+	write(g_fd, &c, 1);
 	return (1);
 }
 
@@ -57,10 +57,11 @@ size_t	parse_string(const char *str, va_list va)
 	return (count);
 }
 
-int		ft_printf(const char *str, ...)
+int		ft_printf(int fd, const char *str, ...)
 {
 	va_list	va;
 
+	g_fd = fd;
 	va_start(va, str);
 	if (!str)
 		return (0);

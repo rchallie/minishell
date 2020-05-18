@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/18 15:09:16 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/18 16:11:56 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 # include "../srcs/libft/libft.h"
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h> //PLOP
-# include <unistd.h>
 # include <term.h>
 # include <curses.h>
 # include <termios.h>
@@ -38,7 +36,6 @@
 # include <sys/stat.h>
 # include <errno.h>
 # include <signal.h>
-# include "../srcs/libft/libft.h"
 
 # define HISTORY_PATH ".save_history"
 # define MAX_CMD_LEN 4096
@@ -132,18 +129,18 @@ typedef struct		s_keymove
 	void			(*funct)(t_line *line);
 }					t_keymove;
 
-typedef struct	s_highlight
+typedef struct		s_highlight
 {
-	char	*beg;
-	char	*hlight;
-	char	*end;
-}				t_highlight;
+	char			*beg;
+	char			*hlight;
+	char			*end;
+}					t_highlight;
 
-typedef struct	s_keyhist
+typedef struct		s_keyhist
 {
-	int		key;
-	void	(*funct)(t_line *line, t_dlist **hist);
-}				t_keyhist;
+	int				key;
+	void			(*funct)(t_line *line, t_dlist **hist);
+}					t_keyhist;
 
 typedef struct		s_keymove_hl
 {
@@ -163,119 +160,148 @@ typedef struct		s_args
 	void			*content;
 }					t_args;
 
-char			**envp;
-char			**export_vars;
-t_minishell		ms;
+char				**envp;
+char				**export_vars;
+t_minishell			ms;
 
+/*
+** _____ Double char tab _____
+*/
+
+void				free_double_char_tab(char **tab_to_free);
+int					get_double_char_tab_len(char **tabl);
+int					dup_double_char_tab(char **src, char ***new_tab);
+int					double_char_tab_contain(char *name, char **from);
+char				**double_tab_bubble_sort(char ***sort_me);
+int					double_char_tab_remove(char **to_remove, char ***array);
+int					add_word_to_tab(char *word, char ***treated);
+
+/*
+** _____ Char array _____
+*/
+
+char				*add_char_to_word(char *word, char c);
+char				*add_char_to_word_free(char *word, char c);
+
+/*
+** _____ Environment _____
+*/
+
+char				*get_env_var_by_name(char *name);
+int					add_var_to_env(char *var);
+
+/*
+** _____ Utils _____
+*/
+
+int					ft_printf(int fd, const char *str, ...);
+int					ft_secure_strlen(const char *str);
+int					ft_is_whitespace(char c);
+int					get_word(char *startword, char **entry_addr, char **word);
+
+/*
+** _____ Pwd _____
+*/
+
+int					get_pwd(char **pwd);
+int					get_pwd_short(char **pwd);
+
+/*
+** _____ Commands _____
+*/
+
+int					is_exec();
+int					export_(int argc, char **argv, char **envp);
+int					cd(int argc, char **argv, char **envp);
+int					print_work_dir(int argc, char **argv, char **envp);
+int					env(int argc, char **argv, char **envp);
+int					echo_(int argc, char **argv, char **envp);
+int					exit_minishell(int argc, char **argv, char **envp);
+int					unset(int argc, char **argv, char **envp);
+
+/*
+** _____ Command line treatment _____
+*/
+
+int					get_sequence(char **treated, int **sequence);
+int					sanitize(char *entry, char ***treated);
+int					reorder_sequence(void);
+int					has_redir_output(int redir_type, int cursor, int fd);
+int					has_redir_input(int redir_type, int cursor, int fd);
+void				cmd_has_pipe(int gen_fork, int fork_, int nb_cmd_p);
+int					treat_command();
+
+/*
+** _____ Errors _____
+*/
+
+int					error_path(const char *cmd, const char *path,
+						int errnum);
+int					error_identifier(char *msg, const char *identifier);
+int					error_command(char *cmd);
+
+/*
+** _____ Checkers _____
+*/
+
+int					is_cmd(char *cmd);
+int					is_char_spec(char *s);
+int					is_special_token(char *to_test);
+int					remove_var_env(char *var_name);
+int					error_unidentified(char *msg, const char *unidentified);
+
+/*
+** _____ Termcaps _____
+*/
 
 void				init_terminal_data(void);
 void				interrogate_terminal(void);
 void				default_term_mode(void);
 void				raw_term_mode(void);
-void				free_double_char_tab(char **tab_to_free);
-
-char				*add_char_to_word(char *word, char c);
-char				*get_env_var_by_name(char *name);
-
-int					ft_printf(const char *str, ...);
-int					ft_secure_strlen(const char *str);
-int					ft_is_whitespace(char c);
-int					get_pwd(char **pwd);
-int     export_(int argc, char **argv, char **envp);
-
 int					line_edition();
-int					get_pwd_short(char **pwd);
-int				get_word(char *startword, char **entry_addr, char **word);
-int					get_sequence(char **treated, int **sequence);
-int		cd(int argc, char **argv, char **envp);
-int					print_work_dir(int argc, char **argv, char **envp);
-int		env(int argc, char **argv, char **envp);
-int					echo_(int argc, char **argv, char **envp);
-int					error_path(const char *cmd, const char *path,
-						int errnum);
-int		error_identifier(char *msg, const char *identifier);
-
-int					error_command(char *cmd);
-int					is_cmd(char *cmd);
-int				sanitize(char *entry, char ***treated);
-int					get_double_char_tab_len(char **tabl);
-char		*add_char_to_word_front(char *word, char c);
-char		*add_char_to_word_ads(char *word, char c, int nb);
-
-int					is_char_spec(char *s);
-
-int		exit_minishell(int argc, char **argv, char **envp);
 void				clear_term(void);
 void				put_beg(void);
-int					is_special_token(char *to_test);
-int		dup_double_char_tab(char **src, char ***new_tab);
-int		double_char_tab_contain(char *name, char **from);
-char			**double_tab_bubble_sort(char ***sort_me);
-int		add_var_to_env(char *var);
-int 	unset(int argc, char **argv, char **envp);
-int		double_char_tab_remove(char **to_remove, char ***array);
-int remove_var_env(char *var_name);
-int		error_unidentified(char *msg, const char *unidentified);
-char			*add_char_to_word_free(char *word, char c);
-
-
-
-
-/* ______ termcaps ______ */
-
-
-char		*edit_line(void);
-void    init_terminal_data(void);
-void    interrogate_terminal(void);
-void	raw_term_mode(void);
-int		tc_putchar(int c);
-void	cursor_to_left(t_line *line);
-void	cursor_to_right(t_line *line);
-int		is_spec(char c);
-int		is_not_spec(char c);
-void	left_word(t_line *line);
-void	right_word(t_line *line);
-void	cursor_to_home(t_line *line);
-void	cursor_to_end(t_line *line);
-void	up_row(t_line *line);
-void	down_row(t_line *line);
-void	get_cursor_start_pos(t_line *line);
-void	set_curpos(t_line *line);
-int		ft_getwinsz(t_winsz *winsz);
-void	insert_char(t_line *line, int key);
-void	delete_char(t_line *line, int key);
-void	set_line(int save, t_line *line);
-int		match_key_curse(char *str);
-void	find_match(int key, t_line *line);
-void	match_move(int key, t_line *line);
-void    highlight(int key, t_line *line);
-void							match_highlight(int key, t_line *line);
-void	match_hist(int key, t_line *line);
-void	match_ctrl(int key, t_line *line);
-void 	clear_screen_(t_line *line);
-void	exit_pgm(t_line *line);
-t_dlist     *get_history(void);
-void        append_history(char *new_hist);
-void        old_history(t_line *line, t_dlist **hist);
-void        new_history(t_line *line, t_dlist **hist);
-int     ft_dlst_size(t_dlist *hist);
-void    ft_dlst_del(t_dlist **list);
-void   ft_dlst_remove_link(t_dlist **head);
-void    ft_dlst_add(t_dlist **head, t_dlist *new);
-t_dlist     *ft_dlst_new(void const *content, int content_size);
-void    launch_(t_line line);
-void    welcome_to_minishell(char *launching, t_line line, char *str, int nb);
-void    high_left(t_line *line);
-void    high_right(t_line *line);
-void    reset_line(t_line *line);
-
-int		is_exec();
-int		add_word_to_tab(char *word, char ***treated);
-
-int 	reorder_sequence(void);
-int		has_redir_output(int redir_type, int cursor, int fd);
-int		has_redir_input(int redir_type, int cursor, int fd);
-void		cmd_has_pipe(int gen_fork, int fork_, int nb_cmd_p);
-int		treat_command();
+int					tc_putchar(int c);
+void				get_cursor_start_pos(t_line *line);
+int					ft_getwinsz(t_winsz *winsz);
+void				set_curpos(t_line *line);
+char				*edit_line(void);
+void				cursor_to_left(t_line *line);
+void				cursor_to_right(t_line *line);
+int					is_spec(char c);
+int					is_not_spec(char c);
+void				left_word(t_line *line);
+void				right_word(t_line *line);
+void				cursor_to_home(t_line *line);
+void				cursor_to_end(t_line *line);
+void				up_row(t_line *line);
+void				down_row(t_line *line);
+void				insert_char(t_line *line, int key);
+void				delete_char(t_line *line, int key);
+void				set_line(int save, t_line *line);
+int					match_key_curse(char *str);
+void				find_match(int key, t_line *line);
+void				match_move(int key, t_line *line);
+void				highlight(int key, t_line *line);
+void				match_highlight(int key, t_line *line);
+void				match_hist(int key, t_line *line);
+void				match_ctrl(int key, t_line *line);
+void				clear_screen_(t_line *line);
+void				exit_pgm(t_line *line);
+t_dlist				*get_history(void);
+void				append_history(char *new_hist);
+void				old_history(t_line *line, t_dlist **hist);
+void				new_history(t_line *line, t_dlist **hist);
+int					ft_dlst_size(t_dlist *hist);
+void				ft_dlst_del(t_dlist **list);
+void				ft_dlst_remove_link(t_dlist **head);
+void				ft_dlst_add(t_dlist **head, t_dlist *new);
+t_dlist				*ft_dlst_new(void const *content, int content_size);
+void				launch_(t_line line);
+void				welcome_to_minishell(char *launching, t_line line,
+					char *str, int nb);
+void				high_left(t_line *line);
+void				high_right(t_line *line);
+void				reset_line(t_line *line);
 
 #endif

@@ -14,7 +14,7 @@
 
 void	clear_screen_(t_line *line)
 {
-	(void)ms;
+
 	if (line->start.row > 1)
 		tputs(tgoto(tgetstr("SF", NULL), 0, line->start.row - 1), 1, &tc_putchar);
 	line->start.row = 1;
