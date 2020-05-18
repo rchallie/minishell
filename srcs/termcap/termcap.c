@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:10:30 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/02 11:20:11 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 15:43:53 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int			input_loop(t_line *line)
 		if (key != KEY_SLEFT && key != KEY_SRIGHT)
 			line->cursor_highl = -1;
 		ft_getwinsz(&line->winsz);
-		find_match(key, line);
+		find_match(&key, line);
 		if (key > 31 && key < 127)
 		{
 			insert_char(line, key);
