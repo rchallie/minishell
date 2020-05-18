@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 16:03:58 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/18 15:30:22 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,12 @@ static void		sigint_catcher()
 	ms.last_cmd_rtn = 130;
 }
 
+static void		sigquit_catcher()
+{
+	write(1, "Quit (core dumped)\n", 19);
+	ms.last_cmd_rtn = 131;
+}
+
 // ctrl-\" a gérer?
 int				main(int ac, char **av, char **env)
 {
@@ -123,6 +129,8 @@ int				main(int ac, char **av, char **env)
 	// envp = env;
 	if (signal(SIGINT, sigint_catcher) == SIG_ERR)
 		exit(ERROR_SIGINT);
+	if (signal(SIGQUIT, sigquit_catcher) == SIG_ERR)
+		exit(ERROR_SIGQUIT);
 	while (ret == SUCCESS)
 	{
 		ms = (t_minishell){.iscmdret = -1, .isexecret = -1,
