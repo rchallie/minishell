@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 18:04:47 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/15 17:44:15 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/18 18:16:52 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	raw_term_mode(void)
 	tattr.c_cc[VMIN] = 1;
 	tattr.c_cc[VTIME] = 0;
 	tcsetattr(STDIN_FILENO, TCSADRAIN, &tattr);
-
 	tgetent(NULL, getenv("TERM"));
 	atexit(&default_term_mode);
 }

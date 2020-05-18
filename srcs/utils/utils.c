@@ -6,20 +6,20 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:27:25 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 16:50:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:44:16 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int	ft_is_whitespace(char c)
+int			ft_is_whitespace(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\v' || c == '\n' || c == '\r');
 }
 
-int	ft_secure_strlen(const char *str)
+int			ft_secure_strlen(const char *str)
 {
-	int	len;
+	int		len;
 
 	len = 0;
 	if (!str)
@@ -40,7 +40,7 @@ int	ft_secure_strlen(const char *str)
 **		return : A new string with the char in end of it.
 */
 
-char			*add_char_to_word(char *word, char c)
+char		*add_char_to_word(char *word, char c)
 {
 	char	*save_word;
 	int		new_word_len;
@@ -73,7 +73,7 @@ char			*add_char_to_word(char *word, char c)
 **		return : A new string with the char in end of it.
 */
 
-char			*add_char_to_word_free(char *word, char c)
+char		*add_char_to_word_free(char *word, char c)
 {
 	char	*save_word;
 	int		new_word_len;

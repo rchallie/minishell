@@ -111,9 +111,6 @@ fclean: clean
 	
 re: fclean all
 
-run: all
-	@./$(NAME)
-
 valgind: all
 	valgrind --leak-check=yes --errors-for-leak-kinds=all --show-leak-kinds=all ./$(NAME)
 

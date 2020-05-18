@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/18 18:09:04 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:56:59 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,7 @@ static int		init_for_exec(t_exec *ex)
 
 	ex->exec = ms.treated[ex->save_seq_cursor];
 	add_word_to_tab(ms.treated[ex->save_seq_cursor], &ex->argv);
-	ex->save_seq_cursor++;
-	if (ms.sequence[ex->save_seq_cursor] > 2)
+	if (ms.sequence[++ex->save_seq_cursor] > 2)
 	{
 		ex->argv ? free(ex->argv) : 0;
 		if (!(ex->argv = (char **)malloc(sizeof(char *) * 2)))
@@ -105,7 +104,7 @@ static int		init_for_exec(t_exec *ex)
 	else
 		while (ms.sequence[ex->save_seq_cursor]
 			&& ms.sequence[ex->save_seq_cursor] <= 2)
-				add_word_to_tab(ms.treated[ex->save_seq_cursor++], &ex->argv);
+			add_word_to_tab(ms.treated[ex->save_seq_cursor++], &ex->argv);
 	get_pwd(&ex->exec_path);
 	last_exec_path = ex->exec_path;
 	ex->exec_path = add_char_to_word(ex->exec_path, '/');

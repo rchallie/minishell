@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/15 15:35:25 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:05:41 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 /*
 **	Function: check_special_chars
 **	--------------------
-**		Check for all possible special characters. 
+**		Check for all possible special characters.
 **
 **		(char *)	entry : the command line.
 **		(char ***)	treated : a pointer to the double array
@@ -85,7 +85,7 @@ static int		check_special_chars(char ***treated, char *entry, int up)
 /*
 **	Function: sanitize_home
 **	--------------------
-**		Modify '~' to home directory in and create new word. 
+**		Modify '~' to home directory in and create new word.
 **
 **		(char *)	word : the word to treat.
 **
@@ -114,7 +114,7 @@ static char		*sanitize_home(char *word)
 **	Function: sanitize_loop
 **	--------------------
 **		Evolve in commande line and add token to treated
-**		double array of tokens. 
+**		double array of tokens.
 **
 **		(int *)		int : a pointer to the up (cursor) value.
 **		(char *)	entry : the command line.
@@ -150,7 +150,7 @@ static int		sanitize_loop(int *up, char *entry, char ***treated)
 **	Function: sanitize
 **	--------------------
 **		Sanitize the command line and fill it into a treated
-**		double array of tokens. 
+**		double array of tokens.
 **
 **		(char *)	entry : the command line.
 **		(char ***)	treated : a pointer to the double array
