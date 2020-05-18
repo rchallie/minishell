@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/02 12:25:04 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/15 15:45:31 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ static int		print_export_vars(void)
 	while (sorted && sorted[i])
 	{
 		if (ft_strchr(sorted[i], '=') != NULL)
-			ft_printf("declare -x %.*s\"%s\"\n", (ft_strchr(sorted[i], '=')
-				- sorted[i]) + 1, sorted[i], ft_strchr(sorted[i], '=') + 1);
+			ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n",
+				(ft_strchr(sorted[i], '=') - sorted[i]) + 1, sorted[i],
+				ft_strchr(sorted[i], '=') + 1);
 		else
-			ft_printf("declare -x %.*s\n", (ft_strchr(sorted[i], '=')
-				- sorted[i]) + 1, sorted[i]);
+			ft_printf(STDOUT_FILENO, "declare -x %.*s\n",
+				(ft_strchr(sorted[i], '=') - sorted[i]) + 1, sorted[i]);
 		i++;
 	}
 	free_double_char_tab(sorted);
@@ -69,7 +70,7 @@ static int		export(void)
 		if (double_char_tab_contain(sorted[i], export_vars) == ERROR
 			&& ft_strncmp(sorted[i], "_", (ft_strchr(sorted[i], '=')
 				- sorted[i])))
-			ft_printf("declare -x %.*s\"%s\"\n", (ft_strchr(sorted[i], '=')
+			ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n", (ft_strchr(sorted[i], '=')
 				- sorted[i]) + 1, sorted[i], ft_strchr(sorted[i], '=') + 1);
 		i++;
 	}
@@ -82,16 +83,15 @@ static int		export(void)
 ** ------------
 **		Check a variable is setted.
 **
-**		(char *)	var : variable to check.
+**		(char *)	var_name : variable to check.
 **
 **		returns: return 1 : if the variable is set.
 **				 return 0 : if the variable is not set.
 */
 
-// Voir pour le transformer en is_set_in, ajouté le tableau a checker en param
-// et l'envoyer dans les utils
-// histoire de libérer la place pour remove_var_export
-static int		is_set(char *var_name)
+static int		is_set(
+	char *var_name
+)
 {
 	int		i;
 	char	*end_name;
@@ -117,13 +117,15 @@ static int		is_set(char *var_name)
 ** ------------
 **		Add/update a variable to export variables.
 **
-**		(char *)	var : variable to add.
+**		(char *)	var_name : variable to add.
 **
 **		returns: return 1 : if no problem
 **				 return 0 : if an error appear
 */
 
-static int		add_var_to_export(char *var_name)
+static int		add_var_to_export(
+	char *var_name
+)
 {
 	int		i;
 	char	*end_name;
@@ -164,7 +166,11 @@ static int		add_var_to_export(char *var_name)
 **		returns: return 0
 */
 
-int				export_(int argc, char **argv, char **envp)
+int				export_(
+	int argc,
+	char **argv,
+	char **envp
+)
 {
 	int			cursor;
 	char		*end_name;
@@ -178,7 +184,7 @@ int				export_(int argc, char **argv, char **envp)
 			end_name = ft_strchr(argv[cursor], '=');
 			if (end_name == argv[cursor])
 			{
-				ft_printf("minishell: export: « %s » : %s\n",
+				ft_printf(STDERR_FILENO, "minishell: export: « %s » : %s\n",
 					argv[cursor], "invalid identifier");
 				continue;
 			}

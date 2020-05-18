@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "typeinfo": "c",
+        "minishell.h": "c"
+    },
+    "python.linting.enabled": false
+}

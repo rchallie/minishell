@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_flags.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 11:04:51 by thervieu          #+#    #+#             */
-/*   Updated: 2019/12/02 11:04:53 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:48:44 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ size_t	width(int width, int minus, size_t zero)
 	while (width - minus > 0)
 	{
 		if (zero)
-			ft_putchar('0');
+			ft_putchar_fd('0', g_fd);
 		else
-			ft_putchar(' ');
+			ft_putchar_fd(' ', g_fd);
 		width--;
 		count++;
 	}

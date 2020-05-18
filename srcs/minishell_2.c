@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 15:14:32 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:44:49 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static void		print_middle_term(char *str1, char *str2, int str_len, int row)
 	line.start.row = row;
 	line.start.col = line.winsz.col / 2 - str_len / 2;
 	set_curpos(&line);
-	ft_printf(str1);
-	ft_printf(str2);
+	ft_printf(STDOUT_FILENO, str1);
+	ft_printf(STDOUT_FILENO, str2);
 	line.start.row = row + 1;
 	line.start.col = 0;
 	set_curpos(&line);

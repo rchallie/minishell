@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 09:53:22 by thervieu          #+#    #+#             */
-/*   Updated: 2019/10/29 09:53:24 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:26:56 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ typedef struct	s_flags
 	char	conv;
 }				t_flags;
 
-int				ft_printf(const char *str, ...);
+int				g_fd;
+
+int				ft_printf(int fd, const char *str, ...);
 size_t			is_conv(char c);
 size_t			is_conv_nbr(char c);
 size_t			is_in_flags_or_conv(char c);

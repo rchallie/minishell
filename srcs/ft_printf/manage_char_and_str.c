@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   manage_char_and_string.c                           :+:      :+:    :+:   */
+/*   manage_char_and_str.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 14:36:28 by thervieu          #+#    #+#             */
-/*   Updated: 2019/11/26 14:36:37 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:48:17 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ size_t	manage_char(char c, t_flags flags)
 
 	count = 0;
 	if (flags.minus == 1)
-		ft_putchar(c);
+		ft_putchar_fd(c, g_fd);
 	count += width(flags.width, 1, 0);
 	if (flags.minus == 0)
-		ft_putchar(c);
+		ft_putchar_fd(c, g_fd);
 	return (count + 1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_cursor_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:43:12 by thervieu          #+#    #+#             */
-/*   Updated: 2020/02/25 12:43:13 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:36:14 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	down_row(t_line *line)
 	if (line->length > line->winsz.col
 		&& line->cursor <= (line->length - line->winsz.col))
 	{
-		ft_printf("nn\n");
+		ft_printf(STDIN_FILENO, "nn\n");
 		line->cursor += line->winsz.col;
 		set_curpos(line);
 	}

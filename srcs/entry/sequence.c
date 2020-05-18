@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:46:46 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/05 14:41:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 18:16:17 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int		seq_for_special(char **treated, int *sequ, int *has_cmd, int *i)
 		*i += 1;
 		if (treated[*i] && !is_special(treated[*i], sequ, *i))
 			sequ[*i] = 8;
-		else 
+		else
 			return (error_identifier("syntax error near unexpected token",
 				treated[*i]));
 	}
@@ -108,7 +108,7 @@ static int		seq_treated_tab(char **treated, int *sequ)
 		{
 			if (((ret_spe =
 				seq_for_special(treated, sequ, &has_cmd, &i)) != SUCCESS))
-					return (ret_spe);
+				return (ret_spe);
 		}
 		else if (has_cmd == 0)
 		{

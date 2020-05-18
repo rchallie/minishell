@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:51:16 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/02 12:24:19 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 16:23:49 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 **				 return 0 : if an error appear
 */
 
-static int	remove_var_export(char *var_name)
+static int	remove_var_export(
+	char *var_name
+)
 {
 	int		i;
 	char	*end_name;
@@ -55,7 +57,11 @@ static int	remove_var_export(char *var_name)
 **		returns: return 0;
 */
 
-int			unset(int argc, char **argv, char **env)
+int			unset(
+	int argc,
+	char **argv,
+	char **env
+)
 {
 	int cursor;
 

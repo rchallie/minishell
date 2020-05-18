@@ -6,13 +6,27 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 17:24:07 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/02 12:23:54 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/13 16:16:06 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int		exit_minishell(int argc, char **argv, char **env)
+/*
+**	Function: exit_minishell
+**	--------------------
+**		Exit command. Leave minishell propely.
+**
+**		(char *)	path : final path to directory.
+**		(int)		curosr : arguments cursor.
+**		(char **)	argv : arguments.
+*/
+
+int		exit_minishell(
+	int argc,
+	char **argv,
+	char **env
+)
 {
 	(void)argc;
 	(void)argv;
