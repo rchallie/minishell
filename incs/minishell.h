@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/15 18:04:28 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 15:47:41 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ typedef struct		s_keymove_hl
 typedef struct		s_keymove_ms
 {
 	int				key;
-	void			(*funct)(t_line *line);
+	void			(*funct)(int *key, t_line *line);
 }					t_keymove_ms;
 
 typedef struct		s_args
@@ -279,14 +279,14 @@ void				insert_char(t_line *line, int key);
 void				delete_char(t_line *line, int key);
 void				set_line(int save, t_line *line);
 int					match_key_curse(char *str);
-void				find_match(int key, t_line *line);
+void				find_match(int *key, t_line *line);
 void				match_move(int key, t_line *line);
 void				highlight(int key, t_line *line);
 void				match_highlight(int key, t_line *line);
 void				match_hist(int key, t_line *line);
-void				match_ctrl(int key, t_line *line);
-void				clear_screen_(t_line *line);
-void				exit_pgm(t_line *line);
+void				match_ctrl(int *key, t_line *line);
+void				clear_screen_(int *key, t_line *line);
+void				exit_pgm( int *key, t_line *line);
 t_dlist				*get_history(void);
 void				append_history(char *new_hist);
 void				old_history(t_line *line, t_dlist **hist);
