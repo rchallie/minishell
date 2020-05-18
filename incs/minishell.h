@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/15 17:43:45 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/18 15:09:16 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define ERROR_NEAR_UNEXPECTED_AT_NEXT_POS 0x8
 # define ERROR_NEAR_UNEXPECTED_AT_POS 0x9
 # define ERROR_SIGINT 0xA
+# define ERROR_SIGQUIT 0xB
 
 # include "../srcs/libft/libft.h"
 # include <stdlib.h>
