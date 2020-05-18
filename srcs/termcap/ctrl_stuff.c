@@ -6,25 +6,30 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:55:44 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/14 15:38:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 15:55:13 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-void	clear_screen_(t_line *line)
+void	clear_screen_(int *key, t_line *line)
 {
+	(void)key;
 	tputs(tgoto(tgetstr("SF", NULL), 0, line->start.row - 1), 1, &tc_putchar);
 	line->start.row = 1;
 	set_curpos(line);
 }
 
-void	exit_pgm(t_line *line)
+void	exit_pgm(int *key, t_line *line)
 {
-	int		a;
+	int		i;
+	char	*str;
 
-	a = line->length;
-	(void)a;
-	(void)ms;
-	exit_minishell(0, NULL, NULL);
+	i = -1;
+	str = "exit";
+	if (line->length != 0)
+		return;
+	while (++i != 5)
+		line->cmd[i] = str[i];
+	*key = '\n';
 }
