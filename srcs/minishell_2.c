@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/15 15:44:49 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:45:47 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int				has_redir_output(int redir_type,
 		o = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
 			: O_CREAT | O_RDWR | O_APPEND;
 		if (!(fd = open(ms.treated[cursor], o, s)))
-			return (-1); //Error path à gérer
+			return (-1);
 		redir_type = 0;
 	}
 	return (has_redir_output(redir_type, cursor + 1, fd));
@@ -101,7 +101,7 @@ int				has_redir_input(int redir_type,
 	{
 		(fd >= 3) ? close(fd) : 0;
 		if (!(fd = open(ms.treated[cursor], O_RDONLY)))
-			return (-1); //Error path à gérer
+			return (-1);
 		redir_type = 0;
 	}
 	return (has_redir_input(redir_type, cursor + 1, fd));

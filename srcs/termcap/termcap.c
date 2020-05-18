@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:10:30 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/18 15:43:53 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:20:52 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ int			get_key(void)
 	key = match_key_curse(str);
 	free(str);
 	return (key);
+}
+
+static int	ctrl_c(t_line *line)
+{
+	ms.last_cmd_rtn = 130;
+	insert_char(line, '^');
+	insert_char(line, 'C');
+	return (ERROR);
 }
 
 int			input_loop(t_line *line)
@@ -51,12 +59,7 @@ int			input_loop(t_line *line)
 			delete_char(line, key);
 		set_curpos(line);
 		if (key == 3)
-		{
-			ms.last_cmd_rtn = 130;
-			insert_char(line, '^');
-			insert_char(line, 'C');
-			return (ERROR);
-		}
+			return (ctrl_c(line));
 		else if ((char)key == '\n')
 			break ;
 	}
@@ -67,7 +70,7 @@ char		*edit_line(void)
 {
 	t_line	line;
 	int		input_rtn;
-	char *rtn;
+	char	*rtn;
 
 	rtn = NULL;
 	raw_term_mode();

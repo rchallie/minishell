@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/27 11:53:36 by thervieu          #+#    #+#             */
-/*   Updated: 2020/04/18 15:19:14 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:13:19 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ size_t	manage_uint_and_hexa(unsigned int unint, t_flags flags)
 	size_t	count;
 
 	count = 0;
-	// if (unint < 0)
-	// 	unint = 4294967295 + 1 + unint;
 	if (flags.dot == 0 && unint == 0)
 	{
 		count += width(flags.width, 0, 0);
