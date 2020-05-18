@@ -6,17 +6,17 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:14:35 by excalibur         #+#    #+#             */
-/*   Updated: 2020/04/30 17:02:03 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:24:58 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-int		double_char_tab_remove(char **to_remove, char ***array)
+int			double_char_tab_remove(char **to_remove, char ***array)
 {
-	int i;
+	int		i;
 	int		has_found_to_remove;
-	char **new_array;
+	char	**new_array;
 
 	i = 0;
 	has_found_to_remove = 0;
@@ -39,7 +39,7 @@ int		double_char_tab_remove(char **to_remove, char ***array)
 	return (SUCCESS);
 }
 
-int		double_char_tab_contain(char *name, char **from)
+int			double_char_tab_contain(char *name, char **from)
 {
 	if (name == NULL || from == NULL)
 		return (ERROR);
@@ -53,10 +53,10 @@ int		double_char_tab_contain(char *name, char **from)
 	return (ERROR);
 }
 
-void	free_double_char_tab(char **tab_to_free)
+void		free_double_char_tab(char **tab_to_free)
 {
-	int i;
-	int tab_len;
+	int		i;
+	int		tab_len;
 
 	i = 0;
 	if (!tab_to_free)
@@ -72,11 +72,11 @@ void	free_double_char_tab(char **tab_to_free)
 	free(tab_to_free);
 }
 
-int		dup_double_char_tab(char **src, char ***new_tab)
+int			dup_double_char_tab(char **src, char ***new_tab)
 {
-	char **nt;
-	int i;
-	int tab_len;
+	char	**nt;
+	int		i;
+	int		tab_len;
 
 	i = 0;
 	if (!src)
@@ -94,7 +94,7 @@ int		dup_double_char_tab(char **src, char ***new_tab)
 	return (SUCCESS);
 }
 
-char			**double_tab_bubble_sort(char ***sort_me)
+char		**double_tab_bubble_sort(char ***sort_me)
 {
 	char	*tmp;
 	char	**save;

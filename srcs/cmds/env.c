@@ -6,13 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/15 15:45:20 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/18 18:04:38 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-char	*get_env_var_by_name(char *name)
+char		*get_env_var_by_name(char *name)
 {
 	int		i;
 	char	*rename;
@@ -33,28 +33,27 @@ char	*get_env_var_by_name(char *name)
 		}
 		i++;
 	}
-	(void)envp;
 	if (rename)
 		free(rename);
 	return (ft_strdup(""));
 }
 
-int remove_var_env(char *var_name)
+int			remove_var_env(char *var_name)
 {
-	int     i;
+	int		i;
 	char	*end_name;
 
-    i = 0;
-    while (envp[i])
-    {
+	i = 0;
+	while (envp[i])
+	{
 		end_name = ft_strchr(envp[i], '=');
-        if (!ft_strncmp(envp[i], var_name, end_name - envp[i]))
-            break ;
-        i++;
-    }
-    if (envp[i] != NULL)
-        return (double_char_tab_remove(&envp[i], &envp));
-    return (SUCCESS);
+		if (!ft_strncmp(envp[i], var_name, end_name - envp[i]))
+			break ;
+		i++;
+	}
+	if (envp[i] != NULL)
+		return (double_char_tab_remove(&envp[i], &envp));
+	return (SUCCESS);
 }
 
 /*
@@ -69,7 +68,7 @@ int remove_var_env(char *var_name)
 **				 return 0 : if an error appear
 */
 
-int				add_var_to_env(char *var)
+int			add_var_to_env(char *var)
 {
 	int		i;
 	char	*end_name;
@@ -93,12 +92,12 @@ int				add_var_to_env(char *var)
 	return (SUCCESS);
 }
 
-int		env(int argc, char **argv, char **envp)
+int			env(int argc, char **argv, char **envp)
 {
 	char	*env_list;
 	int		cursor;
 	int		i;
-	
+
 	(void)argc;
 	(void)argv;
 	i = 0;
