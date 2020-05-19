@@ -9,10 +9,12 @@ NAME 		= 	minishell
 SRCS_DIR 	= 	srcs/
 SRC			=	minishell.c 					\
 				minishell_2.c 					\
-				minishell_3.c 					\
+				minishell_pipe.c 				\
 				check.c							\
 				exec.c							\
 				error.c							\
+				sig_catcher.c					\
+				interface.c						\
 				utils/utils.c					\
 				utils/cutted_tree_forest.c		\
 				utils/utils_double_tabs.c		\

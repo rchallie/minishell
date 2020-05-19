@@ -6,14 +6,14 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/18 18:01:52 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/19 19:01:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
 /*
-** Function: print_export_vars
+** Function: print_g_export_vars
 ** ------------
 **		Print the list of commands to export "export variables".
 **
@@ -21,13 +21,13 @@
 **				 return 0 : if an error appear
 */
 
-static int		print_export_vars(void)
+static int		print_g_export_vars(void)
 {
 	int		i;
 	char	**sorted;
 
 	i = 0;
-	if (!dup_double_char_tab(export_vars, &sorted))
+	if (!dup_double_char_tab(g_export_vars, &sorted))
 		return (ERROR);
 	sorted = double_tab_bubble_sort(&sorted);
 	while (sorted && sorted[i])
@@ -62,12 +62,12 @@ static int		export(void)
 	char	**sorted;
 
 	i = 0;
-	if (!dup_double_char_tab(envp, &sorted))
+	if (!dup_double_char_tab(g_envp, &sorted))
 		return (ERROR);
 	sorted = double_tab_bubble_sort(&sorted);
 	while (sorted && sorted[i])
 	{
-		if (double_char_tab_contain(sorted[i], export_vars) == ERROR
+		if (double_char_tab_contain(sorted[i], g_export_vars) == ERROR
 			&& ft_strncmp(sorted[i], "_", (ft_strchr(sorted[i], '=')
 				- sorted[i])))
 			ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n",
@@ -76,7 +76,7 @@ static int		export(void)
 		i++;
 	}
 	free_double_char_tab(sorted);
-	return (print_export_vars());
+	return (print_g_export_vars());
 }
 
 /*
@@ -101,14 +101,14 @@ static int		is_set(
 	end_name = ft_strchr(var_name, '=');
 	if (end_name == NULL)
 		end_name = (var_name + ft_secure_strlen(var_name));
-	while (export_vars && export_vars[i])
+	while (g_export_vars && g_export_vars[i])
 	{
-		if (!ft_strncmp(export_vars[i], var_name, end_name - var_name))
+		if (!ft_strncmp(g_export_vars[i], var_name, end_name - var_name))
 			break ;
 		i++;
 	}
-	if (export_vars && export_vars[i] != NULL
-		&& export_vars[i][end_name - var_name] == '=')
+	if (g_export_vars && g_export_vars[i] != NULL
+		&& g_export_vars[i][end_name - var_name] == '=')
 		return (SUCCESS);
 	return (ERROR);
 }
@@ -135,18 +135,18 @@ static int		add_var_to_export(
 	end_name = ft_strchr(var_name, '=');
 	if (end_name == NULL && (is_set(var_name) == SUCCESS))
 		return (SUCCESS);
-	while (export_vars && export_vars[i] != NULL)
+	while (g_export_vars && g_export_vars[i] != NULL)
 	{
-		if (!ft_strncmp(export_vars[i], var_name, end_name - var_name))
+		if (!ft_strncmp(g_export_vars[i], var_name, end_name - var_name))
 			break ;
 		i++;
 	}
-	if (export_vars == NULL || export_vars[i] == NULL)
-		return (add_word_to_tab(var_name, &export_vars));
+	if (g_export_vars == NULL || g_export_vars[i] == NULL)
+		return (add_word_to_tab(var_name, &g_export_vars));
 	else
 	{
-		ft_strdel(&export_vars[i]);
-		export_vars[i] = ft_strdup(var_name);
+		ft_strdel(&g_export_vars[i]);
+		g_export_vars[i] = ft_strdup(var_name);
 	}
 	return (SUCCESS);
 }

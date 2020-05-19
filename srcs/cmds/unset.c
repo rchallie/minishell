@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:51:16 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/13 16:23:49 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/19 19:03:58 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,18 @@ static int	remove_var_export(
 	char	*end_name;
 
 	i = 0;
-	while (export_vars[i])
+	while (g_export_vars[i])
 	{
-		end_name = ft_strchr(export_vars[i], '=');
+		end_name = ft_strchr(g_export_vars[i], '=');
 		if (end_name == NULL)
-			end_name = (export_vars[i] + ft_secure_strlen(export_vars[i]));
-		if (!ft_strncmp(export_vars[i], var_name, end_name - export_vars[i]))
+			end_name = (g_export_vars[i] + ft_secure_strlen(g_export_vars[i]));
+		if (!ft_strncmp(g_export_vars[i],
+			var_name, end_name - g_export_vars[i]))
 			break ;
 		i++;
 	}
-	if (export_vars[i] != NULL)
-		return (double_char_tab_remove(&export_vars[i], &export_vars));
+	if (g_export_vars[i] != NULL)
+		return (double_char_tab_remove(&g_export_vars[i], &g_export_vars));
 	return (SUCCESS);
 }
 
@@ -52,7 +53,7 @@ static int	remove_var_export(
 **
 **		(int)		argc : number of arguments of the command line.
 **		(char **)	argv : arguments array.
-**		(char **)	envp : environement variable array.
+**		(char **)	g_envp : environement variable array.
 **
 **		returns: return 0;
 */
@@ -70,9 +71,9 @@ int			unset(
 	cursor = 0;
 	while (argv[++cursor])
 	{
-		if (envp)
+		if (g_envp)
 			remove_var_env(argv[cursor]);
-		if (export_vars)
+		if (g_export_vars)
 			remove_var_export(argv[cursor]);
 	}
 	return (0);

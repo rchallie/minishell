@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ctrl_stuff.c                                       :+:      :+:    :+:   */
+/*   sig_catcher.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/25 12:55:44 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/19 18:54:22 by excalibur        ###   ########.fr       */
+/*   Created: 2020/05/19 18:19:10 by excalibur         #+#    #+#             */
+/*   Updated: 2020/05/19 18:59:31 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/minishell.h"
+#include "../incs/minishell.h"
 
-void	clear_screen_(int *key, t_line *line)
+void		sigint_catcher(void)
 {
-	(void)key;
-	if (line->start.row > 1)
-		tputs(tgoto(tgetstr("SF", NULL), 0, line->start.row - 1), 1,
-			&tc_putchar);
-	line->start.row = 1;
-	set_curpos(line);
+	write(1, "\n", 1);
+	g_ms.last_cmd_rtn = 130;
 }
 
-void	exit_pgm(int *key, t_line *line)
+void		sigquit_catcher(void)
 {
-	int		i;
-	char	*str;
-
-	i = -1;
-	str = "exit";
-	if (line->length != 0)
-		return ;
-	while (++i != 5)
-		line->cmd[i] = str[i];
-	*key = '\n';
+	write(1, "Quit (core dumped)\n", 19);
+	g_ms.last_cmd_rtn = 131;
 }

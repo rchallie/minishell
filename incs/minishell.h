@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/18 16:11:56 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/19 19:05:14 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,9 +160,16 @@ typedef struct		s_args
 	void			*content;
 }					t_args;
 
-char				**envp;
-char				**export_vars;
-t_minishell			ms;
+char				**g_envp;
+char				**g_export_vars;
+t_minishell			g_ms;
+
+/*
+** _____ Signal catchers _____
+*/
+
+void				sigint_catcher();
+void				sigquit_catcher();
 
 /*
 ** _____ Double char tab _____
@@ -229,7 +236,8 @@ int					reorder_sequence(void);
 int					has_redir_output(int redir_type, int cursor, int fd);
 int					has_redir_input(int redir_type, int cursor, int fd);
 void				cmd_has_pipe(int gen_fork, int fork_, int nb_cmd_p);
-int					treat_command();
+void				cmd_no_pipe(void);
+int					treat_command(void);
 
 /*
 ** _____ Errors _____
@@ -239,6 +247,8 @@ int					error_path(const char *cmd, const char *path,
 						int errnum);
 int					error_identifier(char *msg, const char *identifier);
 int					error_command(char *cmd);
+int					error_file(char *file_name, int errnum);
+int					error_unidentified(char *msg, const char *unidentified);
 
 /*
 ** _____ Checkers _____
@@ -248,7 +258,6 @@ int					is_cmd(char *cmd);
 int					is_char_spec(char *s);
 int					is_special_token(char *to_test);
 int					remove_var_env(char *var_name);
-int					error_unidentified(char *msg, const char *unidentified);
 
 /*
 ** _____ Termcaps _____
@@ -258,7 +267,7 @@ void				init_terminal_data(void);
 void				interrogate_terminal(void);
 void				default_term_mode(void);
 void				raw_term_mode(void);
-int					line_edition();
+void				line_edition(void);
 void				clear_term(void);
 void				put_beg(void);
 int					tc_putchar(int c);
@@ -287,7 +296,7 @@ void				match_highlight(int key, t_line *line);
 void				match_hist(int key, t_line *line);
 void				match_ctrl(int *key, t_line *line);
 void				clear_screen_(int *key, t_line *line);
-void				exit_pgm( int *key, t_line *line);
+void				exit_pgm(int *key, t_line *line);
 t_dlist				*get_history(void);
 void				append_history(char *new_hist);
 void				old_history(t_line *line, t_dlist **hist);
