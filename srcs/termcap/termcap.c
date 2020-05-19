@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 21:10:30 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/18 18:55:27 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/19 19:02:15 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			get_key(void)
 
 static int	ctrl_c(t_line *line)
 {
-	ms.last_cmd_rtn = 130;
+	g_ms.last_cmd_rtn = 130;
 	insert_char(line, '^');
 	insert_char(line, 'C');
 	return (ERROR);
@@ -90,7 +90,7 @@ char		*edit_line(void)
 	return (ft_strdup((char *)line.cmd));
 }
 
-int			line_edition(void)
+void		line_edition(void)
 {
 	char	*new_entry;
 
@@ -98,6 +98,5 @@ int			line_edition(void)
 	default_term_mode();
 	init_terminal_data();
 	new_entry = edit_line();
-	ms.entry = new_entry;
-	return (1);
+	g_ms.entry = new_entry;
 }

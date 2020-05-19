@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/18 18:56:59 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/19 18:59:07 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void		init_exec(t_exec *ex)
 	ex->env_path = NULL;
 	ex->path_list = NULL;
 	ex->argv = NULL;
-	ex->save_seq_cursor = ms.seq_cursor;
+	ex->save_seq_cursor = g_ms.seq_cursor;
 }
 
 /*
@@ -39,7 +39,6 @@ static void		init_exec(t_exec *ex)
 **
 **		(char *)file		:	path to binarie
 **		(t_exec *)ex		:	a pointer to the exec structure
-**		(t_minishell *)ms	:	minishell global variables
 **
 **		returns:	return 0 :	if the binarie file was'nt found
 **					return 1 :	if the binaries was sucessfull executed
@@ -60,13 +59,13 @@ static int		exec_cmd(char *file, t_exec *ex)
 		free(execute_env_path);
 		if ((pid = fork()) == 0)
 		{
-			if ((execve(file, ex->argv, envp)) == -1)
+			if ((execve(file, ex->argv, g_envp)) == -1)
 				exit(errno);
 		}
 		else
 		{
 			waitpid(pid, &status, 0);
-			ms.last_cmd_rtn = WEXITSTATUS(status);
+			g_ms.last_cmd_rtn = WEXITSTATUS(status);
 			free(ex->argv);
 			return (SUCCESS);
 		}
@@ -80,7 +79,6 @@ static int		exec_cmd(char *file, t_exec *ex)
 **		Initialise (t_exec *)ex (like argv) to be used command for absolute path
 **
 **		(t_exec *)ex		:	a pointer to the exec structure
-**		(t_minishell *)ms	:	minishell global variables
 **
 **		returns:	return 0 :	if the malloc of argv array return NULL
 **					return 1 :	if everything was okay
@@ -90,9 +88,9 @@ static int		init_for_exec(t_exec *ex)
 {
 	char	*last_exec_path;
 
-	ex->exec = ms.treated[ex->save_seq_cursor];
-	add_word_to_tab(ms.treated[ex->save_seq_cursor], &ex->argv);
-	if (ms.sequence[++ex->save_seq_cursor] > 2)
+	ex->exec = g_ms.treated[ex->save_seq_cursor];
+	add_word_to_tab(g_ms.treated[ex->save_seq_cursor], &ex->argv);
+	if (g_ms.sequence[++ex->save_seq_cursor] > 2)
 	{
 		ex->argv ? free(ex->argv) : 0;
 		if (!(ex->argv = (char **)malloc(sizeof(char *) * 2)))
@@ -102,9 +100,9 @@ static int		init_for_exec(t_exec *ex)
 		ex->argv[1] = NULL;
 	}
 	else
-		while (ms.sequence[ex->save_seq_cursor]
-			&& ms.sequence[ex->save_seq_cursor] <= 2)
-			add_word_to_tab(ms.treated[ex->save_seq_cursor++], &ex->argv);
+		while (g_ms.sequence[ex->save_seq_cursor]
+			&& g_ms.sequence[ex->save_seq_cursor] <= 2)
+			add_word_to_tab(g_ms.treated[ex->save_seq_cursor++], &ex->argv);
 	get_pwd(&ex->exec_path);
 	last_exec_path = ex->exec_path;
 	ex->exec_path = add_char_to_word(ex->exec_path, '/');
@@ -122,7 +120,6 @@ static int		init_for_exec(t_exec *ex)
 **		variable PATH, exclude /bin && /usr/bin
 **
 **		(t_exec *)ex		:	a pointer to the exec structure
-**		(t_minishell *)ms	:	minishell global variables
 **
 **		returns:	return 0 :	if the malloc of argv array return NULL
 **					return 1 :	if everything was okay
@@ -133,7 +130,7 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 	ex->env_path = get_env_var_by_name("PATH");
 	ex->path_list = ft_split(ex->env_path, ':');
 	free(ex->env_path);
-	if (is_cmd(ms.treated[ms.seq_cursor]) == -1)
+	if (is_cmd(g_ms.treated[g_ms.seq_cursor]) == -1)
 	{
 		while (++i < get_double_char_tab_len(ex->path_list))
 		{
@@ -159,8 +156,6 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 ** Function : is_exec
 ** -------------------------
 **		Will try to execute binaries where seq_cursor was
-**
-**		(t_minishell *)ms	:	minishell global variables
 **
 **		returns:	return 0 :	if init as a problem, if len of the binarie name
 **								is NULL or is the binaries was not found

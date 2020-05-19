@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/18 18:04:38 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/19 19:01:36 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ char		*get_env_var_by_name(char *name)
 
 	rename = ft_strdup(name);
 	i = 0;
-	while (envp[i])
+	while (g_envp[i])
 	{
 		j = 0;
-		while (envp[i][j] && rename[j] && envp[i][j] == rename[j])
+		while (g_envp[i][j] && rename[j] && g_envp[i][j] == rename[j])
 			j++;
-		if (rename[j] == '\0' && envp[i][j] == '=')
+		if (rename[j] == '\0' && g_envp[i][j] == '=')
 		{
 			j++;
 			free(rename);
-			return (ft_strdup(&envp[i][j]));
+			return (ft_strdup(&g_envp[i][j]));
 		}
 		i++;
 	}
@@ -44,15 +44,15 @@ int			remove_var_env(char *var_name)
 	char	*end_name;
 
 	i = 0;
-	while (envp[i])
+	while (g_envp[i])
 	{
-		end_name = ft_strchr(envp[i], '=');
-		if (!ft_strncmp(envp[i], var_name, end_name - envp[i]))
+		end_name = ft_strchr(g_envp[i], '=');
+		if (!ft_strncmp(g_envp[i], var_name, end_name - g_envp[i]))
 			break ;
 		i++;
 	}
-	if (envp[i] != NULL)
-		return (double_char_tab_remove(&envp[i], &envp));
+	if (g_envp[i] != NULL)
+		return (double_char_tab_remove(&g_envp[i], &g_envp));
 	return (SUCCESS);
 }
 
@@ -75,24 +75,24 @@ int			add_var_to_env(char *var)
 
 	i = 0;
 	end_name = ft_strchr(var, '=');
-	while (envp[i] != NULL)
+	while (g_envp[i] != NULL)
 	{
-		if (!ft_strncmp(envp[i], var, end_name - var)
-			&& envp[i][(end_name - var)] == '=')
+		if (!ft_strncmp(g_envp[i], var, end_name - var)
+			&& g_envp[i][(end_name - var)] == '=')
 			break ;
 		i++;
 	}
-	if (envp[i] == NULL)
-		return (add_word_to_tab(var, &envp));
+	if (g_envp[i] == NULL)
+		return (add_word_to_tab(var, &g_envp));
 	else
 	{
-		ft_strdel(&envp[i]);
-		envp[i] = ft_strdup(var);
+		ft_strdel(&g_envp[i]);
+		g_envp[i] = ft_strdup(var);
 	}
 	return (SUCCESS);
 }
 
-int			env(int argc, char **argv, char **envp)
+int			env(int argc, char **argv, char **g_envp)
 {
 	char	*env_list;
 	int		cursor;
@@ -103,9 +103,9 @@ int			env(int argc, char **argv, char **envp)
 	i = 0;
 	cursor = 0;
 	env_list = NULL;
-	while (envp[i])
+	while (g_envp[i])
 	{
-		env_list = ft_strjoin(env_list, envp[i]);
+		env_list = ft_strjoin(env_list, g_envp[i]);
 		env_list = add_char_to_word(env_list, '\n');
 		i++;
 	}

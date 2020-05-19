@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 10:18:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/18 18:06:08 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/19 19:01:56 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static void	reorder_redir_move(
 
 	save_x = x;
 	save_i = *i;
-	save_value_char = ms.treated[save_x];
-	save_value_int = ms.sequence[save_x];
+	save_value_char = g_ms.treated[save_x];
+	save_value_int = g_ms.sequence[save_x];
 	while (save_x > save_i)
 	{
-		ms.treated[save_x] = ms.treated[save_x - 1];
-		ms.sequence[save_x] = ms.sequence[save_x - 1];
+		g_ms.treated[save_x] = g_ms.treated[save_x - 1];
+		g_ms.sequence[save_x] = g_ms.sequence[save_x - 1];
 		save_x--;
 	}
-	ms.sequence[save_x] = save_value_int;
-	ms.treated[save_x] = save_value_char;
+	g_ms.sequence[save_x] = save_value_int;
+	g_ms.treated[save_x] = save_value_char;
 }
 
 /*
@@ -60,14 +60,14 @@ static void	reorder_redir(
 	int x;
 
 	x = *i;
-	while (ms.treated[x] && ms.sequence[x] != 9)
+	while (g_ms.treated[x] && g_ms.sequence[x] != 9)
 	{
-		if ((ms.sequence[x] == 0) ||
-			(ms.sequence[x] == 6 || ms.sequence[x] == 7))
+		if ((g_ms.sequence[x] == 0) ||
+			(g_ms.sequence[x] == 6 || g_ms.sequence[x] == 7))
 			break ;
 		x++;
 	}
-	if (ms.sequence[x] == 0 && x != *i)
+	if (g_ms.sequence[x] == 0 && x != *i)
 	{
 		reorder_redir_move(i, x);
 		*i = 0;
@@ -91,14 +91,14 @@ static void	reorder_args(
 	int		save_value_int;
 
 	x = *i;
-	while (x > 0 && ms.sequence[x - 1] && ms.sequence[x - 1] != 2)
+	while (x > 0 && g_ms.sequence[x - 1] && g_ms.sequence[x - 1] != 2)
 	{
-		save_value_char = ms.treated[x - 1];
-		save_value_int = ms.sequence[x - 1];
-		ms.sequence[x - 1] = ms.sequence[x];
-		ms.treated[x - 1] = ms.treated[x];
-		ms.sequence[x] = save_value_int;
-		ms.treated[x] = save_value_char;
+		save_value_char = g_ms.treated[x - 1];
+		save_value_int = g_ms.sequence[x - 1];
+		g_ms.sequence[x - 1] = g_ms.sequence[x];
+		g_ms.treated[x - 1] = g_ms.treated[x];
+		g_ms.sequence[x] = save_value_int;
+		g_ms.treated[x] = save_value_char;
 		x--;
 	}
 	*i = x;
@@ -118,12 +118,12 @@ int			reorder_sequence(void)
 	int i;
 
 	i = 0;
-	while (ms.treated[i])
+	while (g_ms.treated[i])
 	{
-		if (ms.sequence[i] == 3 || ms.sequence[i] == 4
-			|| ms.sequence[i] == 5)
+		if (g_ms.sequence[i] == 3 || g_ms.sequence[i] == 4
+			|| g_ms.sequence[i] == 5)
 			reorder_redir(&i);
-		else if (ms.sequence[i] == 2)
+		else if (g_ms.sequence[i] == 2)
 			reorder_args(&i);
 		i++;
 	}
