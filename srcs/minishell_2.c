@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 19:03:39 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/20 16:32:50 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int				has_redir_output(int redir_type,
 	int			o;
 	int			s;
 
-	s = S_IRWXG | S_IRWXU | S_IRWXO;
+	s = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	if (!g_ms.sequence[cursor] || g_ms.sequence[cursor] == 6
 		|| g_ms.sequence[cursor] == 7 || g_ms.sequence[cursor] == 9)
 		return (fd);

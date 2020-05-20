@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 18:55:29 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/20 15:40:27 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 		{
 			ft_printf(STDERR_FILENO,
 				"minishell: syntax error near unexpected token `%c'\n", c);
-			return (ERROR);
+			return (-1);
 		}
 		else
 			add_word_to_tab(word, treated);
@@ -73,12 +73,11 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 
 static int		check_special_chars(char ***treated, char *entry, int up)
 {
-	if (!(up = special_char(treated, entry, up, '>'))
-		|| !(up = special_char(treated, entry, up, '<'))
-		|| !(up = special_char(treated, entry, up, '|'))
-		|| !(up = special_char(treated, entry, up, '>'))
-		|| !(up = special_char(treated, entry, up, ';')))
-		return (ERROR);
+	if (((up = special_char(treated, entry, up, '>')) == -1)
+		|| ((up = special_char(treated, entry, up, '<')) == -1)
+		|| ((up = special_char(treated, entry, up, '|')) == -1)
+		|| ((up = special_char(treated, entry, up, ';')) == -1))
+		return (-1);
 	return (up);
 }
 
@@ -139,7 +138,7 @@ static int		sanitize_loop(int *up, char *entry, char ***treated)
 	free(word);
 	while (ft_is_whitespace(*(entry + *up)))
 		(*up)++;
-	if (!(*up = check_special_chars(treated, entry, *up)))
+	if ((*up = check_special_chars(treated, entry, *up)) == -1)
 		return (ERROR);
 	while (ft_is_whitespace(*(entry + *up)))
 		(*up)++;
@@ -177,7 +176,7 @@ int				sanitize(char *entry, char ***treated)
 	}
 	up = 0;
 	while (*(entry + up))
-		if (sanitize_loop(&up, entry, treated) == ERROR)
+		if (sanitize_loop(&up, entry, treated) == -1)
 			return (ERROR);
 	free(entry);
 	add_word_to_tab("\n", treated);

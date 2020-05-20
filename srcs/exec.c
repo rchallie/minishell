@@ -6,30 +6,31 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 18:59:07 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/20 16:47:48 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
-/*
-** Function : init_exec
-** -------------------------
-**		Init all values need for exec binaries
-**
-**		(t_exec *)ex :	a pointer to the exec structure at init
-**
-**		returns:	null
-*/
-
-static void		init_exec(t_exec *ex)
+static int		do_cmd(char *file, t_exec *ex)
 {
-	ex->exec = NULL;
-	ex->exec_path = NULL;
-	ex->env_path = NULL;
-	ex->path_list = NULL;
-	ex->argv = NULL;
-	ex->save_seq_cursor = g_ms.seq_cursor;
+	pid_t	pid;
+	int		status;
+
+	pid = 0;
+	if ((pid = fork()) == 0)
+	{
+		if ((execve(file, ex->argv, g_envp)) == -1)
+			exit(errno);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		g_ms.last_cmd_rtn = WEXITSTATUS(status);
+		free(ex->argv);
+		return (SUCCESS);
+	}
+	return (ERROR);
 }
 
 /*
@@ -46,29 +47,20 @@ static void		init_exec(t_exec *ex)
 
 static int		exec_cmd(char *file, t_exec *ex)
 {
-	pid_t	pid;
-	int		ret;
-	int		status;
-	char	*execute_env_path;
+	int			ret;
+	char		*execute_env_path;
+	struct stat	sb;
 
-	pid = 0;
 	if ((ret = open(file, O_RDONLY)) > 0)
 	{
+		close(ret);
+		if (!(stat(file, &sb) == 0 && sb.st_mode & S_IXUSR)
+			|| S_ISDIR(sb.st_mode))
+			return (ERROR);
 		execute_env_path = ft_strjoin("_=", file);
 		add_var_to_env(execute_env_path);
 		free(execute_env_path);
-		if ((pid = fork()) == 0)
-		{
-			if ((execve(file, ex->argv, g_envp)) == -1)
-				exit(errno);
-		}
-		else
-		{
-			waitpid(pid, &status, 0);
-			g_ms.last_cmd_rtn = WEXITSTATUS(status);
-			free(ex->argv);
-			return (SUCCESS);
-		}
+		return (do_cmd(file, ex));
 	}
 	return (ERROR);
 }
@@ -166,7 +158,12 @@ int				is_exec(void)
 {
 	t_exec	ex;
 
-	init_exec(&ex);
+	ex.exec = NULL;
+	ex.exec_path = NULL;
+	ex.env_path = NULL;
+	ex.path_list = NULL;
+	ex.argv = NULL;
+	ex.save_seq_cursor = g_ms.seq_cursor;
 	if (!init_for_exec(&ex))
 		return (ERROR);
 	if (ft_secure_strlen(ex.exec) == 0)
