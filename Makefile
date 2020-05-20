@@ -14,7 +14,6 @@ SRC			=	minishell.c 					\
 				exec.c							\
 				error.c							\
 				sig_catcher.c					\
-				interface.c						\
 				utils/utils.c					\
 				utils/cutted_tree_forest.c		\
 				utils/utils_double_tabs.c		\
@@ -29,18 +28,7 @@ SRC			=	minishell.c 					\
 				cmds/export.c					\
 				entry/sequence.c				\
 				entry/sanitize.c 				\
-				entry/reorder.c					\
-				termcap/termcap.c				\
-				termcap/init_and_interr_term.c 	\
-				termcap/set_mode.c 				\
-				termcap/move_cursor.c			\
-				termcap/move_cursor_2.c			\
-				termcap/match_inputs.c			\
-				termcap/utils_cursor.c			\
-				termcap/ins_del_char.c			\
-				termcap/reset_line.c			\
-				termcap/ctrl_stuff.c			\
-				termcap/tc_putchar.c
+				entry/reorder.c
 
 # ==========================================================================================
 

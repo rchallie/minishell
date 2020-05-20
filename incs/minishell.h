@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 19:05:14 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/20 18:37:11 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ int					ft_printf(int fd, const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);
 int					get_word(char *startword, char **entry_addr, char **word);
+int					print_prompt(void);
 
 /*
 ** _____ Pwd _____

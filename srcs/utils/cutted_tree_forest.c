@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/19 18:59:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/20 18:23:09 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 	return (0);
 }
 
-static void		quote_error(char **startword, char **entry_addr,
+static int		quote_error(char **startword, char **entry_addr,
 char **save_startword, int simple_q)
 {
 	char		*test;
@@ -92,13 +92,16 @@ char **save_startword, int simple_q)
 
 	(simple_q == 1) ? ft_printf(STDOUT_FILENO, "squote > ")
 		: ft_printf(STDOUT_FILENO, "dquote > ");
-	test = edit_line();
+	if (!(test = ft_strnew(sizeof(char) * 65535))
+		|| (read(0, &test, 65534) == -1))
+		return (-1);
 	startword_advencement = *startword - *save_startword;
 	test = ft_strjoin("\n", test);
 	*startword = ft_strjoin(*save_startword, test);
 	*entry_addr = ft_strjoin(*entry_addr, test);
 	*save_startword = *startword;
 	*startword += startword_advencement;
+	return (1);
 }
 
 int				get_word(char *startword, char **entry_addr, char **word)
@@ -112,7 +115,7 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	double_q = 0;
 	char_count = 0;
 	save_startword = startword;
-	while (*startword)
+	while (*startword && *startword != '\n' && simple_q == 0 && double_q == 0)
 	{
 		char_count += tree_named_env(&startword, word);
 		if ((*startword == ' ' || *startword == '>' || *startword == '<'
@@ -122,8 +125,9 @@ int				get_word(char *startword, char **entry_addr, char **word)
 		char_count += if_quotes(&startword, word, &simple_q, &double_q);
 		startword++;
 		char_count++;
-		if (*startword == '\0' && (simple_q || double_q))
-			quote_error(&startword, entry_addr, &save_startword, simple_q);
+		if (*startword == '\0' && (simple_q || double_q) &&
+			quote_error(&startword, entry_addr, &save_startword, simple_q) == -1)
+			return (-1);
 	}
 	if (word && *word && is_special_token(*word) == SUCCESS)
 		*word = add_char_to_word_free(*word, 3);
