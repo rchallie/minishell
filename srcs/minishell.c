@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 18:57:26 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/20 18:42:17 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int				treat_entry(void)
 	return (SUCCESS);
 }
 
-static int		print_prompt(void)
+int		print_prompt(void)
 {
 	char *pwd;
 
@@ -50,12 +50,15 @@ static int		minishell_loop(int *cmd_ret)
 
 	g_ms = (t_minishell){.iscmdret = -1, .isexecret = -1,
 		.last_cmd_rtn = *cmd_ret};
+	if (!(g_ms.entry = ft_strnew(sizeof(char) * 65535)))
+		return (ERROR);
 	if (print_prompt() == ERROR || !get_pwd(&pwd))
 		return (ERROR);
 	execute_path_env = ft_strjoin("_=", pwd);
 	add_var_to_env(execute_path_env);
 	free(execute_path_env);
-	line_edition();
+	if (read(0, g_ms.entry, 65534) == -1)
+		exit(errno);
 	if (!sanitize(g_ms.entry, &g_ms.treated))
 	{
 		free_double_char_tab(g_ms.treated);
@@ -77,7 +80,6 @@ int				main(int ac, char **av, char **env)
 	(void)av;
 	ret = 1;
 	cmd_ret = 0;
-	put_beg();
 	dup_double_char_tab(env, &g_envp);
 	if (signal(SIGINT, sigint_catcher) == SIG_ERR)
 		exit(ERROR_SIGINT);

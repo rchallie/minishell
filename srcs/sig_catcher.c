@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 18:19:10 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/19 18:59:31 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/20 18:36:26 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void		sigint_catcher(void)
 {
 	write(1, "\n", 1);
+	print_prompt();
 	g_ms.last_cmd_rtn = 130;
 }
 
