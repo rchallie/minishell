@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/21 15:44:00 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/21 16:03:36 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,21 @@ static int		minishell_loop(int *cmd_ret)
 	execute_path_env = ft_strjoin("_=", pwd);
 	add_var_to_env(execute_path_env);
 	free(execute_path_env);
-	
 	rtn = 0;
 	if ((rtn += read(0, &g_ms.entry[rtn], 65534)) == -1)
 		return (errno);
+	ft_printf(1, "after first return\n");
 	if (rtn)
 	{
+		ft_printf(1, "before while loop\n");
 		while (g_ms.entry[rtn - 1] != '\n')
+		{
+			ft_printf(1, "beg while loop\n");
 			if ((rtn += read(0, &g_ms.entry[rtn], 65534)) == -1)
 				exit(errno);
+			ft_printf(1, "end while loop\n");
+		}
+		ft_printf(1, "after while loop\n");
 	}
 	else
 	{
