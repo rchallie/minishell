@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/21 15:44:00 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/21 18:00:10 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,17 @@ static int		minishell_loop(int *cmd_ret)
 	free(execute_path_env);
 	
 	rtn = 0;
+
 	if ((rtn += read(0, &g_ms.entry[rtn], 65534)) == -1)
 		return (errno);
 	if (rtn)
 	{
 		while (g_ms.entry[rtn - 1] != '\n')
+		{
 			if ((rtn += read(0, &g_ms.entry[rtn], 65534)) == -1)
 				exit(errno);
+			ft_printf(1, "ms = %s\n", g_ms.entry);
+		}
 	}
 	else
 	{
