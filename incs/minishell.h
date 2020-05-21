@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/20 18:37:11 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/21 15:39:34 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ typedef struct		s_minishell
 	int				iscmdret;
 	int				isexecret;
 	int				treated_len;
-	int				has_spec_uf;
 	int				nbr_pipe;
 	int				has_pipe;
 	int				cursor;
