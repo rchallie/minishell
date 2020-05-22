@@ -53,6 +53,7 @@ static int		minishell_loop(int *cmd_ret)
 	if (print_prompt() == ERROR || !get_pwd(&pwd))
 		return (ERROR);
 	execute_path_env = ft_strjoin("_=", pwd);
+	free(pwd);
 	add_var_to_env(execute_path_env);
 	free(execute_path_env);
 	line_edition();

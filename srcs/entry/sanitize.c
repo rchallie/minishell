@@ -31,17 +31,17 @@
 static int		special_char(char ***treated, char *entry, int up, char c)
 {
 	char	*word;
+	char	*word_free;
 
 	word = NULL;
 	if (*(entry + up) == c)
 	{
-		if (word)
-			free(word);
-		word = NULL;
 		while (*(entry + up) == c)
 		{
-			word = add_char_to_word(word, *(entry + up));
-			up++;
+			word_free = word;
+			word = add_char_to_word(word, *(entry + up++));
+			if (word_free)
+				free(word_free);
 		}
 		if (ft_secure_strlen(word) > 2)
 		{
@@ -54,6 +54,7 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 		while (ft_is_whitespace(*(entry + up)))
 			up++;
 	}
+	free(word);
 	return (up);
 }
 
@@ -172,6 +173,7 @@ int				sanitize(char *entry, char ***treated)
 		add_word_to_tab(word, treated);
 		add_word_to_tab("\n", treated);
 		free(word);
+		free(entry);
 		return (SUCCESS);
 	}
 	up = 0;

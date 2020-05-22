@@ -27,7 +27,7 @@ static int		do_cmd(char *file, t_exec *ex)
 	{
 		waitpid(pid, &status, 0);
 		g_ms.last_cmd_rtn = WEXITSTATUS(status);
-		free(ex->argv);
+		free_double_char_tab(ex->argv);
 		return (SUCCESS);
 	}
 	return (ERROR);
@@ -84,11 +84,11 @@ static int		init_for_exec(t_exec *ex)
 	add_word_to_tab(g_ms.treated[ex->save_seq_cursor], &ex->argv);
 	if (g_ms.sequence[++ex->save_seq_cursor] > 2)
 	{
-		ex->argv ? free(ex->argv) : 0;
+		ex->argv ? free_double_char_tab(ex->argv) : 0;
 		if (!(ex->argv = (char **)malloc(sizeof(char *) * 2)))
 			return (ERROR);
 		ft_bzero(ex->argv, sizeof(char *) * 2);
-		ex->argv[0] = "";
+		ex->argv[0] = ft_strdup("");
 		ex->argv[1] = NULL;
 	}
 	else
@@ -136,10 +136,9 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 				free(ex->exec_path);
 				return (SUCCESS);
 			}
+			free(ex->exec_path);
 		}
 	}
-	free(ex->exec_path);
-	ex->exec_path = NULL;
 	free_double_char_tab(ex->path_list);
 	return (ERROR);
 }
@@ -167,13 +166,17 @@ int				is_exec(void)
 	if (!init_for_exec(&ex))
 		return (ERROR);
 	if (ft_secure_strlen(ex.exec) == 0)
+	{
+		free(ex.exec_path);
+		free_double_char_tab(ex.argv);
 		return (ERROR);
+	}
 	if (exec_cmd(ex.exec, &ex) == SUCCESS)
 		return (SUCCESS);
 	free(ex.exec_path);
 	ex.exec_path = NULL;
 	if (exec_from_env(&ex, -1, NULL) == SUCCESS)
 		return (SUCCESS);
-	free(ex.argv);
+	free_double_char_tab(ex.argv);
 	return (ERROR);
 }
