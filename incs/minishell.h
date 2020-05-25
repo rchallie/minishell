@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 19:05:14 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/25 15:09:29 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,7 @@ int					add_var_to_env(char *var);
 ** _____ Utils _____
 */
 
+int					get_next_line(int fd, char **line);
 int					ft_printf(int fd, const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);

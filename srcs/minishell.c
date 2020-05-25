@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 18:57:26 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/25 16:05:51 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int		minishell_loop(int *cmd_ret)
 	char		*pwd;
 	char		*execute_path_env;
 
-	g_ms = (t_minishell){.iscmdret = -1, .isexecret = -1,
+	g_ms = (t_minishell){.iscmdret = 0, .isexecret = -1,
 		.last_cmd_rtn = *cmd_ret};
 	if (print_prompt() == ERROR || !get_pwd(&pwd))
 		return (ERROR);
@@ -70,21 +70,40 @@ static int		minishell_loop(int *cmd_ret)
 
 int				main(int ac, char **av, char **env)
 {
-	int			ret;
 	int			cmd_ret;
 
 	(void)ac;
 	(void)av;
-	ret = 1;
 	cmd_ret = 0;
-	put_beg();
 	dup_double_char_tab(env, &g_envp);
 	if (signal(SIGINT, sigint_catcher) == SIG_ERR)
 		exit(ERROR_SIGINT);
 	if (signal(SIGQUIT, sigquit_catcher) == SIG_ERR)
 		exit(ERROR_SIGQUIT);
-	while (ret == SUCCESS)
-		if (minishell_loop(&cmd_ret) == ERROR)
-			return (1);
+		(void)minishell_loop;
+	if (isatty(0))
+	{
+		put_beg();
+		while (42)
+			if (minishell_loop(&cmd_ret) == ERROR)
+				return (1);
+	}
+	int rtn = 0;
+	char *line;
+	while ((rtn = get_next_line(0, &line)) > 0)
+	{
+		g_ms = (t_minishell){.iscmdret = -1, .isexecret = -1,
+		.last_cmd_rtn = cmd_ret, .entry = line};
+		if (!sanitize(g_ms.entry, &g_ms.treated))
+		{
+			free_double_char_tab(g_ms.treated);
+			free(g_ms.sequence);
+			cmd_ret = 2;
+			return (SUCCESS);
+		}
+		treat_entry();
+		cmd_ret = g_ms.last_cmd_rtn;
+	}
+
 	return (0);
 }

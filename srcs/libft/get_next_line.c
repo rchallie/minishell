@@ -1,62 +1,108 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <thervieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/14 12:21:43 by thervieu          #+#    #+#             */
-/*   Updated: 2019/11/26 17:37:40 by thervieu         ###   ########.fr       */
+/*   Created: 2019/10/18 10:20:38 by rchallie          #+#    #+#             */
+/*   Updated: 2019/11/04 10:24:41 by rchallie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*append_str(char *str, char buff)
+char	*get_save(char *save)
 {
-	int		len;
-	char	*dst;
+	char	*rtn;
+	int		i;
+	int		j;
 
-	len = 0;
-	if (!str)
-		return (ft_strdup(&buff));
-	while (str[len])
-		len++;
-	if ((dst = malloc(sizeof(char) * (len + 2))) == NULL)
-		return (NULL);
-	len = 0;
-	while (str[len])
+	i = 0;
+	j = 0;
+	if (!save)
+		return (0);
+	while (save[i] && save[i] != '\n')
+		i++;
+	if (!save[i])
 	{
-		dst[len] = str[len];
-		len++;
+		free(save);
+		return (0);
 	}
-	dst[len] = buff;
-	dst[len + 1] = '\0';
-	return (dst);
+	if (!(rtn = malloc(sizeof(char) * ((ft_strlen(save) - i) + 1))))
+		return (0);
+	i++;
+	while (save[i])
+		rtn[j++] = save[i++];
+	rtn[j] = '\0';
+	free(save);
+	return (rtn);
+}
+
+char	*get_line(char *str)
+{
+	int		i;
+	char	*rtn;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] && str[i] != '\n')
+		i++;
+	if (!(rtn = malloc(sizeof(char) * (i + 1))))
+		return (0);
+	i = 0;
+	while (str[i] && str[i] != '\n')
+	{
+		rtn[i] = str[i];
+		i++;
+	}
+	rtn[i] = '\0';
+	return (rtn);
+}
+
+int		has_return (char *str)
+{
+	int i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int		get_next_line(int fd, char **line)
 {
-	static char		*str;
-	char			buff;
-	char			*to_free;
-	int				reading;
+	char			*buff;
+	static char		*save;
+	int				reader;
 
-	reading = 1;
+	reader = 1;
 	if (fd < 0 || !line)
 		return (-1);
-	buff = '\0';
-	str = NULL;
-	while ((reading = read(fd, &buff, 1)) == 1 && buff != '\n')
-	{
-		to_free = str;
-		str = append_str(str, buff);
-		free(to_free);
-	}
-	if (reading == -1)
+	if (!(buff = malloc(sizeof(char) * (2))))
 		return (-1);
-	*line = str;
-	if (reading == 0)
+	while (!has_return(save) && reader != 0)
+	{
+		if ((reader = read(fd, buff, 1)) == -1)
+		{
+			free(buff);
+			return (-1);
+		}
+		buff[reader] = '\0';
+		save = ft_strjoin(save, buff);
+	}
+	free(buff);
+	*line = get_line(save);
+	save = get_save(save);
+	if (reader == 0)
 		return (0);
 	return (1);
 }
