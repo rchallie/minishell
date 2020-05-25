@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/20 16:32:50 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/25 15:41:01 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int				treat_command(void)
 		}
 		else if (g_ms.sequence[g_ms.seq_cursor] == 0
 			&& g_ms.iscmdret == -1 && g_ms.treated[g_ms.seq_cursor][0])
-			return (ERROR);
+				return (ERROR);
 	}
 	return (SUCCESS);
 }

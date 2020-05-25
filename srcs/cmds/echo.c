@@ -39,8 +39,8 @@ int				echo_(
 	(void)envp;
 	cursor = 1;
 	has_opt = 0;
-	if (argv[cursor])
-		has_opt = (!ft_strcmp(argv[cursor], "-n")) ? 1 : 0;
+	while  (argv[cursor + has_opt] && ft_strcmp(argv[cursor + has_opt], "-n") == 0)
+		has_opt++;
 	cursor += has_opt;
 	while (argv[cursor])
 	{
