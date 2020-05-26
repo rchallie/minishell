@@ -70,9 +70,7 @@ char		*edit_line(void)
 {
 	t_line	line;
 	int		input_rtn;
-	char	*rtn;
 
-	rtn = NULL;
 	raw_term_mode();
 	ft_bzero(&line, sizeof(line));
 	ft_bzero(&line.cmd, sizeof(char) * 4096);
@@ -83,20 +81,13 @@ char		*edit_line(void)
 	default_term_mode();
 	ft_putchar('\n');
 	if (input_rtn == ERROR)
-	{
-		rtn = ft_strdup("");
-		return (rtn);
-	}
+		return (ft_strdup(""));
 	return (ft_strdup((char *)line.cmd));
 }
 
 void		line_edition(void)
 {
-	char	*new_entry;
-
-	new_entry = NULL;
 	default_term_mode();
 	init_terminal_data();
-	new_entry = edit_line();
-	g_ms.entry = new_entry;
+	g_ms.entry = edit_line();
 }
