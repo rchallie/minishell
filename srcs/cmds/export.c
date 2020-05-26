@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/19 19:01:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/26 15:47:24 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,26 +175,39 @@ int				export_(
 {
 	int			cursor;
 	char		*end_name;
+	int			error;
 
+	error = 0;
 	(void)envp;
 	cursor = 0;
 	if (argc > 1)
 	{
 		while (argv[++cursor])
 		{
-			end_name = ft_strchr(argv[cursor], '=');
-			if (end_name == argv[cursor])
+			if (!ft_isalpha(argv[cursor][0]) && argv[cursor][0] != '_')
 			{
-				ft_printf(STDERR_FILENO, "minishell: export: « %s » : %s\n",
-					argv[cursor], "invalid identifier");
-				continue;
+				ft_printf(1, "minishell: export: '%s': %s",
+					argv[cursor], "not a valid identifier\n");
+				error++;
 			}
-			else if (end_name != NULL)
-				add_var_to_env(argv[cursor]);
-			add_var_to_export(argv[cursor]);
+			else
+			{
+				end_name = ft_strchr(argv[cursor], '=');
+				if (end_name == argv[cursor])
+				{
+					ft_printf(STDERR_FILENO, "minishell: export: « %s » : %s\n",
+						argv[cursor], "invalid identifier");
+				}
+				else if (end_name != NULL)
+					add_var_to_env(argv[cursor]);
+				add_var_to_export(argv[cursor]);
+			}
 		}
 	}
 	else
 		export();
-	return (0);
+	if (error == 0)
+		return (0);
+	else
+		return (ERROR);
 }

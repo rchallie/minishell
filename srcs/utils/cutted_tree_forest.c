@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/19 18:59:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/26 15:32:45 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ static int		tree_named_env(char **entry, char **word)
 		rtn++;
 		while (*entry && **entry != '\'' && **entry != '\"' && **entry != '='
 			&& *(*entry - 1) != '?' && (ft_isalnum(**entry)  || **entry == '?'
-			|| **entry == '_' || **entry == '$')
-			&& (*(*entry - 1) ))
+			|| **entry == '_' || **entry == '$'))
 		{
 			env_var_name = add_char_to_word_free(env_var_name, **entry);
 			(*entry)++;
@@ -47,9 +46,7 @@ static int		tree_named_env(char **entry, char **word)
 			*word = ft_strjoin(*word, env_var_name);
 			*word = add_char_to_word_free(*word, '\0');
 		}
-		if (*(*entry - 1) == '$' && **entry == '=')
-			*word = add_char_to_word_free(*word, '$');
-		if (*(*entry - 1) == '$' && **entry == '\"')
+		if (*(*entry - 1) == '$' && (**entry == '=' || **entry == '\"'))
 			*word = add_char_to_word_free(*word, '$');
 	}
 	else if (**entry == '$')

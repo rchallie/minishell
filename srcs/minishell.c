@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/25 16:05:51 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/26 15:51:20 by thervieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,11 @@ static int		print_prompt(void)
 
 static int		minishell_loop(int *cmd_ret)
 {
-	char		*pwd;
-	char		*execute_path_env;
-
 	g_ms = (t_minishell){.iscmdret = 0, .isexecret = -1,
 		.last_cmd_rtn = *cmd_ret};
-	if (print_prompt() == ERROR || !get_pwd(&pwd))
+	if (print_prompt() == ERROR)
 		return (ERROR);
-	execute_path_env = ft_strjoin("_=", pwd);
-	free(pwd);
-	add_var_to_env(execute_path_env);
-	free(execute_path_env);
+	add_var_to_env("_=./minishell");
 	line_edition();
 	if (!sanitize(g_ms.entry, &g_ms.treated))
 	{
@@ -95,6 +89,7 @@ int				main(int ac, char **av, char **env)
 	{
 		g_ms = (t_minishell){.iscmdret = -1, .isexecret = -1,
 		.last_cmd_rtn = cmd_ret, .entry = line};
+		add_var_to_env("_=./minishell");
 		if (!sanitize(g_ms.entry, &g_ms.treated))
 		{
 			free_double_char_tab(g_ms.treated);
