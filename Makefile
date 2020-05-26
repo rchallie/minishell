@@ -112,7 +112,7 @@ fclean: clean
 	
 re: fclean all
 
-valgind: all
+valgrind: all
 	valgrind --leak-check=yes --errors-for-leak-kinds=all --show-leak-kinds=all ./$(NAME)
 
 # ==========================================================================================

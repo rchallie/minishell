@@ -45,7 +45,7 @@ int				echo_(
 	while (argv[cursor])
 	{
 		write(1, argv[cursor], ft_secure_strlen(argv[cursor]));
-		if (argv[cursor + 1] != NULL)
+		if (argv[cursor + 1])
 			write(1, " ", 1);
 		cursor++;
 	}
