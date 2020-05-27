@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/26 15:51:20 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/26 17:34:52 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,43 @@ int				treat_entry(void)
 	if ((seq_ret = get_sequence(g_ms.treated, &g_ms.sequence)) != SUCCESS)
 		return (ERROR);
 	reorder_sequence();
-	while (g_ms.treated[g_ms.cursor])
-		g_ms.has_pipe += (g_ms.sequence[g_ms.cursor++] == 6) ? 1 : 0;
-	g_ms.has_pipe += (g_ms.has_pipe) ? 1 : 0;
-	(g_ms.has_pipe == 0) ? cmd_no_pipe() : cmd_has_pipe(0, 0, 0);
+
+	int cursor = 0;
+	while(g_ms.treated[cursor])
+	{
+		char **cmd = NULL;
+		int *seq;
+		g_ms.has_pipe = 0;
+		while (g_ms.treated[cursor] && g_ms.sequence[cursor] != 7)
+		{
+			if (!add_word_to_tab(g_ms.treated[cursor], &cmd))
+				return (ERROR);
+			cursor++;
+		}
+		get_sequence(cmd, &seq);
+		int n_cursor = 0;
+		while (cmd[n_cursor])
+		{
+			ft_printf(1, "Cmd = %s | seq = %d\n", cmd[n_cursor], seq[n_cursor]);
+			n_cursor++;
+		}
+
+		int cmd_cursor = 0;
+		while (cmd[cmd_cursor])
+			g_ms.has_pipe += (g_ms.sequence[cmd_cursor++] == 6) ? 1 : 0;
+		g_ms.has_pipe += (g_ms.has_pipe) ? 1 : 0;
+		(g_ms.has_pipe == 0) ? cmd_no_pipe(cmd, seq) : cmd_has_pipe(0, 0, 0, cmd, seq);
+		free(seq);
+		free_double_char_tab(cmd);
+		if (g_ms.treated[cursor])
+			cursor++;
+		ft_printf(1, "Cursor = %d\n", cursor);
+	}
+
+	// while (g_ms.treated[g_ms.cursor])
+	// 	g_ms.has_pipe += (g_ms.sequence[g_ms.cursor++] == 6) ? 1 : 0;
+	// g_ms.has_pipe += (g_ms.has_pipe) ? 1 : 0;
+	// (g_ms.has_pipe == 0) ? cmd_no_pipe() : cmd_has_pipe(0, 0, 0);
 	free_double_char_tab(g_ms.treated);
 	free(g_ms.sequence);
 	return (SUCCESS);

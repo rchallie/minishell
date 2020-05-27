@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/19 19:04:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/26 17:55:34 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	if_in_out(int nb_cmd_p,
 		else
 			dup2(tab_fpipe[nb_cmd_p][1], STDOUT_FILENO);
 		close(tab_fpipe[nb_cmd_p][0]);
-		close(tab_fpipe[nb_cmd_p][1]);
+		// close(tab_fpipe[nb_cmd_p][1]);
 	}
 	else if (nb_cmd_p < g_ms.has_pipe - 1)
 	{
@@ -36,31 +36,33 @@ static void	if_in_out(int nb_cmd_p,
 		dup2(tab_fpipe[nb_cmd_p - 1][0], in_out[2]);
 }
 
-static void	treat_child(int nb_cmd_p, int **tab_fpipe)
+static void	treat_child(int nb_cmd_p, int **tab_fpipe, char **cmd, int *seq)
 {
 	int		in_out[4];
 	int		cmd_return;
-
+	int		cursor = 1;
+	
 	in_out[0] = dup(STDOUT_FILENO);
 	in_out[1] = dup(STDIN_FILENO);
 	if ((in_out[2] = has_redir_input(0,
-		g_ms.seq_cursor + 1, STDOUT_FILENO)) == -1
+		cursor + 1, STDIN_FILENO, cmd, seq)) == -1
 	|| (in_out[3] = has_redir_output(0,
-		g_ms.seq_cursor + 1, STDIN_FILENO)) == -1)
+		cursor + 1, STDOUT_FILENO, cmd, seq)) == -1)
 		return ;
-	in_out[2] = has_redir_input(0, g_ms.seq_cursor + 1, STDIN_FILENO);
-	in_out[3] = has_redir_output(0, g_ms.seq_cursor + 1, STDOUT_FILENO);
+	// in_out[2] = has_redir_input(0, cursor + 1, STDIN_FILENO, cmd, seq);
+	// in_out[3] = has_redir_output(0, cursor + 1, STDOUT_FILENO, cmd, seq);
 	if (in_out[3] != STDOUT_FILENO)
 		dup2(in_out[3], STDOUT_FILENO);
-	dup2(in_out[2], STDIN_FILENO);
+	if (in_out[2] != STDIN_FILENO)
+		dup2(in_out[2], STDIN_FILENO);
 	if_in_out(nb_cmd_p, tab_fpipe, (int *)in_out);
-	cmd_return = treat_command();
+	cmd_return = treat_command(cmd, seq);
 	dup2(in_out[0], STDOUT_FILENO);
 	close(in_out[0]);
 	dup2(in_out[1], STDIN_FILENO);
 	close(in_out[1]);
 	if (cmd_return == ERROR)
-		error_command(g_ms.treated[g_ms.seq_cursor]);
+		error_command(cmd[cursor]);
 }
 
 int			**malloc_tab_fpipe(int **tab_fpipe)
@@ -82,24 +84,20 @@ int			**malloc_tab_fpipe(int **tab_fpipe)
 }
 
 int			child(int *fork_, int nb_cmd_p,
-	int **tab_fpipe)
+	int **tab_fpipe, char **cmd, int *seq)
 {
 	if (pipe(tab_fpipe[nb_cmd_p]) == -1)
 		return (0);
 	if ((*fork_ = fork()) < 0)
 		return (0);
-	(*fork_ == 0) ? treat_child(nb_cmd_p, tab_fpipe) : 0;
+	(*fork_ == 0) ? treat_child(nb_cmd_p, tab_fpipe, cmd, seq) : 0;
 	(*fork_ == 0) ? exit(0) : 0;
 	(*fork_ != 0) ? close(tab_fpipe[nb_cmd_p][1]) : 0;
-	g_ms.seq_cursor++;
-	while (g_ms.sequence[g_ms.seq_cursor]
-		&& g_ms.seq_cursor < g_ms.treated_len)
-		g_ms.seq_cursor++;
 	return (1);
 }
 
 void		cmd_has_pipe(int gen_fork,
-	int fork_, int nb_cmd_p)
+	int fork_, int nb_cmd_p, char **cmd, int *seq)
 {
 	int		status;
 	int		gen_status;
@@ -117,7 +115,7 @@ void		cmd_has_pipe(int gen_fork,
 		while (nb_cmd_p < g_ms.has_pipe)
 		{
 			signal(SIGINT, NULL);
-			if (!child(&fork_, nb_cmd_p, tab_fpipe))
+			if (!child(&fork_, nb_cmd_p, tab_fpipe, cmd, seq))
 				break ;
 			nb_cmd_p++;
 		}
