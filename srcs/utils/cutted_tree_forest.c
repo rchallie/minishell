@@ -6,16 +6,16 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/26 15:32:45 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/29 15:24:27 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
 
-static int		tree_named_env(char **entry, char **word)
+static int tree_named_env(char **entry, char **word)
 {
-	int		rtn;
-	char	*env_var_name;
+	int rtn;
+	char *env_var_name;
 
 	env_var_name = NULL;
 	rtn = 0;
@@ -23,8 +23,8 @@ static int		tree_named_env(char **entry, char **word)
 	{
 		(*entry)++;
 		rtn++;
-		while (*entry && **entry != '\'' && **entry != '\"' && **entry != '='
-			&& *(*entry - 1) != '?' && (ft_isalnum(**entry)  || **entry == '?'
+		while (**entry && **entry != '\'' && **entry != '\"' && **entry != '='
+			&& *(*entry - 1) != '?' && (ft_isalnum(**entry) || **entry == '?'
 			|| **entry == '_' || **entry == '$'))
 		{
 			env_var_name = add_char_to_word_free(env_var_name, **entry);
@@ -92,7 +92,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 			*word = add_char_to_word_free(*word, **entry);
 	else if (*double_q == 1)
 	{
-		if (**entry == '\\' && ((*(*entry + 1) == '\"') || *(*entry + 1) == '$'))
+		if (**entry == '\\' && ((*(*entry + 1) == '\"')))
 		{
 			(*entry)++;
 			*word = add_char_to_word_free(*word, **entry);

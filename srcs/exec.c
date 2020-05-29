@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/20 16:47:48 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/29 18:09:10 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ static int		exec_cmd(char *file, t_exec *ex)
 **					return 1 :	if everything was okay
 */
 
-static int		init_for_exec(t_exec *ex)
+static int		init_for_exec(t_exec *ex, char **cmd, int *seq)
 {
 	char	*last_exec_path;
 
-	ex->exec = g_ms.treated[ex->save_seq_cursor];
-	add_word_to_tab(g_ms.treated[ex->save_seq_cursor], &ex->argv);
-	if (g_ms.sequence[++ex->save_seq_cursor] > 2)
+	ex->exec = cmd[ex->save_seq_cursor];
+	add_word_to_tab(cmd[ex->save_seq_cursor], &ex->argv);
+	if (seq[++ex->save_seq_cursor] > 2)
 	{
 		ex->argv ? free_double_char_tab(ex->argv) : 0;
 		if (!(ex->argv = (char **)malloc(sizeof(char *) * 2)))
@@ -92,9 +92,9 @@ static int		init_for_exec(t_exec *ex)
 		ex->argv[1] = NULL;
 	}
 	else
-		while (g_ms.sequence[ex->save_seq_cursor]
-			&& g_ms.sequence[ex->save_seq_cursor] <= 2)
-			add_word_to_tab(g_ms.treated[ex->save_seq_cursor++], &ex->argv);
+		while (seq[ex->save_seq_cursor]
+			&& seq[ex->save_seq_cursor] <= 2)
+			add_word_to_tab(cmd[ex->save_seq_cursor++], &ex->argv);
 	get_pwd(&ex->exec_path);
 	last_exec_path = ex->exec_path;
 	ex->exec_path = add_char_to_word(ex->exec_path, '/');
@@ -117,12 +117,41 @@ static int		init_for_exec(t_exec *ex)
 **					return 1 :	if everything was okay
 */
 
-static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
+static int		exec_from_env(t_exec *ex, int i, char *last_exec_path, char **cmd)
 {
+	ft_printf(1, "XXXXX\n");
 	ex->env_path = get_env_var_by_name("PATH");
+	ft_printf(1, "LLLLL\n");
+	// if (ex->env_path)
+		ft_printf(1, " ENVPATH = |%s|\n", ex->env_path);
+	ft_printf(1, "LLLLL\n");
+
+	// char *new_start = ex->env_path;
+	// char *find = NULL;
+	// char *path;
+	// while (new_start)
+	// {
+	// 	path = NULL;
+	// 	find = ft_strchr(new_start, ':');
+	// 	if (!find)
+	// 		find = new_start + ft_secure_strlen(new_start);
+	// 	path = ft_substr(ex->env_path, new_start - ex->env_path, find - new_start);
+	// 	ft_printf(1, "PATH = %s\n", path);
+	// 	add_word_to_tab(path, &ex->path_list);
+	// 	exit(1);
+	// 	if (path)
+	// 		free(path);
+	// 	if (find)
+	// 		new_start = find + 1;
+	// 	else
+	// 		new_start = find;
+	// }
+
 	ex->path_list = ft_split(ex->env_path, ':');
+
 	free(ex->env_path);
-	if (is_cmd(g_ms.treated[g_ms.seq_cursor]) == -1)
+	ft_printf(1, "ZZZZZ\n");
+	if (is_cmd(cmd[0]) == -1)
 	{
 		while (++i < get_double_char_tab_len(ex->path_list))
 		{
@@ -153,7 +182,7 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path)
 **					return 1 :	if the binarie was found and executed
 */
 
-int				is_exec(void)
+int				is_exec(char **cmd, int *seq)
 {
 	t_exec	ex;
 
@@ -162,21 +191,30 @@ int				is_exec(void)
 	ex.env_path = NULL;
 	ex.path_list = NULL;
 	ex.argv = NULL;
-	ex.save_seq_cursor = g_ms.seq_cursor;
-	if (!init_for_exec(&ex))
+	ex.save_seq_cursor = 0;
+	ft_printf(1, "AAAAA\n");
+	if (!init_for_exec(&ex, cmd, seq))
 		return (ERROR);
+	ft_printf(1, "BBBBB\n");
 	if (ft_secure_strlen(ex.exec) == 0)
 	{
 		free(ex.exec_path);
 		free_double_char_tab(ex.argv);
 		return (ERROR);
 	}
+	ft_printf(1, "CCCCC\n");
 	if (exec_cmd(ex.exec, &ex) == SUCCESS)
 		return (SUCCESS);
+	ft_printf(1, "DDDDD\n");
 	free(ex.exec_path);
 	ex.exec_path = NULL;
-	if (exec_from_env(&ex, -1, NULL) == SUCCESS)
+	ft_printf(1, "EEEEE\n");
+	if (exec_from_env(&ex, -1, NULL, cmd) == SUCCESS)
+	{
+		ft_printf(1, "UUUUU\n");
 		return (SUCCESS);
+	}
+	ft_printf(1, "FFFFF\n");
 	free_double_char_tab(ex.argv);
 	return (ERROR);
 }
