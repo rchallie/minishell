@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/26 15:47:24 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/05/28 15:31:39 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int				export_(
 				end_name = ft_strchr(argv[cursor], '=');
 				if (end_name == argv[cursor])
 				{
-					ft_printf(STDERR_FILENO, "minishell: export: « %s » : %s\n",
+					ft_printf(2, "minishell: export: « %s » : %s\n",
 						argv[cursor], "invalid identifier");
 				}
 				else if (end_name != NULL)

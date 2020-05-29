@@ -1,0 +1,166 @@
+==897== Memcheck, a memory error detector
+==897== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==897== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==897== Command: ./minishell
+==897== Parent PID: 874
+==897== 
+==897== Invalid free() / delete / delete[] / realloc()
+==897==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x405353: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b90 is 0 bytes inside a block of size 10 free'd
+==897==    at 0x4C30D3B: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x409D36: sanitize (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404BEA: treat_entry (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405344: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Block was alloc'd at
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x403096: ft_substr (ft_substr.c:24)
+==897==    by 0x4052FB: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x402968: ft_strlen (ft_strlen.c:20)
+==897==    by 0x403A29: manage_string (manage_char_and_str.c:42)
+==897==    by 0x40459F: parse_conv (parse_flags.c:37)
+==897==    by 0x4036BA: parse_string (ft_printf.c:49)
+==897==    by 0x403800: ft_printf (ft_printf.c:68)
+==897==    by 0x4050B1: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b44 is 0 bytes after a block of size 20 alloc'd
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x402539: ft_strdup (ft_strdup.c:23)
+==897==    by 0x40AC1A: edit_line (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x40AC42: line_edition (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405078: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x402968: ft_strlen (ft_strlen.c:20)
+==897==    by 0x404B78: flags_put_str_for_sp (put_group_functions.c:82)
+==897==    by 0x403A6D: manage_string (manage_char_and_str.c:44)
+==897==    by 0x40459F: parse_conv (parse_flags.c:37)
+==897==    by 0x4036BA: parse_string (ft_printf.c:49)
+==897==    by 0x403800: ft_printf (ft_printf.c:68)
+==897==    by 0x4050B1: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b44 is 0 bytes after a block of size 20 alloc'd
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x402539: ft_strdup (ft_strdup.c:23)
+==897==    by 0x40AC1A: edit_line (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x40AC42: line_edition (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405078: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x4048DA: put_str (put_group_functions.c:20)
+==897==    by 0x404B8A: flags_put_str_for_sp (put_group_functions.c:82)
+==897==    by 0x403A6D: manage_string (manage_char_and_str.c:44)
+==897==    by 0x40459F: parse_conv (parse_flags.c:37)
+==897==    by 0x4036BA: parse_string (ft_printf.c:49)
+==897==    by 0x403800: ft_printf (ft_printf.c:68)
+==897==    by 0x4050B1: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b44 is 0 bytes after a block of size 20 alloc'd
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x402539: ft_strdup (ft_strdup.c:23)
+==897==    by 0x40AC1A: edit_line (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x40AC42: line_edition (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405078: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x40237A: ft_strchr (ft_strchr.c:17)
+==897==    by 0x4050C5: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b44 is 0 bytes after a block of size 20 alloc'd
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x402539: ft_strdup (ft_strdup.c:23)
+==897==    by 0x40AC1A: edit_line (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x40AC42: line_edition (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405078: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x402394: ft_strchr (ft_strchr.c:19)
+==897==    by 0x4050C5: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b44 is 0 bytes after a block of size 20 alloc'd
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x402539: ft_strdup (ft_strdup.c:23)
+==897==    by 0x40AC1A: edit_line (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x40AC42: line_edition (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405078: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x406FB3: ft_secure_strlen (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x4050E8: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b44 is 0 bytes after a block of size 20 alloc'd
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x402539: ft_strdup (ft_strdup.c:23)
+==897==    by 0x40AC1A: edit_line (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x40AC42: line_edition (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405078: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x405150: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b44 is 0 bytes after a block of size 20 alloc'd
+==897==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==897==    by 0x402539: ft_strdup (ft_strdup.c:23)
+==897==    by 0x40AC1A: edit_line (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x40AC42: line_edition (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x405078: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x4048BB: put_str (put_group_functions.c:22)
+==897==    by 0x404B8A: flags_put_str_for_sp (put_group_functions.c:82)
+==897==    by 0x403A6D: manage_string (manage_char_and_str.c:44)
+==897==    by 0x40459F: parse_conv (parse_flags.c:37)
+==897==    by 0x4036BA: parse_string (ft_printf.c:49)
+==897==    by 0x403800: ft_printf (ft_printf.c:68)
+==897==    by 0x4050B1: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b68 is 24 bytes after a block of size 32 in arena "client"
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x402385: ft_strchr (ft_strchr.c:17)
+==897==    by 0x4050C5: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b68 is 24 bytes after a block of size 32 in arena "client"
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x405166: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b68 is 24 bytes after a block of size 32 in arena "client"
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x40516D: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b69 is 25 bytes after a block of size 32 in arena "client"
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x405194: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b68 is 24 bytes after a block of size 32 in arena "client"
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x4051CB: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b68 is 24 bytes after a block of size 32 in arena "client"
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x405202: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b68 is 24 bytes after a block of size 32 in arena "client"
+==897== 
+==897== Invalid read of size 1
+==897==    at 0x405239: minishell_loop (in /home/thibault/Desktop/minishell/minishell)
+==897==    by 0x404EEC: main (in /home/thibault/Desktop/minishell/minishell)
+==897==  Address 0x5461b68 is 24 bytes after a block of size 32 in arena "client"
+==897== 

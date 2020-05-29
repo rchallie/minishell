@@ -52,7 +52,7 @@ INCS_DIR	 = ./incs
 # FLAGS ====================================================================================
 
 INCLUDE 	= -I$(INCS_DIR)
-FLAGS 		= -ltermcap -Wall -Wextra -Werror
+FLAGS 		= -ltermcap -Wall -Wextra -Werror -g
 
 # ==========================================================================================
 
@@ -113,7 +113,7 @@ fclean: clean
 re: fclean all
 
 valgrind: all
-	valgrind --leak-check=yes --errors-for-leak-kinds=all --show-leak-kinds=all ./$(NAME)
+	valgrind --log-file=val --leak-check=yes --errors-for-leak-kinds=all --show-leak-kinds=all ./$(NAME)
 
 # ==========================================================================================
 

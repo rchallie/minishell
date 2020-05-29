@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/26 17:32:12 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/05/29 16:41:52 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,19 @@ int				treat_command(char **cmd, int *seq)
 
 	argv = NULL;
 	int cursor = 0;
-	if (seq[cursor] == 0
-		&& (g_ms.isexecret = is_exec()) == ERROR)
+
+	int e = 0;
+	while (cmd[e])
 	{
+		ft_printf(1, " TREAT cmd = |%s|\n", cmd[e]);
+		ft_printf(1, " TREAT seq = |%d|\n", seq[e]);
+		e++;
+	}
+	ft_printf(1, "PLOP\n");
+	if (seq[cursor] == 0
+		&& (g_ms.isexecret = is_exec(cmd, seq)) == ERROR)
+	{
+		ft_printf(1, "MEH\n");
 		if ((g_ms.iscmdret = is_cmd(cmd[cursor])) != -1
 			&& (g_ms.iscmdret >= 0 && g_ms.iscmdret <= 6))
 		{
@@ -50,8 +60,11 @@ int				treat_command(char **cmd, int *seq)
 		}
 		else if (seq[cursor] == 0
 			&& g_ms.iscmdret == -1 && cmd[cursor][0])
+			{
 				return (ERROR);
+			}
 	}
+	ft_printf(1, "OOOOOOO\n");
 	return (SUCCESS);
 }
 
@@ -61,20 +74,26 @@ void			cmd_no_pipe(char **cmd, int *seq)
 	int			saved_stdin;
 	int			fdinput;
 	int			fdoutput;
-	int			cursor = 0;
 
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
 	if ((fdoutput = has_redir_output(0,
-		cursor + 1, STDOUT_FILENO, cmd, seq)) == -1
+		1, STDOUT_FILENO, cmd, seq)) == -1
 	|| (fdinput = has_redir_input(0,
-		cursor + 1, STDIN_FILENO, cmd, seq)) == -1)
+		1, STDIN_FILENO, cmd, seq)) == -1)
 		return ;
 	dup2(fdinput, STDIN_FILENO);
 	dup2(fdoutput, STDOUT_FILENO);
 
+	int e = 0;
+	while (cmd[e])
+	{
+		ft_printf(1, "NOPIPE = %s\n", cmd[e]);
+		e++;
+	}
+
 	if (treat_command(cmd, seq) == ERROR)
-		error_command(cmd[cursor]);
+		error_command(cmd[0]);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdout);
 	dup2(saved_stdin, STDIN_FILENO);
