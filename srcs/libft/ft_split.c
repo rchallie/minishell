@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 17:26:55 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/29 18:33:48 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/09 18:14:44 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static char		**ft_cpy(char **strs, char const *s, char c)
 			strs[i][j] = '\0';
 		h++;
 	}
-	write(1, "cpy\n", 2);
+	// write(1, "cpy\n", 2);
 	return (strs);
 }
 
@@ -114,7 +114,7 @@ char			**ft_split(char const *s, char c)
 	char	**rtn = NULL;
 	int		nbr_w;
 
-	write(1, "a\n", 2);
+	// write(1, "a\n", 2);
 	if (!s || !*s)
 	{
 		if (!(rtn = malloc(sizeof(char *) * 1)))
@@ -122,16 +122,16 @@ char			**ft_split(char const *s, char c)
 		*rtn = (void *)0;
 		return (rtn);
 	}
-	write(1, "b\n", 2);
+	// write(1, "b\n", 2);
 	nbr_w = ft_hm(s, c);
-	printf("NBR WORD = %d\n", nbr_w);
-	write(1, "c\n", 2);
+	// printf("NBR WORD = %d\n", nbr_w);
+	// write(1, "c\n", 2);
 	rtn = malloc(sizeof(char *) * (nbr_w + 1));
-	write(1, "d\n", 2);
+	// write(1, "d\n", 2);
 	if (!rtn)
 		return (0);
 	ft_bzero(rtn, sizeof(char *) * (nbr_w + 1));
-	write(1, "e\n", 2);
+	// write(1, "e\n", 2);
 	if (ft_mal(rtn, s, c) != 0)
 		ft_cpy(rtn, s, c);
 	else
@@ -139,7 +139,7 @@ char			**ft_split(char const *s, char c)
 		free(rtn);
 		return (NULL);
 	}
-	write(1, "AUREVOIR\n", 9);
+	// write(1, "AUREVOIR\n", 9);
 	rtn[nbr_w] = (void *)0;
 	return (rtn);
 }

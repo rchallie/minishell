@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/03 10:18:57 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/29 16:25:18 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/09 18:35:27 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,43 +123,9 @@ int			reorder_sequence(char ***cmd, int **seq)
 {
 	int i;
 
-	ft_printf(1, "\n--- PREVIOUS REORDER ---\n");
-	int j = 0;
-	char **d_cmd = *cmd;
-	while (j < get_double_char_tab_len(d_cmd))
-	{
-		ft_printf(1, "AA\n");
-		ft_printf(1, "*seq[j] = %d\n", (*seq)[j]);
-		if ((*seq)[j] == 0)
-			ft_printf(1, "{%d} %d | CMD		(%s)\n", j, (*seq)[j], (d_cmd[j]));
-		else if ((*seq)[j] == 1)
-			ft_printf(1, "{%d} %d | FLAG		(%s)\n", j, (*seq)[j], (d_cmd[j]));
-		else if ((*seq)[j] == 2)
-			ft_printf(1, "{%d} %d | ARG		(%s)\n", j, (*seq)[j], (d_cmd[j]));
-		else if ((*seq)[j] == 3)
-			ft_printf(1, "{%d} %d | REDIR \">\"	(%s)\n", j, (*seq)[j], (d_cmd[j]));
-		else if ((*seq)[j] == 4)
-			ft_printf(1, "{%d} %d | REDIR \">>\"	(%s)\n", j, (*seq)[j], (d_cmd[j]));
-		else if ((*seq)[j] == 5)
-			ft_printf(1, "{%d} %d | REDIR  \"<\"	(%s)\n", j, (*seq)[j], (d_cmd[j]));
-		else if ((*seq)[j] == 6)
-			ft_printf(1, "\n{%d} %d | PIPE\n\n", j, (*seq)[j]);
-		else if ((*seq)[j] == 7)
-			ft_printf(1, "{%d} %d | END\n", j, (*seq)[j]);
-		else if ((*seq)[j] == 8)
-			ft_printf(1, "{%d} %d | FILE		(%s)\n", j, (*seq)[j], (d_cmd[j]));
-		else if ((*seq)[j] == 9)
-			ft_printf(1, "{%d} %d | NEWLINE\n", j, (*seq)[j]);
-		else if ((*seq)[j] == -1)
-			ft_printf(1, "{%d} %d | ERROR\n", j, (*seq)[j]);
-		j++;
-	}
-	
 	i = 0;
-	ft_printf(1, "CMD[i] start = %d\n", *(*(cmd[i])));
 	while ((*cmd)[i])
 	{
-		ft_printf(1, "A\n");
 		if ((*seq)[i] == 3 || (*seq)[i] == 4
 			|| (*seq)[i] == 5)
 			reorder_redir(&i, cmd, seq);

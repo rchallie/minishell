@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 10:23:19 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 16:24:50 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/09 18:21:28 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int				echo_(
 	(void)envp;
 	cursor = 1;
 	has_opt = 0;
-	while  (argv[cursor + has_opt] && ft_strcmp(argv[cursor + has_opt], "-n") == 0)
+	while (argv[cursor + has_opt]
+		&& ft_strcmp(argv[cursor + has_opt], "-n") == 0)
 		has_opt++;
 	cursor += has_opt;
 	while (argv[cursor])

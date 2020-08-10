@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/28 15:31:39 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/09 18:31:52 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,12 +173,12 @@ int				export_(
 	char **envp
 )
 {
+	(void)envp;
 	int			cursor;
 	char		*end_name;
 	int			error;
 
 	error = 0;
-	(void)envp;
 	cursor = 0;
 	if (argc > 1)
 	{
