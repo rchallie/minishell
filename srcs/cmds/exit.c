@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 17:24:07 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 19:00:43 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 22:11:22 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ int		exit_minishell(
 		free_double_char_tab(g_envp);
 	if (g_export_vars)
 		free_double_char_tab(g_export_vars);
-	exit(0);
+	if (argc == 2)
+		exit(ft_atoi(argv[1]));
+	exit(g_ms.last_cmd_rtn);
 }

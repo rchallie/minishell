@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 15:23:43 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 22:18:46 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static void		entry_splitter(
 		if (new_start == 0)
 			break ;
 	}
+
 }
 
 /*
@@ -160,6 +161,9 @@ int				main(int ac, char **av, char **env)
 	(void)av;
 	cmd_ret = 0;
 	rtn = 0;
+	
+	if(!get_pwd(&g_pwd))
+		return (ERROR);
 	dup_double_char_tab(env, &g_envp);
 	sigcatcher_init();
 	if (isatty(0))

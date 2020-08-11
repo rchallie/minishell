@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 18:06:20 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 22:04:23 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	change_dir(
 )
 {
 	DIR			*dir;
-	int			chdir_return;
+	int			rtn;
 	char		*old_pwd;
 
 	dir = opendir(path);
@@ -42,14 +42,20 @@ static int	change_dir(
 	else
 	{
 		closedir(dir);
-		if (get_pwd(&old_pwd) == ERROR)
-		{
-			ft_printf(2, "cd : %s\n", strerror(errno));
-			return (1);
-		}
+		get_shell_pwd(&old_pwd);
 		add_var_to_env(ft_strjoin("OLDPWD=", old_pwd));
-		chdir_return = chdir(path);
-		if (chdir_return == -1)
+		rtn = chdir(path);
+		if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR && (!ft_strcmp(".", path)
+			|| !ft_strcmp("./", path)))
+		{
+			char *old_pwd = g_pwd;
+			g_pwd = ft_strjoin(g_pwd, "/");
+			free(old_pwd);
+			old_pwd = g_pwd;
+			g_pwd = ft_strjoin(g_pwd, path);
+			free(old_pwd);
+		}
+		if (rtn == -1)
 			return (error_path("cd", argv[cursor + 1], errno));
 	}
 	return (0);
@@ -93,8 +99,7 @@ int			cd(
 		path = ft_strdup(argv[cursor + 1]);
 	if (change_dir(path, cursor, argv) != 0)
 		return (1);
-	if (get_pwd(&pwd) == ERROR)
-		return (1);
+	get_shell_pwd(&pwd);
 	add_var_to_env(ft_strjoin("PWD=", pwd));
 	return (0);
 }
