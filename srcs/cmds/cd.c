@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 16:15:30 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 18:06:20 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static int	change_dir(
 	{
 		closedir(dir);
 		if (get_pwd(&old_pwd) == ERROR)
+		{
+			ft_printf(2, "cd : %s\n", strerror(errno));
 			return (1);
+		}
 		add_var_to_env(ft_strjoin("OLDPWD=", old_pwd));
 		chdir_return = chdir(path);
 		if (chdir_return == -1)

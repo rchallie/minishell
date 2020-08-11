@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/08/11 11:18:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 17:30:43 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ static void		child_in_out_put(
 	|| (fdinput = has_redir_input(0,
 		1, STDIN_FILENO, child_cmd, child_seq)) == -1)
 		return ;
+	
+	// ft_printf(1, "FDOUT : %d\n", fdoutput);
+
 	if (fdinput != STDIN_FILENO)
 		dup2(fdinput, STDIN_FILENO);
 	else if (nb_cmd_p != 0)
@@ -79,7 +82,7 @@ static void		child_treat(
 	int *child_seq;
 
 	get_sequence(child_cmd, &child_seq);
-	reorder_sequence(&child_cmd, &child_seq);
+	// reorder_sequence(&child_cmd, &child_seq);
 	child_in_out_put(nb_cmd_p, pipes_, child_cmd, child_seq);
 	count_closed_pipes = 0;
 	while (count_closed_pipes < ((g_ms.has_pipe - 1) * 2))

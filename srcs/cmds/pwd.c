@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/13 15:44:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 17:54:52 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int		get_pwd(char **pwd)
 	if (!(new_pwd = (char *)malloc(sizeof(char) * 1025)))
 		return (ERROR);
 	ft_bzero(new_pwd, 1025);
-	getcwd(new_pwd, sizeof(char) * 1024);
+	if (getcwd(new_pwd, sizeof(char) * 1024) == NULL)
+		return (ERROR);
 	*pwd = new_pwd;
 	return (SUCCESS);
 }
