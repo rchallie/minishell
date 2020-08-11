@@ -1,0 +1,1 @@
+echo plop | sed 's/.$//' | sed 's/.$//' ; ls | grep ans

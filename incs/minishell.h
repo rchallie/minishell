@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/10 16:30:14 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 11:34:41 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ t_minishell			g_ms;
 ** _____ Signal catchers _____
 */
 
+void				sigcatcher_init();
 void				sigint_catcher();
 void				sigquit_catcher();
 
@@ -271,6 +272,7 @@ void				raw_term_mode(void);
 void				line_edition(void);
 void				clear_term(void);
 void				put_beg(void);
+int					print_prompt(void);
 int					tc_putchar(int c);
 void				get_cursor_start_pos(t_line *line);
 int					ft_getwinsz(t_winsz *winsz);
