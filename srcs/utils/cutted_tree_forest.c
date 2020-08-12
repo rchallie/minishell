@@ -92,7 +92,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 			*word = add_char_to_word_free(*word, **entry);
 	else if (*double_q == 1)
 	{
-		if (**entry == '\\' && ((*(*entry + 1) == '\"')))
+		if (**entry == '\\' && ((*(*entry + 1) == '\"' || *(*entry + 1) == '$')))
 		{
 			(*entry)++;
 			*word = add_char_to_word_free(*word, **entry);
