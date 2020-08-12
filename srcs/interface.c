@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 18:35:30 by excalibur         #+#    #+#             */
-/*   Updated: 2020/08/11 11:19:40 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 21:44:06 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		print_prompt(void)
 	char *pwd;
 
 	if (!get_pwd_short(&pwd))
-		return (ERROR);
+			return (ERROR);
 	ft_printf(STDOUT_FILENO,
 		"\e[97m[\e[91mm\e[92mi\e[93mn\e[94mi\e[95ms\e[96mh\e[91me");
 	ft_printf(STDOUT_FILENO,

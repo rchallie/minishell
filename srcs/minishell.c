@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 11:46:57 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 22:18:46 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int				treat_entry(char *cmd)
 		g_ms.has_pipe += (sequence[cursor++] == 6) ? 1 : 0;
 	g_ms.has_pipe += (g_ms.has_pipe) ? 1 : 0;
 	(g_ms.has_pipe == 0) ?
-		cmd_no_pipe(cmd_treated, sequence) 
+		cmd_no_pipe(cmd_treated, sequence)
 			: cmd_has_pipe(cmd_treated, sequence);
 	free_double_char_tab(cmd_treated);
 	free(sequence);
@@ -79,9 +79,27 @@ static void		entry_splitter(
 		if (new_start == 0)
 			break ;
 	}
+
 }
 
-static int		minishell_loop(char *entry, int *cmd_ret, int isatty)
+/*
+** Function: minishell_loop
+** ------------
+**		Init global structur of variables. Call splitter
+**		to treate "entry" or the  entry  from  the  line
+**		edition, according to isatty.
+**
+**		params:
+**			"isatty" : if it's set to 0 the entry will be
+**					   voided and the used will be set from
+**					   line edition, otherwise if it's 1
+**					   "entry" will be used.
+**			"entry"	 : the entry to use (defined by main function).
+**			"cmd_ret": the address were store the return of th
+**					   command.
+*/
+
+static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 {
 	g_ms = (t_minishell){.iscmdret = 0, .isexecret = -1,
 		.last_cmd_rtn = *cmd_ret};
@@ -100,6 +118,39 @@ static int		minishell_loop(char *entry, int *cmd_ret, int isatty)
 	return (SUCCESS);
 }
 
+/*
+** Minishell :
+** -----------
+**		Minishell is a project from 42 School. Please
+**		take a look :  https://www.42.fr/.  The  main
+**		objectives is to recreate a  little  part  of
+**		bash :
+**			- Built in :
+**				+ cd
+**				+ echo
+**				+ env
+**				+ exit
+**				+ export
+**				+ pwd
+**				+ unset
+**			- Can execute other built in.
+**			- Pipes
+**			- Semicolon
+**			- Input / output / "overwrite output" file
+**			  in command line.
+**
+**		Main funtion check that the file  descritor  is
+**		linked to a terminal. If it's not, it will just
+**		execute commands line from the file descriptor,
+**		otherwise  it  open  minishell  and  wait   for
+**		commands.
+**
+**		params:
+**			"ac"	: the argument. count.
+**			"av"	: the arguments array.
+**			"env"	: the environments variables.
+*/
+
 int				main(int ac, char **av, char **env)
 {
 	int			cmd_ret;
@@ -110,19 +161,22 @@ int				main(int ac, char **av, char **env)
 	(void)av;
 	cmd_ret = 0;
 	rtn = 0;
+	
+	if(!get_pwd(&g_pwd))
+		return (ERROR);
 	dup_double_char_tab(env, &g_envp);
 	sigcatcher_init();
 	if (isatty(0))
 	{
 		put_beg();
 		while (42)
-			if (minishell_loop(g_ms.entry, &cmd_ret, 0) == ERROR)
+			if (minishell_loop(0, g_ms.entry, &cmd_ret) == ERROR)
 				return (1);
 	}
 	else
 		while ((rtn = get_next_line(0, &line)) > 0)
 		{
-			if (minishell_loop(line, &cmd_ret, 1) == ERROR)
+			if (minishell_loop(1, line, &cmd_ret) == ERROR)
 				return (1);
 			cmd_ret = g_ms.last_cmd_rtn;
 		}

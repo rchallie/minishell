@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 11:34:41 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/11 21:49:50 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define ERROR_NEAR_UNEXPECTED_AT_POS 0x9
 # define ERROR_SIGINT 0xA
 # define ERROR_SIGQUIT 0xB
+# define ERROR_NO_CURRENT_WORK_DIR 0xC
 
 # include "../srcs/libft/libft.h"
 # include <stdlib.h>
@@ -89,6 +90,7 @@ typedef struct		s_minishell
 	int				has_pipe;
 	int				cursor;
 	int				last_cmd_rtn;
+	char			*pwd;
 }					t_minishell;
 
 typedef struct		s_keymatch
@@ -162,6 +164,7 @@ typedef struct		s_args
 
 char				**g_envp;
 char				**g_export_vars;
+char				*g_pwd;
 t_minishell			g_ms;
 
 /*
@@ -212,9 +215,10 @@ int					get_word(char *startword, char **entry_addr, char **word);
 ** _____ Pwd _____
 */
 
+void				get_shell_pwd(char **pwd);
 int					get_pwd(char **pwd);
 int					get_pwd_short(char **pwd);
-
+int					get_pwd_short_from(char **pwd);
 /*
 ** _____ Commands _____
 */
