@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:16:10 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 22:04:50 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/12 23:39:35 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int		get_pwd_short(char **pwd)
 	return (SUCCESS);
 }
 
-int get_pwd_short_from(char **pwd)
+int		get_pwd_short_from(char **pwd)
 {
 	int		pwd_len;
 	char	*home;
