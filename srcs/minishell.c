@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 22:18:46 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/12 19:22:36 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,40 @@ int				treat_entry(char *cmd)
 	return (SUCCESS);
 }
 
+static int		entry_splitter_precheck(
+	char *entry
+)
+{
+	int s_quote = 0;
+	int d_quote = 0;
+	if (*entry && *entry == ';')
+	{
+		if (*(entry + 1) && *(entry + 1) == ';')
+			ft_printf(2, "minishell : syntax error near unexpected token « ;; »\n");
+		else
+			ft_printf(2, "minishell : syntax error near unexpected token « ; »\n");
+		return (ERROR);
+	}
+	while (*entry)
+	{
+		if (*entry == '\'' && *(entry - 1) != '\\' && s_quote == 0)
+			s_quote = 1;
+		else if (*entry == '\'' && *(entry - 1) != '\\' && s_quote == 1)
+			s_quote = 0;
+		if (*entry == '"' && *(entry - 1) != '\\' && d_quote == 0)
+			d_quote = 1;
+		else if (*entry == '"' && *(entry - 1) != '\\' && d_quote == 1)
+			d_quote = 0;
+		if ((s_quote != 1 && d_quote != 1) && *entry && *entry == ';' && *(entry + 1) == ';')
+		{
+			ft_printf(2, "minishell : syntax error near unexpected token « ;; »\n");
+			return (ERROR);
+		}
+		entry++;
+	}
+	return (SUCCESS);
+}
+
 static void		entry_splitter(
 	char *entry
 )
@@ -48,15 +82,23 @@ static void		entry_splitter(
 	char *cmd;
 	char *find = NULL;
 	char *new_start = entry;
+
+	if (entry_splitter_precheck(new_start) == ERROR)
+	{
+		g_ms.last_cmd_rtn = 2;
+		return;
+	}
+	
+	int s_quote = 0;
+	int d_quote = 0;
 	while (*new_start)
 	{
 		find = ft_strchr(new_start, ';');
 		if (!find)
 			find = (new_start + ft_secure_strlen(new_start));
 		char *cp = new_start;
-		int s_quote = 0;
-		int d_quote = 0;
-		while (*cp && *cp != *find)
+		
+		while (*cp && cp != find)
 		{
 			if (*cp == '\'' && *(cp - 1) != '\\' && s_quote == 0)
 				s_quote = 1;
@@ -66,12 +108,17 @@ static void		entry_splitter(
 				d_quote = 1;
 			else if (*cp == '"' && *(cp - 1) != '\\' && d_quote == 1)
 				d_quote = 0;
+			if (cp && *(cp + 1) && (cp + 1) == find && (s_quote == 1 || d_quote == 1))
+				if (*find && (*find + 1))
+					find = ft_strchr(find + 1, ';');
 			cp++;
 		}
-		if (s_quote == 1 || d_quote == 1)
-			continue;
+		if (!find)
+			find = (new_start + ft_secure_strlen(new_start));
 		cmd = ft_substr(entry, new_start - entry, find - new_start);
 		treat_entry(cmd);
+		s_quote = 0;
+		d_quote = 0;
 		if (find && *find && *(find + 1) != 0)
 			new_start = find + 1;
 		else
@@ -180,5 +227,5 @@ int				main(int ac, char **av, char **env)
 				return (1);
 			cmd_ret = g_ms.last_cmd_rtn;
 		}
-	return (0);
+	return (g_ms.last_cmd_rtn);
 }

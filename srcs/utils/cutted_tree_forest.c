@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/29 15:24:27 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/12 23:24:47 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ static int tree_named_env(char **entry, char **word)
 
 	env_var_name = NULL;
 	rtn = 0;
+	// ft_printf(1, "Actual char (pre) = %c (%.12s)| %d\n", **entry, *entry, **entry);
 	if (**entry == '$' && *(*entry + 1))
 	{
 		(*entry)++;
 		rtn++;
-		while (**entry && **entry != '\'' && **entry != '\"' && **entry != '='
+		while (**entry && **entry != '\'' && **entry != '\"' && **entry != '=' && **entry != '$'
 			&& *(*entry - 1) != '?' && (ft_isalnum(**entry) || **entry == '?'
-			|| **entry == '_' || **entry == '$'))
+			|| **entry == '_'))
 		{
 			env_var_name = add_char_to_word_free(env_var_name, **entry);
 			(*entry)++;
@@ -34,12 +35,12 @@ static int tree_named_env(char **entry, char **word)
 				break ;
 		}
 		if (env_var_name && ft_secure_strlen(env_var_name) == 1
-			&& env_var_name[0] == '?')
+			&& env_var_name[0] == '?')								 //Last return
 		{
 			env_var_name = (g_ms.last_cmd_rtn != -1) ?
 				ft_itoa(g_ms.last_cmd_rtn) : ft_strdup("0");
 		}
-		else if (env_var_name)
+		else if (env_var_name)										// Get en var normaly
 			env_var_name = get_env_var_by_name(env_var_name);
 		if (env_var_name && *env_var_name)
 		{
@@ -51,6 +52,7 @@ static int tree_named_env(char **entry, char **word)
 	}
 	else if (**entry == '$')
 		*word = ft_strdup("$");
+	// ft_printf(1, "Actual char (end) = %c (%.12s)| %d\n", **entry, *entry, **entry);
 	return (rtn);
 }
 
@@ -136,6 +138,7 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	save_startword = startword;
 	while (*startword)
 	{
+		// ft_printf(1, "Actual char (ins) = %c (%.12s)| %d\n", *startword, startword, *startword);
 		if (*startword == '$' && simple_q == 0)
 			char_count += tree_named_env(&startword, word);
 		if (((*startword == ' ' || *startword == '>' || *startword == '<'
@@ -143,12 +146,16 @@ int				get_word(char *startword, char **entry_addr, char **word)
 			&& !(simple_q || double_q)) && word)
 			break ;
 		char_count += if_quotes(&startword, word, &simple_q, &double_q);
-		startword++;
-		char_count++;
+		if (*startword && (*startword != '$' || (*startword == '$' && *(startword -1) == '\\')))
+		{
+			startword++;
+			char_count++;
+		}
 		if (*startword == '\0' && (simple_q || double_q))
 			quote_error(&startword, entry_addr, &save_startword, simple_q);
 	}
 	if (word && *word && is_special_token(*word) == SUCCESS)
 		*word = add_char_to_word_free(*word, 3);
+	// ft_printf(1, "Char count = %d\n", char_count);
 	return (char_count);
 }

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 21:49:50 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/12 12:05:16 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ int					get_pwd_short_from(char **pwd);
 ** _____ Commands _____
 */
 
-int					is_exec();
+int					is_exec(char **cmd, int *seq);
 int					export_(int argc, char **argv, char **envp);
 int					cd(int argc, char **argv, char **envp);
 int					print_work_dir(int argc, char **argv, char **envp);

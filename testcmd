@@ -1,1 +1,1 @@
-echo plop | sed 's/.$//' | sed 's/.$//' ; ls | grep ans
+echo ";; test" "; exit" 

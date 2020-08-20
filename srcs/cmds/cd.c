@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 22:04:23 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/08/12 23:44:48 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,10 @@ static int	change_dir(
 		get_shell_pwd(&old_pwd);
 		add_var_to_env(ft_strjoin("OLDPWD=", old_pwd));
 		rtn = chdir(path);
-		if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR && (!ft_strcmp(".", path)
-			|| !ft_strcmp("./", path)))
+		if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR
+			&& (!ft_strcmp(".", path) || !ft_strcmp("./", path)))
 		{
-			char *old_pwd = g_pwd;
-			g_pwd = ft_strjoin(g_pwd, "/");
-			free(old_pwd);
+			g_pwd = add_char_to_word_free(g_pwd, '/');
 			old_pwd = g_pwd;
 			g_pwd = ft_strjoin(g_pwd, path);
 			free(old_pwd);
