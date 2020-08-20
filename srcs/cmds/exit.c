@@ -81,6 +81,7 @@ int				exit_minishell(
 		free_double_char_tab(g_envp);
 	if (g_export_vars)
 		free_double_char_tab(g_export_vars);
+	ft_putstr("exit\n");
 	if (argc == 2)
 		exit(ft_atou(argv[1]));
 	exit(g_ms.last_cmd_rtn);
