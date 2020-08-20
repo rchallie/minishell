@@ -187,6 +187,7 @@ int					double_char_tab_contain(char *name, char **from);
 char				**double_tab_bubble_sort(char ***sort_me);
 int					double_char_tab_remove(char **to_remove, char ***array);
 int					add_word_to_tab(char *word, char ***treated);
+char				**new_double_char_tab_init(size_t double_tab_size, char *str_init);
 
 /*
 ** _____ Char array _____
