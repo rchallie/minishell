@@ -98,7 +98,6 @@ int				exit_minishell(
 		free_double_char_tab(g_envp);
 	if (g_export_vars)
 		free_double_char_tab(g_export_vars);
-	//ft_putstr_fd("exit\n", 2);
 	if (argc == 2)
 	{
 		if (!is_numeric_str(argv[1]))

@@ -132,6 +132,8 @@ static int		sanitize_loop(int *up, char *entry, char ***treated)
 	word = NULL;
 	while (ft_is_whitespace(*(entry + *up)))
 		(*up)++;
+	//ft_printf(1, "entry = %s\n", entry);
+	//ft_printf(1, "lasting = %s\n", entry + *up);
 	*up += get_word((entry + *up), &entry, &word);
 	if (word && word[0] == '~' && (!word[1] || word[1] == '/'))
 		word = sanitize_home(word);
