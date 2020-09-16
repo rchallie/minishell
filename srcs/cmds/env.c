@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/19 19:01:36 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/16 17:37:16 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int			env(int argc, char **argv, char **g_envp)
 	i = 0;
 	cursor = 0;
 	env_list = NULL;
+	if (argc >= 2)
+		return (2);
 	while (g_envp[i])
 	{
 		env_list = ft_strjoin(env_list, g_envp[i]);
