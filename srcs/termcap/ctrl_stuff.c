@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-void	clear_screen_(int *key, t_line *line)
+void		clear_screen_(int *key, t_line *line)
 {
 	(void)key;
 	if (line->start.row > 1)
@@ -22,16 +22,31 @@ void	clear_screen_(int *key, t_line *line)
 	set_curpos(line);
 }
 
-void	exit_pgm(int *key, t_line *line)
+void	delete_char_ctrl_d(t_line *line)
 {
-	int		i;
-	char	*str;
-
-	i = -1;
-	str = "exit";
-	if (line->length != 0)
+	if (line->cursor == line->length)
 		return ;
-	while (++i != 5)
-		line->cmd[i] = str[i];
-	*key = '\n';
+	ft_memmove(line->cmd + line->cursor, line->cmd + line->cursor + 1,
+			MAX_CMD_LEN - line->cursor - 1);
+	line->length--;
+	tputs(tgetstr("cd", NULL), 0, &tc_putchar);
+	ft_putstr_fd(line->cmd + line->cursor, 0);
+	set_curpos(line);
+}
+
+void		exit_pgm(int *key, t_line *line)
+{
+	char	**exit;
+	int		*int_exit;
+
+	(void)key;
+	if (ft_strcmp(line->cmd, "") == 0)
+	{
+		exit = new_double_char_tab_init(1, "exit");
+		exit[1] = NULL;
+		get_sequence(exit, &int_exit);
+		treat_command(exit, int_exit);
+	}
+	else
+		delete_char_ctrl_d(line);
 }

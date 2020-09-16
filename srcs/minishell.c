@@ -95,16 +95,17 @@ static void		entry_splitter(
 	{
 		find = ft_strchr(new_start, ';');
 		if (!find)
+		{
 			find = (new_start + ft_secure_strlen(new_start));
+		}
 		char *cp = new_start;
-		
 		while (*cp && cp != find)
 		{
-			if (*cp == '\'' && *(cp - 1) != '\\' && s_quote == 0)
+			if (*cp == '\'' && *(cp - 1) != '\\' && (s_quote == 0 && d_quote == 0))
 				s_quote = 1;
-			else if (*cp == '\'' && *(cp - 1) != '\\' && s_quote == 1)
+			else if (*cp == '\'' && s_quote == 1)
 				s_quote = 0;
-			if (*cp == '"' && *(cp - 1) != '\\' && d_quote == 0)
+			if (*cp == '"' && *(cp - 1) != '\\' && (d_quote == 0 && s_quote == 0))
 				d_quote = 1;
 			else if (*cp == '"' && *(cp - 1) != '\\' && d_quote == 1)
 				d_quote = 0;
@@ -208,7 +209,7 @@ int				main(int ac, char **av, char **env)
 	(void)av;
 	cmd_ret = 0;
 	rtn = 0;
-	
+
 	if(!get_pwd(&g_pwd))
 		return (ERROR);
 	dup_double_char_tab(env, &g_envp);
@@ -223,6 +224,7 @@ int				main(int ac, char **av, char **env)
 	else
 		while ((rtn = get_next_line(0, &line)) > 0)
 		{
+			//ft_printf(1, "line = |%s|\n", line);
 			if (minishell_loop(1, line, &cmd_ret) == ERROR)
 				return (1);
 			cmd_ret = g_ms.last_cmd_rtn;

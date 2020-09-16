@@ -136,6 +136,11 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	double_q = 0;
 	char_count = 0;
 	save_startword = startword;
+	if (ft_secure_strlen(startword) == 1 && *startword == '$')
+	{
+		*word = add_char_to_word_free(*word, *startword);
+		return (1);
+	}
 	while (*startword)
 	{
 		// ft_printf(1, "Actual char (ins) = %c (%.12s)| %d\n", *startword, startword, *startword);

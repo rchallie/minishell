@@ -34,7 +34,7 @@ static char	**new_double_char_tab(size_t double_tab_size)
 	return (new_tab);
 }
 
-static char	**new_double_char_tab_init(size_t double_tab_size, char *str_init)
+char	**new_double_char_tab_init(size_t double_tab_size, char *str_init)
 {
 	char	**new_tab;
 
