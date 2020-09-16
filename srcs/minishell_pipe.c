@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/08/11 17:30:43 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/16 13:56:41 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ static void		child_in_out_put(
 		1, STDIN_FILENO, child_cmd, child_seq)) == -1)
 		return ;
 	
-	// ft_printf(1, "FDOUT : %d\n", fdoutput);
-
 	if (fdinput != STDIN_FILENO)
 		dup2(fdinput, STDIN_FILENO);
 	else if (nb_cmd_p != 0)
@@ -198,11 +196,12 @@ void			cmd_has_pipe(
 		exit(1258);
 	if (gen_fork == 0)
 	{
+		//ADD CHECK MALLOC
 		pipes_ = malloc(sizeof(int) * (g_ms.has_pipe * 2) - 1);
 		while (pipes_count < g_ms.has_pipe - 1)
 		{
 			if (pipe(pipes_ + (pipes_count * 2)) == -1)
-				exit(1);
+				exit(2);
 			pipes_count++;
 		}
 		parent(pipes_, cmd, seq);

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 22:15:58 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/16 14:42:37 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,50 @@ int				treat_command(char **cmd, int *seq)
 
 void			cmd_no_pipe(char **cmd, int *seq)
 {
-	int			saved_stdout;
-	int			saved_stdin;
+	// int			saved_stdout;
+	// int			saved_stdin;
 	int			fdinput;
 	int			fdoutput;
 
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stdin = dup(STDIN_FILENO);
+
 	if ((fdoutput = has_redir_output(0,
 		1, STDOUT_FILENO, cmd, seq)) == -1
 	|| (fdinput = has_redir_input(0,
 		1, STDIN_FILENO, cmd, seq)) == -1)
 		return ;
-	dup2(fdinput, STDIN_FILENO);
-	dup2(fdoutput, STDOUT_FILENO);
+
+	if (fdinput != STDIN_FILENO)
+		dup2(fdinput, STDIN_FILENO);
+	if (fdoutput != STDOUT_FILENO)
+		dup2(fdoutput, STDOUT_FILENO);
 	if (treat_command(cmd, seq) == ERROR)
 		error_command(cmd[0]);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdin);
+	if (fdinput != STDIN_FILENO)
+		close(fdinput);
+	if (fdoutput != STDOUT_FILENO)
+		close(fdoutput);
+	
+	// if ((fdoutput = has_redir_output(0,
+	// 	1, STDOUT_FILENO, cmd, seq)) == -1
+	// || (fdinput = has_redir_input(0,
+	// 	1, STDIN_FILENO, cmd, seq)) == -1)
+	// 	return ;
+
+	// if (fdoutput != STDOUT_FILENO)
+	// 	saved_stdout = dup(STDOUT_FILENO);
+	// ft_printf(2, "TITI EST LE PLUS BEAU\n");
+	// if (fdinput != STDOUT_FILENO)
+	// 	saved_stdin = dup(STDIN_FILENO);
+
+	// dup2(fdinput, STDIN_FILENO);
+	// dup2(fdoutput, STDOUT_FILENO);
+	// ft_printf(2, "INWTF\n");
+
+	// // dup2(saved_stdout, STDOUT_FILENO);
+	// close(saved_stdout);
+	// // dup2(saved_stdin, STDIN_FILENO);
+	// close(saved_stdin);
+	// ft_printf(2, "WTF\n");
 }
 
 int				has_redir_output(int redir_type,

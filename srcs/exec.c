@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 18:13:21 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/16 14:11:13 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,23 @@ static int		do_cmd(char *file, t_exec *ex)
 {
 	pid_t	pid;
 	int		status;
+	int		pipe_[2];
 
 	pid = 0;
+	//ADD CHECK MALLOC
+	if (pipe(pipe_) == -1)
+		exit(2);
 	if ((pid = fork()) == 0)
 	{
+		close(pipe_[0]);
+		dup2(pipe_[1], 2);
+		close(pipe_[1]);
 		if ((execve(file, ex->argv, g_envp)) == -1)
 			exit(errno);
 	}
 	else
 	{
+		close(pipe_[1]);
 		waitpid(pid, &status, 0);
 		g_ms.last_cmd_rtn = WEXITSTATUS(status);
 		free_double_char_tab(ex->argv);
