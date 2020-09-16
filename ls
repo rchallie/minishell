@@ -1,2 +1,1 @@
-echo plop
-cd efzeobfzuefb
+test
