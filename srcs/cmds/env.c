@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/16 17:37:16 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/16 19:43:23 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@ int			remove_var_env(char *var_name)
 	i = 0;
 	while (g_envp[i])
 	{
+		ft_printf(2, "YOUPI\n");
 		end_name = ft_strchr(g_envp[i], '=');
-		if (!ft_strncmp(g_envp[i], var_name, end_name - g_envp[i]))
+		if (end_name == NULL)
+			end_name = (g_envp[i] + ft_secure_strlen(g_envp[i]));
+		if (!ft_strncmp(g_envp[i], var_name, ft_strlen(var_name)))
 			break ;
 		i++;
 	}

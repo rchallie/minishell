@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:51:16 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/19 19:03:58 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/16 19:42:44 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	remove_var_export(
 		if (end_name == NULL)
 			end_name = (g_export_vars[i] + ft_secure_strlen(g_export_vars[i]));
 		if (!ft_strncmp(g_export_vars[i],
-			var_name, end_name - g_export_vars[i]))
+			var_name, ft_strlen(var_name)))
 			break ;
 		i++;
 	}
