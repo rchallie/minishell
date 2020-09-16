@@ -90,7 +90,10 @@ int				exit_minishell(
 	if (argc > 2)
 	{
 		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
-		return (1);
+		if (is_numeric_str(argv[1]))
+			return (1);
+		else
+			return (2);
 	}
 	free_double_char_tab(g_ms.treated);
 	free(g_ms.sequence);

@@ -186,7 +186,7 @@ int				export_(
 		{
 			if (!ft_isalpha(argv[cursor][0]) && argv[cursor][0] != '_')
 			{
-				ft_printf(1, "minishell: export: '%s': %s",
+				ft_printf(2, "minishell: export: '%s': %s",
 					argv[cursor], "not a valid identifier\n");
 				error++;
 			}

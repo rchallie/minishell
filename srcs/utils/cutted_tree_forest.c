@@ -143,7 +143,6 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	}
 	while (*startword)
 	{
-		// ft_printf(1, "Actual char (ins) = %c (%.12s)| %d\n", *startword, startword, *startword);
 		if (*startword == '$' && simple_q == 0)
 			char_count += tree_named_env(&startword, word);
 		if (((*startword == ' ' || *startword == '>' || *startword == '<'
@@ -159,7 +158,7 @@ int				get_word(char *startword, char **entry_addr, char **word)
 		if (*startword == '\0' && (simple_q || double_q))
 			quote_error(&startword, entry_addr, &save_startword, simple_q);
 	}
-	if (word && *word && is_special_token(*word) == SUCCESS)
+	if (word && *word && (is_special_token(*word) == SUCCESS))
 		*word = add_char_to_word_free(*word, 3);
 	// ft_printf(1, "Char count = %d\n", char_count);
 	return (char_count);
