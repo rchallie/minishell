@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/16 14:14:24 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/16 16:06:17 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,16 @@ int				main(int ac, char **av, char **env)
 		return (ERROR);
 	dup_double_char_tab(env, &g_envp);
 	sigcatcher_init();
+	
+	char *shlvl_string = get_env_var_by_name("SHLVL");
+	int shlvl = ft_atoi(shlvl_string);
+	free(shlvl_string);
+	shlvl_string = ft_itoa(shlvl + 1);
+	char *shlvl_final = ft_strjoin("SHLVL=",shlvl_string);
+	add_var_to_env(shlvl_final);
+	free(shlvl_string);
+	free(shlvl_final);
+
 	if (isatty(0))
 	{
 		put_beg();
