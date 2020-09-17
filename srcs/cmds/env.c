@@ -46,7 +46,6 @@ int			remove_var_env(char *var_name)
 	i = 0;
 	while (g_envp[i])
 	{
-		ft_printf(2, "YOUPI\n");
 		end_name = ft_strchr(g_envp[i], '=');
 		if (end_name == NULL)
 			end_name = (g_envp[i] + ft_secure_strlen(g_envp[i]));
