@@ -53,18 +53,28 @@ static u_int8_t	ft_atou(const char *str)
 int		is_numeric_str(char *str)
 {
 	int 	i;
+	int		sign;
+	int		nb;
 
+	nb = 0;	
 	i = 0;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
+	sign = 0;
+	sign = (str[i] == '+' || str[i] == '-') ? ++i : i;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
 	}
+	if (ft_secure_strlen(str) == (ft_secure_strlen("9223372036854775808") + sign))
+	{
+		nb = 10 * (str[sign + 17] - '0') + (str[sign + 18] - '0');
+		if (str[0] == '-' && nb > 8)
+			return (0);
+		else if (str[0] != '-' && nb > 7)
+			return (0);
+	}
 	return (1);
-
 }
 
 /*
