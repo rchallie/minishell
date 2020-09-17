@@ -100,17 +100,12 @@ int				exit_minishell(
 	if (argc > 2)
 	{
 		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
-		if (is_numeric_str(argv[1]))
-			return (1);
-		else
-			return (2);
+		return((is_numeric_str(argv[1]) ? 1 : 2));
 	}
 	free_double_char_tab(g_ms.treated);
 	free(g_ms.sequence);
-	if (g_envp)
-		free_double_char_tab(g_envp);
-	if (g_export_vars)
-		free_double_char_tab(g_export_vars);
+	(g_envp) ? free_double_char_tab(g_envp) : 0;
+	(g_export_vars) ? free_double_char_tab(g_export_vars) : 0;
 	if (argc == 2)
 	{
 		if (!is_numeric_str(argv[1]))
