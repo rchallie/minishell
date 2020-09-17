@@ -154,13 +154,13 @@ fi
 LC_ALL=C
 gcc test.c -o prog
 mkdir add_path && cd add_path && gcc ../ls.c -o ls && cd ..
-cd .. && make && cd minishell_tester
+cd .. && make && cd mst
 
-echo -e "$WHITE\n\nDisplay error messages ? [$GREEN Y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDisplay error messages ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'N' ]
+if [ $user_input = 'n' ]
 then
     display_error_msg=0
 fi
@@ -172,7 +172,7 @@ echo -e "\n\n$CYAN##############################################################
 echo -e "#                             EXECUTION TESTS                               #"
 echo -e "#############################################################################$RESET\n"
 
-echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -212,7 +212,7 @@ then
     run_test 'echo $PWD}'
 fi
 
-echo -e "$WHITE\n\nDo you want to do env tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do env tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -253,7 +253,7 @@ then
     run_test 'export testvar=10 ; export testvar=20 ; env | grep -a testvar'
 fi
 
-echo -e "$WHITE\n\nDo you want to do export tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do export tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -297,7 +297,7 @@ then
     run_test 'export testvar=10 ; export testvar=20 ; export | grep -a testvar'
     run_test 'export testvar=lala ; export ; export testvar=10 ; export' 'grep -v _=' 'sort'
 fi
-echo -e "$WHITE\n\nDo you want to do unset tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do unset tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -326,7 +326,7 @@ if [ $user_input = 'y' ]
     run_test 'export _a10=?lala%lala; export ; unset _a10 ; export' 'grep -v _='
     run_test 'export _a10=a10a10 ; export ; unset _a10 ; export' 'grep -v _='
 fi
-echo -e "$WHITE\n\nDo you want to do pwd tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do pwd tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -341,7 +341,7 @@ then
     run_test 'pwd .'
     run_test 'pwd ..'
 fi
-echo -e "$WHITE\n\nDo you want to do cd tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do cd tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -367,7 +367,7 @@ then
     run_test 'pwd ; cd .. ; pwd ; cd .. ; pwd ; cd .. ; pwd ; cd .. ; pwd ; cd .. ; pwd ; cd .. ; pwd '
     run_test 'pwd ; cd .. | pwd'
     run_test 'pwd | cd | pwd ; cd | pwd'
-    run_test 'pwd ; cd ../minishell_tester ; pwd'
+    run_test 'pwd ; cd ../mst ; pwd'
     run_test 'pwd ; cd ../error ; pwd'
     run_test 'pwd ; cd . ; pwd'
     run_test 'pwd ; cd ./ ; pwd'
@@ -388,12 +388,12 @@ then
     run_test 'pwd ; cd ../... ; pwd'
     mkdir ...
     run_test 'pwd ; cd ... ; pwd'
-    run_test 'pwd ; cd ../minishell_tester/... ; pwd'
+    run_test 'pwd ; cd ../mst/... ; pwd'
     run_test 'pwd ; cd .../../..././././../... ; pwd'
     rm -rf test_cd ~/test_cd ...
 fi
 
-echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -442,7 +442,7 @@ if [ $user_input = 'y' ]
     run_test 'exit lala 55'
 fi
 
-echo -e "$WHITE\n\nDo you want to do environement variables tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do environement variables tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -469,7 +469,7 @@ then
     run_test "echo \'$PWD\'"
     run_test "echo \'$LALA\'"
 fi
-echo -e "$WHITE\n\nDo you want to do pipe tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do pipe tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -488,7 +488,7 @@ then
     run_test 'echo test | cat | cat | cat | cat | cat | grep test'
 fi
 
-echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -587,7 +587,7 @@ if [ $user_input = 'y' ]
     run_test "echo lala ;   echo test| echo        lala"
     run_test "echo        lala|echo test ;echo                                   lala"
 fi
-echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -675,7 +675,7 @@ then
     rm -rf test_files
 fi
 
-echo -e "$WHITE\n\nDo you want to do \$? tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do \$? tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -713,7 +713,7 @@ then
     run_test 'echo test > ; echo $?'
     run_test 'echo test >> ; echo $?'
 fi
-echo -e "$WHITE\n\nDo you want to do program tests ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nDo you want to do program tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -774,7 +774,7 @@ fi
 
 
 
-echo -e "$WHITE\n\nTest not mandatory commands ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nTest not mandatory commands ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -861,7 +861,7 @@ run_return 'exit 55 lala'
 run_return 'exit lala 55'
 
 
-echo -e "$WHITE\n\nTest leaks ? [$GREEN y$WHITE /$RED N $WHITE]$RESET"
+echo -e "$WHITE\n\nTest leaks ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
@@ -940,7 +940,7 @@ run_leaks 'pwd ; cd ../.../ ; pwd'
 run_leaks 'pwd ; cd ../... ; pwd'
 mkdir ...
 run_leaks 'pwd ; cd ... ; pwd'
-run_leaks 'pwd ; cd ../minishell_tester/... ; pwd'
+run_leaks 'pwd ; cd ../mst/... ; pwd'
 run_leaks 'pwd ; cd .../../..././././../... ; pwd'
 rm -rf ~/test_cd test_cd ...
 

@@ -1,1 +1,1 @@
-exit
+minishell: export: '%': not a valid identifier
