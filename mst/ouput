@@ -1,0 +1,4 @@
+1string = |1| lvl = |1|
+2string = |2|lvl = |1|
+3string = |2| lvl = |1| final = |SHLVL=2|
+declare -x _testvar10="lala"

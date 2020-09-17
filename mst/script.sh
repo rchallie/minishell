@@ -261,16 +261,17 @@ if [ $user_input = 'y' ]
 then
 
     #EXPORT
-    run_test 'export' 'grep -v _=' 'sort'
-    export SHLVL=8 && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=test && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=0 && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=+23 && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=-10 && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=8+8 && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=++9 && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=-8+8 && run_test 'export' 'grep -a SHLVL'
-    export SHLVL=9-8 && run_test 'export' 'grep -a SHLVL'
+   run_test 'export' 'grep -v _=' 'sort'                    #1
+    export SHLVL=8 && run_test 'export' 'grep -a SHLVL'     #2
+    export SHLVL=test && run_test 'export' 'grep -a SHLVL'  #3
+    export SHLVL=0 && run_test 'export' 'grep -a SHLVL'     #4
+    export SHLVL=+23 && run_test 'export' 'grep -a SHLVL'   #5
+    export SHLVL=-10 && run_test 'export' 'grep -a SHLVL'   #6
+    export SHLVL=8+8 && run_test 'export' 'grep -a SHLVL'   #7
+    export SHLVL=++9 && run_test 'export' 'grep -a SHLVL'   #8
+    export SHLVL=-8+8 && run_test 'export' 'grep -a SHLVL'  #9
+    export SHLVL=9-8 && run_test 'export' 'grep -a SHLVL'   #10
+    export SHLVL=-3+6 && run_test 'export' 'grep -a SHLVL'
     run_test 'export %' 
     run_test 'export !' 
     run_test 'export +' 
