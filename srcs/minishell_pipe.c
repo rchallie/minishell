@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/09/18 16:15:59 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/18 16:55:58 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static void		child_in_out_put(
 	int *child_seq
 )
 {
-	int			fdinput;
-	int			fdoutput;
+	int			fdinput = STDIN_FILENO;
+	int			fdoutput = STDOUT_FILENO;
 
 	// if ((fdoutput = has_redir_output(0,
 	// 	1, STDOUT_FILENO, child_cmd, child_seq)) == -1
