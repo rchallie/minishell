@@ -172,6 +172,95 @@ echo -e "\n\n$CYAN##############################################################
 echo -e "#                             EXECUTION TESTS                               #"
 echo -e "#############################################################################$RESET\n"
 
+echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
+echo -ne "$CYAN>> $RESET"
+let 'test_number=1'
+read user_input
+if [ $user_input = 'y' ]
+then
+    #REDIRECTIONS
+    mkdir test_files
+    run_test 'echo test > a ; cat < a'
+    run_test 'echo lala >a ; cat <a'
+    run_test 'echo test>a ; cat<a'
+    run_test 'echo lala> a ; cat< a'
+    run_test 'echo test >a ; cat <a'
+    run_test 'echo lala> a ; cat< a'
+    run_test 'echo test        >a ; cat<        a'
+    run_test 'echo lala            >     a ; cat        <       a'
+    run_test 'echo test > test_files/a ; cat < test_files/a'
+    run_test 'echo lala >test_files/a ; cat <test_files/a'
+    run_test 'echo test > b ; echo test add >> b ; cat < b'
+    run_test 'echo test > b ; rm b ; echo test add >> b ; cat < b'
+    run_test 'echo test > a ; echo test2 > b ; <a >b ; cat a b'
+    run_test 'echo test > a ; echo test2 > b ; >a >b <error; cat a b'
+    run_test 'echo test > a ; echo test2 > b ; rm a ; rm b ; >a >b <error; cat a b'
+    run_test 'echo test > a ; echo test2 > b ; >a <error b; cat a b'
+    run_test 'echo test > a ; echo test2 > b ; rm a ; rm b ; >a <error >b ; cat a b'
+    run_test 'cat <error'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a >test_files/b <error; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; rm test_files/a ; rm test_files/b ; >test_files/a >test_files/b <error; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a <error >test_files/b; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; rm test_files/a ; rm test_files/b ; >test_files/a <error >test_files/b ; cat test_files/a test_files/b'
+    run_test 'cat <test_files/error'
+    run_test 'echo test > ../a ; echo test2 > ../b ; >../a >../b <error ; cat ../a ../b'
+    run_test 'echo test > ../a ; echo test2 > ../b ; rm ../a ; rm ../b ; >../a >../b <error; cat ../a ../b'
+    run_test 'echo test > ../a ; echo test2 > ../b ; >../a <error >../b ; cat ../a ../b'
+    run_test 'echo test > ../a ; echo test2 > ../b ; rm ../a ; rm ../b ; >../a <error >../b ; cat ../a ../b'
+    run_test 'cat <../error'
+    run_test '<error'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a >>test_files/b <error; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >>test_files/a >test_files/b <error; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >>test_files/a >>test_files/b <error; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
+    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; <error >>test_files/a >>test_files/b ; cat test_files/a test_files/b'
+    delete_file "test_files/a test_files/b"
+    run_test 'echo test > test_files/a ; echo lala > test_files/b ; >test_files/a >>test_files/b <error; cat test_files/a test_files/b'
+    delete_file "test_files/a test_files/b"
+    run_test 'echo test > test_files/a ; echo lala > test_files/b ; >>test_files/a >>test_files/b <error; cat test_files/a test_files/b'
+    delete_file "test_files/a test_files/b"
+    run_test '>test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
+    delete_file "test_files/a test_files/b"
+    run_test '>test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
+    delete_file "test_files/a test_files/b"
+    run_test '<error >>test_files/a >>test_files/b ; cat test_files/a test_files/b'
+    run_test 'echo lala > a >> a >> a ; echo test >> a ; cat < a'
+    run_test 'echo lala > a >> a >> a ; echo test >> a ; echo lala > a >> a >> a ; cat < a'
+    run_test 'echo lala >> a >> a > a ; echo test >> a ; cat < a'
+    run_test 'echo lala >> a >> a > a ; echo test >> a ; echo lala >> a >> a > a ; cat < a'
+    run_test 'echo test > a ; echo lala >> a >> a >> a ; echo test >> a ; cat < a'
+    run_test 'echo test > a ; echo lala >> a >> a >> a ; echo test >> a ; echo lala >> a >> a >> a ; cat < a'
+    run_test 'echo test > a ; echo lala > b ; rm b ; >>a >>b <error; cat a b'
+    run_test 'echo test > a ; echo lala > b ; rm b ; >>a <error >> b ; cat a b'
+    run_test 'echo test > a ; echo lala > b ; rm a ; rm b ; >>a >>b <error; cat a b'
+    run_test 'echo test > a ; echo lala > b ; rm a ;  rm b ; >>a <error >> b ; cat a b'
+    run_test 'echo <a <b'
+    run_test 'echo <b <a'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b > a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala > a > b > a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a >> b > a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala > a >> b > a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b >> a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala > a > b >> a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a > b > a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala >> a > b > a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a >> b >> a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala >> a >> b >> a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b > a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala > a > b > a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a >> b > a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala > a >> b > a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b >> a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala > a > b >> a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a > b > a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala >> a > b > a ; cat a b'
+    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a >> b >> a ; cat a b'
+    run_test 'echo test > a ; echo test > b ; echo lala >> a >> b >> a ; cat a b'
+    rm -rf test_files
+fi
+
+
 echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
@@ -588,93 +677,7 @@ if [ $user_input = 'y' ]
     run_test "echo lala ;   echo test| echo        lala"
     run_test "echo        lala|echo test ;echo                                   lala"
 fi
-echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
-echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
-read user_input
-if [ $user_input = 'y' ]
-then
-    #REDIRECTIONS
-    mkdir test_files
-    run_test 'echo test > a ; cat < a'
-    run_test 'echo lala >a ; cat <a'
-    run_test 'echo test>a ; cat<a'
-    run_test 'echo lala> a ; cat< a'
-    run_test 'echo test >a ; cat <a'
-    run_test 'echo lala> a ; cat< a'
-    run_test 'echo test        >a ; cat<        a'
-    run_test 'echo lala            >     a ; cat        <       a'
-    run_test 'echo test > test_files/a ; cat < test_files/a'
-    run_test 'echo lala >test_files/a ; cat <test_files/a'
-    run_test 'echo test > b ; echo test add >> b ; cat < b'
-    run_test 'echo test > b ; rm b ; echo test add >> b ; cat < b'
-    run_test 'echo test > a ; echo test2 > b ; <a >b ; cat a b'
-    run_test 'echo test > a ; echo test2 > b ; >a >b <error; cat a b'
-    run_test 'echo test > a ; echo test2 > b ; rm a ; rm b ; >a >b <error; cat a b'
-    run_test 'echo test > a ; echo test2 > b ; >a <error b; cat a b'
-    run_test 'echo test > a ; echo test2 > b ; rm a ; rm b ; >a <error >b ; cat a b'
-    run_test 'cat <error'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a >test_files/b <error; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; rm test_files/a ; rm test_files/b ; >test_files/a >test_files/b <error; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a <error >test_files/b; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; rm test_files/a ; rm test_files/b ; >test_files/a <error >test_files/b ; cat test_files/a test_files/b'
-    run_test 'cat <test_files/error'
-    run_test 'echo test > ../a ; echo test2 > ../b ; >../a >../b <error ; cat ../a ../b'
-    run_test 'echo test > ../a ; echo test2 > ../b ; rm ../a ; rm ../b ; >../a >../b <error; cat ../a ../b'
-    run_test 'echo test > ../a ; echo test2 > ../b ; >../a <error >../b ; cat ../a ../b'
-    run_test 'echo test > ../a ; echo test2 > ../b ; rm ../a ; rm ../b ; >../a <error >../b ; cat ../a ../b'
-    run_test 'cat <../error'
-    run_test '<error'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a >>test_files/b <error; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >>test_files/a >test_files/b <error; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >>test_files/a >>test_files/b <error; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; >test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
-    run_test 'echo test > test_files/a ; echo test2 > test_files/b ; <error >>test_files/a >>test_files/b ; cat test_files/a test_files/b'
-    delete_file "test_files/a test_files/b"
-    run_test 'echo test > test_files/a ; echo lala > test_files/b ; >test_files/a >>test_files/b <error; cat test_files/a test_files/b'
-    delete_file "test_files/a test_files/b"
-    run_test 'echo test > test_files/a ; echo lala > test_files/b ; >>test_files/a >>test_files/b <error; cat test_files/a test_files/b'
-    delete_file "test_files/a test_files/b"
-    run_test '>test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
-    delete_file "test_files/a test_files/b"
-    run_test '>test_files/a <error >>test_files/b ; cat test_files/a test_files/b'
-    delete_file "test_files/a test_files/b"
-    run_test '<error >>test_files/a >>test_files/b ; cat test_files/a test_files/b'
-    run_test 'echo lala > a >> a >> a ; echo test >> a ; cat < a'
-    run_test 'echo lala > a >> a >> a ; echo test >> a ; echo lala > a >> a >> a ; cat < a'
-    run_test 'echo lala >> a >> a > a ; echo test >> a ; cat < a'
-    run_test 'echo lala >> a >> a > a ; echo test >> a ; echo lala >> a >> a > a ; cat < a'
-    run_test 'echo test > a ; echo lala >> a >> a >> a ; echo test >> a ; cat < a'
-    run_test 'echo test > a ; echo lala >> a >> a >> a ; echo test >> a ; echo lala >> a >> a >> a ; cat < a'
-    run_test 'echo test > a ; echo lala > b ; rm b ; >>a >>b <error; cat a b'
-    run_test 'echo test > a ; echo lala > b ; rm b ; >>a <error >> b ; cat a b'
-    run_test 'echo test > a ; echo lala > b ; rm a ; rm b ; >>a >>b <error; cat a b'
-    run_test 'echo test > a ; echo lala > b ; rm a ; rm b ; >>a <error >> b ; cat a b'
-    run_test 'echo <a <b'
-    run_test 'echo <b <a'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b > a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala > a > b > a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a >> b > a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala > a >> b > a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b >> a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala > a > b >> a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a > b > a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala >> a > b > a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a >> b >> a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala >> a >> b >> a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b > a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala > a > b > a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a >> b > a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala > a >> b > a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala > a > b >> a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala > a > b >> a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a > b > a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala >> a > b > a ; cat a b'
-    run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a >> b >> a ; cat a b'
-    run_test 'echo test > a ; echo test > b ; echo lala >> a >> b >> a ; cat a b'
-    rm -rf test_files
-fi
+
 
 echo -e "$WHITE\n\nDo you want to do \$? tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
