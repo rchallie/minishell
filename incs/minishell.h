@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/16 17:31:00 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/18 16:14:23 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,7 @@ int					unset(int argc, char **argv, char **envp);
 int					get_sequence(char **treated, int **sequence);
 int					sanitize(char *entry, char ***treated);
 int					reorder_sequence(char ***cmd, int **seq);
+int					has_redir(char **cmd, int *seq, int *fdin, int *fdout);
 int					has_redir_output(int redir_type, int cursor, int fd, char **cmd, int *seq);
 int					has_redir_input(int redir_type, int cursor, int fd, char **cmd, int *seq);
 void				cmd_has_pipe(char **cmd, int *seq);
