@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/21 15:45:08 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/21 19:03:16 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,9 @@ static int		sanitize_loop(int *up, char *entry, char ***treated)
 		(*up)++;
 	//ft_printf(1, "entry = %s\n", entry);
 	//ft_printf(1, "lasting = %s\n", entry + *up);
+	// ft_printf(1, "WORD IS NULL A = %d\n", (!word) ? 10 : 20);
 	error_check = get_word((entry + *up), &entry, &word);
+		// ft_printf(1, "WORD IS NULL B = %d\n", (!word) ? 10 : 20);
 	if (error_check == -1)
 		return (ERROR);
 	*up += error_check;

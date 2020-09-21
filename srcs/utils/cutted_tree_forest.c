@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/21 15:46:51 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/21 19:03:45 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int tree_named_env(char **entry, char **word)
 	int rtn;
 	char *env_var_name;
 	int accolade;
+		// ft_printf(1, "WORD IS NULL 0 = %d\n", (!*word) ? 10 : 20);
 
 	accolade = 0;
 	env_var_name = NULL;
@@ -24,6 +25,7 @@ static int tree_named_env(char **entry, char **word)
 	// ft_printf(1, "Actual char (pre) = %c (%.12s)| %d\n", **entry, *entry, **entry);
 	if (**entry == '$' && *(*entry + 1) && *(*entry + 1) != ' ')
 	{
+		// ft_printf(1, "WORD IS NULL 1 = %d\n", (!*word) ? 10 : 20);
 		(*entry)++;
 		rtn++;
 		if (**entry == '{')
@@ -32,6 +34,7 @@ static int tree_named_env(char **entry, char **word)
 			rtn++;
 			accolade = 1;
 		}
+	// ft_printf(1, "WORD IS NULL 2 = %d\n", (!*word) ? 10 : 20);
 		while (**entry && **entry != '}' && **entry != '\'' && **entry != '\"' && **entry != '=' && **entry != '$'
 			&& *(*entry - 1) != '?' && (ft_isalnum(**entry) || **entry == '?'
 			|| **entry == '_'))
@@ -42,6 +45,7 @@ static int tree_named_env(char **entry, char **word)
 			if (ft_isdigit(*(*entry - 1)) && *(*entry - 2) == '$')
 				break ;
 		}
+	// ft_printf(1, "WORD IS NULL 3 = %d\n", (!*word) ? 10 : 20);
 	//	ft_printf(1, "accolade = |%d|\n**entry = |%c|\n", accolade, **entry);
 		if (env_var_name && ft_secure_strlen(env_var_name) == 1
 			&& env_var_name[0] == '?')								 //Last return
@@ -65,13 +69,16 @@ static int tree_named_env(char **entry, char **word)
 			ft_printf(2, "minishell: syntax error: unexpected end of file\n");
 			return (-1);
 		}
+	// ft_printf(1, "WORD IS NULL 4 = %d\n", (!*word) ? 10 : 20);
 		if (env_var_name && *env_var_name)
 		{
 			*word = ft_strjoin(*word, env_var_name);
 			*word = add_char_to_word_free(*word, '\0');
 		}
+	// ft_printf(1, "WORD IS NULL 5 = %d\n", (!*word) ? 10 : 20);
 		if (*(*entry - 1) == '$' && (**entry == '=' || **entry == '\"'))
 			*word = add_char_to_word_free(*word, '$');
+	// ft_printf(1, "WORD IS NULL 6 = %d\n", (!*word) ? 10 : 20);
 	}
 	else if (**entry == '$')
 		*word = add_char_to_word_free(*word, '$');
@@ -83,6 +90,7 @@ static int tree_named_env(char **entry, char **word)
 static int		no_quotes(char **entry, char **word, int *simple_q,
 	int *double_q)
 {
+	// ft_printf(1, "No quotes [ %d ] \n", **entry);
 	if (**entry == '\'')
 	{
 		*simple_q = 1;
@@ -104,7 +112,7 @@ static int		no_quotes(char **entry, char **word, int *simple_q,
 		//ft_printf(1, "word = |%s|\n", *word);
 		return (1);
 	}
-	else if (**entry != '$')
+	else if (**entry != '$' && **entry != '\0')
 		*word = add_char_to_word_free(*word, **entry);
 	return (0);
 }
@@ -163,6 +171,8 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	double_q = 0;
 	char_count = 0;
 	save_startword = startword;
+	*word = NULL;
+		// ft_printf(1, "WORD IS NULL -2 = %d\n", (!*word) ? 10 : 20);
 	if (ft_secure_strlen(startword) == 1 && *startword == '$')
 	{
 		*word = add_char_to_word_free(*word, *startword);
@@ -171,16 +181,20 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	//ft_printf(1, "startword1 = |%s|\n", startword);
 	while (*startword)
 	{
+		// ft_printf(1, "WORD IS NULL -1 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword2 = |%s|\n", startword);
 		if (*startword == '$' && simple_q == 0)
 			char_count += tree_named_env(&startword, word);
 		//ft_printf(1, "startword2 = |%s|\n", startword);
+		// ft_printf(1, "WORD IS NULL 7 = %d\n", (!*word) ? 10 : 20);
 		if (((*startword == ' ' || *startword == '>' || *startword == '<'
 			|| *startword == '|' || *startword == ';')
 			&& !(simple_q || double_q)) && word)
 			break ;
+		// ft_printf(1, "WORD IS NULL 8 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword3 = |%s|\n", startword);
 		char_count += if_quotes(&startword, word, &simple_q, &double_q);
+		// ft_printf(1, "WORD IS NULL 9 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword4 = |%s|\n", startword);
 		if (*startword && (*startword != '$' || (*startword == '$'
 			&& (*(startword - 1) == '\\' || *(startword + 1) == ' '))))
@@ -188,9 +202,11 @@ int				get_word(char *startword, char **entry_addr, char **word)
 			startword++;
 			char_count++;
 		}
+		// ft_printf(1, "WORD IS NULL 10 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword5 = |%s|\n", startword);
 		if (*startword == '\0' && (simple_q || double_q))
 			quote_error(&startword, entry_addr, &save_startword, simple_q);
+		// ft_printf(1, "WORD IS NULL 11 = %d\n", (!*word) ? 10 : 20);
 	}
 	if (word && *word && (is_special_token(*word) == SUCCESS))
 		*word = add_char_to_word_free(*word, 3);
