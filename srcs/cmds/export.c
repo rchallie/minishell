@@ -209,5 +209,5 @@ int				export_(
 	if (error == 0)
 		return (0);
 	else
-		return (ERROR);
+		return (1);
 }
