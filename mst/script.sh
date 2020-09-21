@@ -295,7 +295,7 @@ then
     run_test 'echo \$PWD'
     run_test 'echo \\$PWD'
     run_test 'echo $NOVAR'
-    run_test 'pwd ; echo $PWD ; echo OLDPWD ; unset PWD ; echo $PWD ; echo $OLDPWD ; cd .. ; echo $OLDPWD ; pwd ; echo $OLDPWD ; cd .. ; pwd ; echo $OLDPWD'
+    run_test 'pwd ; echo $PWD ; echo $OLDPWD ; unset PWD ; echo $PWD ; echo $OLDPWD ; cd .. ; echo $OLDPWD ; pwd ; echo $OLDPWD ; cd .. ; pwd ; echo $OLDPWD'
     run_test 'echo ${PWD}'
     run_test 'echo ${PATH'
     run_test 'echo $PWD}'
