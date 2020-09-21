@@ -172,6 +172,107 @@ echo -e "\n\n$CYAN##############################################################
 echo -e "#                             EXECUTION TESTS                               #"
 echo -e "#############################################################################$RESET\n"
 
+
+echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
+echo -ne "$CYAN>> $RESET"
+let 'test_number=1'
+read user_input
+if [ $user_input = 'y' ]
+    then
+    #PARSING
+    run_test 'echo \n\n'
+    run_test 'echo ""' 
+    run_test 'echo \|' 
+    run_test 'echo \"\"' 
+    run_test 'echo \\'
+    run_test 'echo \\\\' 
+    run_test 'echo \|\|' 
+    run_test 'echo \\\|\\\|' 
+    run_test 'echo \\"\\"' 
+    run_test 'echo \$ \"' 
+    run_test 'echo \[ \] \\ \`' 
+    run_test 'echo \: \@ \< \> \= \?' 
+    run_test 'echo \"a\"' 
+    run_test 'echo \\"a\\"' 
+    run_test 'echo "\\a\\"' 
+    run_test 'echo \\\"a\"\\' 
+    run_test 'echo a\\a' 
+    run_test 'echo a\"\a' 
+    run_test 'echo $' 
+    run_test 'echo \$'
+    run_test 'echo \\$' 
+    run_test 'echo $USER' 
+    run_test 'echo \$USER' 
+    run_test 'echo \\$USER' 
+    run_test 'echo \\\$USER' 
+    run_test 'echo $war' 
+    run_test 'echo \$war' 
+    run_test 'echo \\$war' 
+    run_test 'echo \\\$war' 
+    run_test 'echo \|\\$USER' 
+    run_test 'echo \|\\\$USER' 
+    run_test 'echo \\\"$USER' 
+    run_test 'echo \|\\$USER' 
+    run_test 'echo \|\\\$USER' 
+    run_test 'echo \\\"$USER' 
+    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
+    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
+    run_test 'echo \"\$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|\"' 
+    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
+    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
+    run_test 'echo \\\$ \\\! \\\@ \\\# \\\% \\\^ \\\& \\\* \\\( \\\) \\\_ \\\+ \\\|' 
+    run_test 'echo \: \! \< \> \= \?' 
+    run_test 'echo "\: \! \< \> \= \?"' 
+    run_test 'echo \[ \] \\ \`' 
+    run_test 'echo \\ \\ \\'
+    run_test 'echo \\ \\\ \\'
+    run_test 'echo \\ \ \\'
+    run_test 'echo \\ \ \\'
+    run_test 'echo \\ $ \\'
+    run_test 'echo \\ \$ \\'
+    run_test 'echo \\ \\$ \\'
+    run_test 'echo \\ | \\'
+    run_test 'echo \\ \| \\'
+    run_test 'echo \\ \\| \\'
+    run_test 'echo \\ ; \\'
+    run_test 'echo \\ \; \\'
+    run_test 'echo \\ \\; \\'
+    run_test 'echo \ \\ \\'
+    run_test 'echo \ \\\ \\'
+    run_test 'echo \ \ \\'
+    run_test 'echo \ \ \\'
+    run_test 'echo \ \$ \\'
+    run_test 'echo \ \\$ \\'
+    run_test 'echo \ \| \\'
+    run_test 'echo \ \\| \\'
+    run_test 'echo \ \; \\'
+    run_test 'echo \ \\; \\'
+    run_test 'echo "\\"\\'
+    run_test 'echo \"\\\"\\'
+    run_test 'echo "\\\|"\\'
+    run_test 'echo \"\\\|\"\\'
+    run_test 'echo \"\\$TEST\|\"$1\\$444'
+    run_test 'echo \"\\\$TEST\|\"\$1\\\$444'
+    run_test 'echo "*"\\-\% \\ \$'
+    run_test 'echo \"*"\\-\% \\ \$"'
+    run_test "echo \'"
+    run_test "echo \\'\"\'\""
+    run_test "echo \\'\"\'\""
+    run_test "echo \'\"\'\""
+    run_test "echo \'\"\'\""
+    run_test "echo \\'\"\\'\""
+    run_test "echo \\'\"\\\\'\""
+    run_test "echo \\'\"\\'\""
+    run_test "echo lala;echo test;echo lala"
+    run_test "echo lala|echo test|echo lala"
+    run_test "echo lala;echo test|echo lala"
+    run_test "echo lala|echo test;echo lala"
+    run_test "echo lala ;   echo   test     ;echo      lala"
+    run_test "echo lala             |echo       test |                            echo  lala"
+    run_test "echo lala ;   echo test| echo        lala"
+    run_test "echo        lala|echo test ;echo                                   lala"
+fi
+
 echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
@@ -577,107 +678,6 @@ then
     echo -e "\n$ORANGE >> THIS TEST MAY TAKE A WHILE TO ACHIEVE $RESET"
     run_test 'echo test | cat | cat | cat | cat | cat | grep test'
 fi
-
-echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
-echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
-read user_input
-if [ $user_input = 'y' ]
-    then
-    #PARSING
-    run_test 'echo \n\n'
-    run_test 'echo ""' 
-    run_test 'echo \|' 
-    run_test 'echo \"\"' 
-    run_test 'echo \\'
-    run_test 'echo \\\\' 
-    run_test 'echo \|\|' 
-    run_test 'echo \\\|\\\|' 
-    run_test 'echo \\"\\"' 
-    run_test 'echo \$ \"' 
-    run_test 'echo \[ \] \\ \`' 
-    run_test 'echo \: \@ \< \> \= \?' 
-    run_test 'echo \"a\"' 
-    run_test 'echo \\"a\\"' 
-    run_test 'echo "\\a\\"' 
-    run_test 'echo \\\"a\"\\' 
-    run_test 'echo a\\a' 
-    run_test 'echo a\"\a' 
-    run_test 'echo $' 
-    run_test 'echo \$'
-    run_test 'echo \\$' 
-    run_test 'echo $USER' 
-    run_test 'echo \$USER' 
-    run_test 'echo \\$USER' 
-    run_test 'echo \\\$USER' 
-    run_test 'echo $war' 
-    run_test 'echo \$war' 
-    run_test 'echo \\$war' 
-    run_test 'echo \\\$war' 
-    run_test 'echo \|\\$USER' 
-    run_test 'echo \|\\\$USER' 
-    run_test 'echo \\\"$USER' 
-    run_test 'echo \|\\$USER' 
-    run_test 'echo \|\\\$USER' 
-    run_test 'echo \\\"$USER' 
-    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
-    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
-    run_test 'echo \"\$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|\"' 
-    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
-    run_test 'echo \$ \! \@ \# \% \^ \& \* \( \) \_ \+ \|' 
-    run_test 'echo \\\$ \\\! \\\@ \\\# \\\% \\\^ \\\& \\\* \\\( \\\) \\\_ \\\+ \\\|' 
-    run_test 'echo \: \! \< \> \= \?' 
-    run_test 'echo "\: \! \< \> \= \?"' 
-    run_test 'echo \[ \] \\ \`' 
-    run_test 'echo \\ \\ \\'
-    run_test 'echo \\ \\\ \\'
-    run_test 'echo \\ \ \\'
-    run_test 'echo \\ \ \\'
-    run_test 'echo \\ $ \\'
-    run_test 'echo \\ \$ \\'
-    run_test 'echo \\ \\$ \\'
-    run_test 'echo \\ | \\'
-    run_test 'echo \\ \| \\'
-    run_test 'echo \\ \\| \\'
-    run_test 'echo \\ ; \\'
-    run_test 'echo \\ \; \\'
-    run_test 'echo \\ \\; \\'
-    run_test 'echo \ \\ \\'
-    run_test 'echo \ \\\ \\'
-    run_test 'echo \ \ \\'
-    run_test 'echo \ \ \\'
-    run_test 'echo \ \$ \\'
-    run_test 'echo \ \\$ \\'
-    run_test 'echo \ \| \\'
-    run_test 'echo \ \\| \\'
-    run_test 'echo \ \; \\'
-    run_test 'echo \ \\; \\'
-    run_test 'echo "\\"\\'
-    run_test 'echo \"\\\"\\'
-    run_test 'echo "\\\|"\\'
-    run_test 'echo \"\\\|\"\\'
-    run_test 'echo \"\\$TEST\|\"$1\\$444'
-    run_test 'echo \"\\\$TEST\|\"\$1\\\$444'
-    run_test 'echo "*"\\-\% \\ \$'
-    run_test 'echo \"*"\\-\% \\ \$"'
-    run_test "echo \'"
-    run_test "echo \\'\"\'\""
-    run_test "echo \\'\"\'\""
-    run_test "echo \'\"\'\""
-    run_test "echo \'\"\'\""
-    run_test "echo \\'\"\\'\""
-    run_test "echo \\'\"\\\\'\""
-    run_test "echo \\'\"\\'\""
-    run_test "echo lala;echo test;echo lala"
-    run_test "echo lala|echo test|echo lala"
-    run_test "echo lala;echo test|echo lala"
-    run_test "echo lala|echo test;echo lala"
-    run_test "echo lala ;   echo   test     ;echo      lala"
-    run_test "echo lala             |echo       test |                            echo  lala"
-    run_test "echo lala ;   echo test| echo        lala"
-    run_test "echo        lala|echo test ;echo                                   lala"
-fi
-
 
 echo -e "$WHITE\n\nDo you want to do \$? tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
