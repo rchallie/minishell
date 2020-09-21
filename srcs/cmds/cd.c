@@ -42,7 +42,7 @@ static int	change_dir(
 	else
 	{
 		closedir(dir);
-		get_shell_pwd(&old_pwd);
+		old_pwd = get_env_var_by_name("PWD");
 		add_var_to_env(ft_strjoin("OLDPWD=", old_pwd));
 		rtn = chdir(path);
 		if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR
