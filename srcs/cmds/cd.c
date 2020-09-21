@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/12 23:44:48 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/21 16:05:03 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,11 @@ int			cd(
 	(void)argc;
 	(void)envp;
 	cursor = 0;
+	if (argc > 2)
+	{
+		ft_printf(2, "minishell: cd: to many arguments\n");
+		return (1);
+	}
 	if (!argv[cursor + 1])
 	{
 		path = get_env_var_by_name("HOME");
