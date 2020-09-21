@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/28 15:31:14 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/21 15:45:08 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,9 @@ int				sanitize(char *entry, char ***treated)
 	up = 0;
 	while (*(entry + up))
 		if (sanitize_loop(&up, entry, treated) == ERROR)
+		{
 			return (ERROR);
+		}
 	free(entry);
 	add_word_to_tab("\n", treated);
 	return (SUCCESS);

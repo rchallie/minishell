@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/18 16:11:30 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/21 16:11:57 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 		}
 		else if (seq[cursor] == 8 && (redir_type == 4 || redir_type == 3))
 		{
+			// ft_printf(1,"LOL : %d | %d\n", *fdout, (*fdout >= 3) ? 10 : 20);
 			(*fdout >= 3) ? close(*fdout) : 0;
 			flags = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
 				: O_CREAT | O_RDWR | O_APPEND;
@@ -137,11 +138,13 @@ void			cmd_no_pipe(char **cmd, int *seq)
 
 	// ft_printf(1, "FDINPUT = %d | FDOUTPUT = %d\n", fdinput, fdoutput);
 	
+	// printf("IS INTERACTIV = %d\n", isatty(STDIN_FILENO));
 	if (fdoutput != STDOUT_FILENO)
 		saved_stdout = dup(STDOUT_FILENO);
 	if (fdinput != STDIN_FILENO)
 		saved_stdin = dup(STDIN_FILENO);
 
+	// ft_printf(1, "FILENO STDERR = %d\n", fileno(stderr));
 	dup2(fdinput, STDIN_FILENO);
 	dup2(fdoutput, STDOUT_FILENO);
 	if (treat_command(cmd, seq) == ERROR)

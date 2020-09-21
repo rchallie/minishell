@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:10:38 by excalibur         #+#    #+#             */
-/*   Updated: 2020/08/12 23:24:47 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/21 15:46:51 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static int tree_named_env(char **entry, char **word)
 		else if (accolade == 1 && **entry != '}')
 		{
 			ft_printf(2, "minishell: unexpected EOF while looking for matching `}'\n");
+			ft_printf(2, "minishell: syntax error: unexpected end of file\n");
 			return (-1);
 		}
 		if (env_var_name && *env_var_name)

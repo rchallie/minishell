@@ -50,7 +50,7 @@ run_shell()
     done
     if [ $display_error_msg == 0 ]
     then
-        cat < buffer | grep -v Minishell: > buffer2
+        cat < buffer | grep -v minishell: > buffer2
         cat < buffer2 > buffer
         cat < buffer | grep -v bash: > buffer2
         cat < buffer2 > buffer
