@@ -16,7 +16,9 @@ static int tree_named_env(char **entry, char **word)
 {
 	int rtn;
 	char *env_var_name;
+	int accolade;
 
+	accolade = 0;
 	env_var_name = NULL;
 	rtn = 0;
 	// ft_printf(1, "Actual char (pre) = %c (%.12s)| %d\n", **entry, *entry, **entry);
@@ -24,7 +26,13 @@ static int tree_named_env(char **entry, char **word)
 	{
 		(*entry)++;
 		rtn++;
-		while (**entry && **entry != '\'' && **entry != '\"' && **entry != '=' && **entry != '$'
+		if (**entry == '{')
+		{
+			(*entry)++;
+			rtn++;
+			accolade = 1;
+		}
+		while (**entry && **entry != '}' && **entry != '\'' && **entry != '\"' && **entry != '=' && **entry != '$'
 			&& *(*entry - 1) != '?' && (ft_isalnum(**entry) || **entry == '?'
 			|| **entry == '_'))
 		{
@@ -34,14 +42,28 @@ static int tree_named_env(char **entry, char **word)
 			if (ft_isdigit(*(*entry - 1)) && *(*entry - 2) == '$')
 				break ;
 		}
+	//	ft_printf(1, "accolade = |%d|\n**entry = |%c|\n", accolade, **entry);
 		if (env_var_name && ft_secure_strlen(env_var_name) == 1
 			&& env_var_name[0] == '?')								 //Last return
 		{
 			env_var_name = (g_ms.last_cmd_rtn != -1) ?
 				ft_itoa(g_ms.last_cmd_rtn) : ft_strdup("0");
 		}
-		else if (env_var_name)										// Get en var normaly
+		else if (env_var_name && ((accolade == 1 && **entry == '}') || (accolade == 0)))
+		{									// Get en var normaly
+			//ft_printf(1, "accolade = |%d|\n**entry = |%c|\n", accolade, **entry);
 			env_var_name = get_env_var_by_name(env_var_name);
+			if (accolade == 1)
+			{
+				(*entry)++;
+				rtn++;
+			}
+		}
+		else if (accolade == 1 && **entry != '}')
+		{
+			ft_printf(2, "minishell: unexpected EOF while looking for matching `}'\n");
+			return (-1);
+		}
 		if (env_var_name && *env_var_name)
 		{
 			*word = ft_strjoin(*word, env_var_name);
@@ -52,7 +74,7 @@ static int tree_named_env(char **entry, char **word)
 	}
 	else if (**entry == '$')
 		*word = add_char_to_word_free(*word, '$');
-	// ft_printf(1, "Actual char (end) = %c (%.12s)| %d\n", **entry, *entry, **entry);
+	//ft_printf(1, "Actual char (end) = %c (%.12s)| %d\n", **entry, *entry, **entry);
 	//ft_printf(1, "wordaaa = |%s|\n", *word);
 	return (rtn);
 }
@@ -171,7 +193,7 @@ int				get_word(char *startword, char **entry_addr, char **word)
 	}
 	if (word && *word && (is_special_token(*word) == SUCCESS))
 		*word = add_char_to_word_free(*word, 3);
-	// //ft_printf(1, "Char count = %d\n", char_count);
+	//ft_printf(1, "Char count = %d\n", char_count);
 	//ft_printf(1, "startword6 = |%s|\n", startword);
 	//ft_printf(1, "word = |%s|\n", *word);
 	return (char_count);

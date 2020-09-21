@@ -128,13 +128,17 @@ static char		*sanitize_home(char *word)
 static int		sanitize_loop(int *up, char *entry, char ***treated)
 {
 	char *word;
+	int		error_check;
 
 	word = NULL;
 	while (ft_is_whitespace(*(entry + *up)))
 		(*up)++;
 	//ft_printf(1, "entry = %s\n", entry);
 	//ft_printf(1, "lasting = %s\n", entry + *up);
-	*up += get_word((entry + *up), &entry, &word);
+	error_check = get_word((entry + *up), &entry, &word);
+	if (error_check == -1)
+		return (ERROR);
+	*up += error_check;
 	if (word && word[0] == '~' && (!word[1] || word[1] == '/'))
 		word = sanitize_home(word);
 	add_word_to_tab(word, treated);
@@ -180,7 +184,7 @@ int				sanitize(char *entry, char ***treated)
 	}
 	up = 0;
 	while (*(entry + up))
-		if (sanitize_loop(&up, entry, treated) == -1)
+		if (sanitize_loop(&up, entry, treated) == ERROR)
 			return (ERROR);
 	free(entry);
 	add_word_to_tab("\n", treated);

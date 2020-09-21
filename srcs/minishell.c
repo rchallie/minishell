@@ -86,7 +86,7 @@ static void		entry_splitter(
 	if (entry_splitter_precheck(new_start) == ERROR)
 	{
 		g_ms.last_cmd_rtn = 2;
-		return;
+		return ;
 	}
 	
 	int s_quote = 0;
@@ -117,7 +117,11 @@ static void		entry_splitter(
 		if (!find)
 			find = (new_start + ft_secure_strlen(new_start));
 		cmd = ft_substr(entry, new_start - entry, find - new_start);
-		treat_entry(cmd);
+		if (treat_entry(cmd) == -1)
+		{
+			g_ms.last_cmd_rtn = 2;
+			return ;
+		}
 		s_quote = 0;
 		d_quote = 0;
 		if (find && *find && *(find + 1) != 0)
