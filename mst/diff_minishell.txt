@@ -1,1 +1,1 @@
-testvar=20
+/home/thibault/Desktop/minishell/mst}
