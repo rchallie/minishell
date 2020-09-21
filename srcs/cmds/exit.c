@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 17:24:07 by rchallie          #+#    #+#             */
-/*   Updated: 2020/08/11 22:11:22 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/21 17:34:24 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,16 @@ int				exit_minishell(
 	default_term_mode();
 	if (argc > 2)
 	{
-		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		if (!is_numeric_str(argv[1]))
+		{
+			if (isatty(0))
+				ft_printf(2, "exit\n");
+			ft_printf(2, "minishell: exit: %s: numeric argument required\n", argv[1]);
+			exit(2);
+		}
+		if (isatty(0))
+			ft_printf(2, "exit\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return((is_numeric_str(argv[1]) ? 1 : 2));
 	}
 	free_double_char_tab(g_ms.treated);
@@ -110,12 +119,14 @@ int				exit_minishell(
 	{
 		if (!is_numeric_str(argv[1]))
 		{
-			ft_printf(2, "exit\nminishell: exit: %s: numeric argument required\n", argv[1]);
+			if (isatty(0))
+				ft_printf(2, "exit\n");
+			ft_printf(2, "minishell: exit: %s: numeric argument required\n", argv[1]);
 			exit(2);
 		}
 		exit(ft_atou(argv[1]));
 	}
-	if (argc == 1)
+	if (argc == 1 && isatty(0))
 		ft_printf(2, "exit\n");
 	exit(g_ms.last_cmd_rtn);
 }
