@@ -81,6 +81,38 @@ static int		seq_for_special(char **treated, int *sequ, int *has_cmd, int *i)
 	return (SUCCESS);
 }
 
+void		tuning_treated(char **str)
+{
+	int simple_q;
+	int double_q;
+	char *new_str;
+
+	new_str = NULL;
+	simple_q = 0;
+	double_q = 0;
+	while (**str)
+	{
+		if (**str == '\\' && simple_q == 0)
+		{
+			(*str)++;
+			new_str = add_char_to_word_free(new_str, **str);
+		}
+		else if (**str == '\"' && double_q == 0)
+			double_q = 1;
+		else if (**str == '\"' && double_q == 1)
+			double_q = 0;
+		else if (**str == '\'' && simple_q == 0)
+			simple_q = 1;
+		else if (**str == '\'' && simple_q == 1)
+			simple_q = 0;
+		else
+			new_str = add_char_to_word_free(new_str, **str);
+		(*str)++;
+	}
+	*str = new_str;
+	return ;
+}
+
 /*
 ** Function : seq_treated_tab
 ** -------------------------
@@ -117,6 +149,8 @@ static int		seq_treated_tab(char **treated, int *sequ)
 		}
 		else
 			sequ[i] = 2;
+		if (sequ[i] == 0 || sequ[i] == 2 || sequ[i] == 8)
+			tuning_treated(&(treated[i]));
 		i++;
 	}
 	return (SUCCESS);
