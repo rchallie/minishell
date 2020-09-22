@@ -110,6 +110,125 @@
 // 	return (word);
 // }
 
+int	env_var(char **entry, char **word)
+{
+ 	int rtn;
+ 	char *env_var_name;
+ 	int accolade;
+ 	//	 ft_printf(1, "WORD IS NULL 0 = %d\n", (!*word) ? 10 : 20);
+
+ 	accolade = 0;
+ 	env_var_name = NULL;
+ 	rtn = 0;
+ 	// ft_printf(1, "Actual char (pre) = %c (%.12s)| %d\n", **entry, *entry, **entry);
+ 	if (**entry == '$' && *(*entry + 1) && *(*entry + 1) != ' ')
+ 	{
+ 		// ft_printf(1, "WORD IS NULL 1 = %d\n", (!*word) ? 10 : 20);
+ 		(*entry)++;
+ 		rtn++;
+ 		if (**entry == '{')
+ 		{
+ 			(*entry)++;
+ 			rtn++;
+ 			accolade = 1;
+ 		}
+ 	 //ft_printf(1, "WORD IS NULL 2 = %d\n", (!*word) ? 10 : 20);
+ 		while (**entry && **entry != '}' && **entry != '\'' && **entry != '\"' && **entry != '=' && **entry != '$'
+ 			&& *(*entry - 1) != '?' && (ft_isalnum(**entry) || **entry == '?'
+ 			|| **entry == '_'))
+ 		{
+ 			env_var_name = add_char_to_word_free(env_var_name, **entry);
+ 			(*entry)++;
+ 			rtn++;
+ 			if (ft_isdigit(*(*entry - 1)) && *(*entry - 2) == '$')
+ 				break ;
+ 		}
+ //	 ft_printf(1, "WORD IS NULL 3 = %d\n", (!*word) ? 10 : 20);
+ 		//ft_printf(1, "accolade = |%d|\n**entry = |%c|\n", accolade, **entry);
+ 		if (env_var_name && ft_secure_strlen(env_var_name) == 1
+ 			&& env_var_name[0] == '?')								// Last return
+ 		{
+ 			env_var_name = (g_ms.last_cmd_rtn != -1) ?
+ 				ft_itoa(g_ms.last_cmd_rtn) : ft_strdup("0");
+ 		}
+ 		else if (env_var_name && ((accolade == 1 && **entry == '}') || (accolade == 0)))
+ 		{								//	 Get en var normaly
+ 		//	ft_printf(1, "accolade = |%d|\n**entry = |%c|\n", accolade, **entry);
+ 			env_var_name = get_env_var_by_name(env_var_name);
+ 			if (accolade == 1)
+ 			{
+ 				(*entry)++;
+ 				rtn++;
+ 			}
+ 		}
+ 		else if (accolade == 1 && **entry != '}')
+ 		{
+ 			ft_printf(2, "minishell: unexpected EOF while looking for matching `}'\n");
+ 			ft_printf(2, "minishell: syntax error: unexpected end of file\n");
+ 			return (-1);
+ 		}
+ //	 ft_printf(1, "WORD IS NULL 4 = %d\n", (!*word) ? 10 : 20);
+ 		if (env_var_name && *env_var_name)
+ 		{
+ 			*word = ft_strjoin(*word, env_var_name);
+ 			*word = add_char_to_word_free(*word, '\0');
+ 		}
+ 	// ft_printf(1, "WORD IS NULL 5 = %d\n", (!*word) ? 10 : 20);
+ 		if (*(*entry - 1) == '$' && (**entry == '=' || **entry == '\"'))
+ 			*word = add_char_to_word_free(*word, '$');
+ //	 ft_printf(1, "WORD IS NULL 6 = %d\n", (!*word) ? 10 : 20);
+ 	}
+ 	else if (**entry == '$')
+ 		*word = add_char_to_word_free(*word, '$');
+ //	ft_printf(1, "Actual char (end) = %c (%.12s)| %d\n", **entry, *entry, **entry);
+ //	ft_printf(1, "wordaaa = |%s|\n", *word);
+ 	return (rtn);
+ }
+
+int	env_var_boucle(char **entry)
+{
+	int simple_q;
+	char *word;
+	char *save;
+	char *new_entry;
+
+	word = NULL;
+	simple_q = 0;
+	while (**entry)
+	{
+		word = NULL;
+			//ft_printf(1, "1 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
+		if (**entry == '\'' && simple_q == 0)
+			simple_q = 1;
+		else if (**entry == '\'' && simple_q == 1)
+			simple_q = 0;
+		if (**entry == '$' && simple_q == 0)
+		{
+			//ft_printf(1, "2 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
+			save = *entry;
+			if (env_var(entry, &word) == -1)
+				return (-1);
+			//ft_printf(1, "3 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
+			char *to_free;
+			to_free = NULL;
+			to_free = new_entry;
+			new_entry = ft_strjoin(new_entry, word);
+			//ft_printf(1, "4 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
+			if (word)
+				free(word);
+			if (to_free)
+				free(to_free);
+		}
+		else
+		{
+			new_entry = add_char_to_word_free(new_entry, **entry);
+			(*entry)++;
+		}
+	}
+	*entry = new_entry;
+	return (1);
+}
+
 /*
 **	Function: sanitize_loop
 **	--------------------
@@ -186,6 +305,8 @@ int				sanitize(char *entry, char ***treated)
 		return (SUCCESS);
 	}
 	up = 0;
+	if (env_var_boucle(&entry) == -1)
+		return (ERROR); 
 	while (*(entry + up))
 		if (sanitize_loop(&up, entry, treated) == ERROR)
 			return (ERROR);
