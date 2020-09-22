@@ -15,7 +15,7 @@ SRC			=	minishell.c 					\
 				sig_catcher.c					\
 				interface.c						\
 				utils/utils.c					\
-				utils/cutted_tree_forest.c		\
+				utils/words_parser.c			\
 				utils/utils_double_tabs.c		\
 				utils/utils_double_tabs_2.c		\
 				cmds/check.c					\
