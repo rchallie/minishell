@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:40:44 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/22 17:55:55 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/22 17:58:46 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ int				get_word(char *startword, char **entry_addr, char **word)
                         startword++;
                         char_count++;
                     }
-                    if ((ft_secure_strlen(*word) > 2 && c == '>') || ft_secure_strlen(*word) > 1)
+                    if ((ft_secure_strlen(*word) > 2 && c == '>') || (ft_secure_strlen(*word) > 1 && c != '>'))
                     {
                         ft_printf(2,
                             "minishell: syntax error near unexpected token `%c%c'\n", c, c);
