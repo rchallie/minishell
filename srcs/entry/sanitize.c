@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/22 15:23:23 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/22 17:45:08 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,26 +194,23 @@ int	env_var_boucle(char **entry)
 
 	word = NULL;
 	simple_q = 0;
+	new_entry = NULL;
 	while (**entry)
 	{
 		word = NULL;
-			//ft_printf(1, "1 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
 		if (**entry == '\'' && simple_q == 0)
 			simple_q = 1;
 		else if (**entry == '\'' && simple_q == 1)
 			simple_q = 0;
 		if (**entry == '$' && simple_q == 0)
 		{
-			//ft_printf(1, "2 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
 			save = *entry;
 			if (env_var(entry, &word) == -1)
 				return (-1);
-			//ft_printf(1, "3 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
 			char *to_free;
 			to_free = NULL;
 			to_free = new_entry;
 			new_entry = ft_strjoin(new_entry, word);
-			//ft_printf(1, "4 entry = |%s|\nnew_entry = |%s|\nword = |%s|\n\n", *entry, new_entry, word);
 			if (word)
 				free(word);
 			if (to_free)
@@ -317,7 +314,6 @@ int				sanitize(char *entry, char ***treated)
 		ft_printf(1, "Word = |%s|\n", (*treated)[i]);
 		i++;
 	}
-	return (ERROR);
 	free(entry);
 	add_word_to_tab("\n", treated);
 	return (SUCCESS);

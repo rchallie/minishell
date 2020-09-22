@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:40:44 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/22 15:42:34 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/22 17:55:55 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static int		no_quotes(char **entry, char **word, int *simple_q,
 	}
     else
 		*word = add_char_to_word_free(*word, **entry);
-
+    return (0);
 	// else if (**entry == '\"')
 	// {
 	// 	*double_q = 1;
@@ -134,7 +134,6 @@ static int		no_quotes(char **entry, char **word, int *simple_q,
 	// 	return (1);
 	// }
 	// else if (**entry != '$' && **entry != '\0')
-	return (0);
 }
 
 int				if_quotes(char **entry, char **word, int *simple_q,
@@ -210,26 +209,51 @@ int				get_word(char *startword, char **entry_addr, char **word)
 		//ft_printf(1, "startword2 = |%s|\n", startword);
 		// ft_printf(1, "WORD IS NULL 7 = %d\n", (!*word) ? 10 : 20);
 
-        // COND D'ARRET
-		if (((((*startword == ' ' || *startword == '>' || *startword == '<'
+        // COND D'ARRET 
+
+
+		if ((((*startword == ' ' || *startword == '>' || *startword == '<'
 			|| *startword == '|' || *startword == ';')
             && (&(*startword) != &(**entry_addr))) && *(startword - 1) != '\\')
-			&& !(simple_q || double_q)) && *word)
-			break ;
-            
+			&& !(simple_q || double_q))
+            {
+                if (*word)
+        			break ;
+                else
+                {
+                    char c = *startword;
+                    while (*startword == c)
+                    {
+                        *word = add_char_to_word_free(*word, *startword);
+                        startword++;
+                        char_count++;
+                    }
+                    if ((ft_secure_strlen(*word) > 2 && c == '>') || ft_secure_strlen(*word) > 1)
+                    {
+                        ft_printf(2,
+                            "minishell: syntax error near unexpected token `%c%c'\n", c, c);
+                        return (-1);
+                    }
+                    break;
+                }
+            }
 		// ft_printf(1, "WORD IS NULL 8 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword3 = |%s|\n", startword);
 
         // QUOTE 
-		char_count += if_quotes(&startword, word, &simple_q, &double_q);
+		if_quotes(&startword, word, &simple_q, &double_q);
         
 		// ft_printf(1, "WORD IS NULL 9 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword4 = |%s|\n", startword);
         
 		// if (*startword*(startword + 1) == ' '))))
 		// {
-			startword++;
-			char_count++;
+        if (*startword)
+        {
+            startword++;
+            char_count++;
+        }
+			
 		// }
 		// ft_printf(1, "WORD IS NULL 10 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword5 = |%s|\n", startword);
@@ -240,7 +264,6 @@ int				get_word(char *startword, char **entry_addr, char **word)
     // ft_printf(1, "WORD = |%s|\n", *word);
 	// if (word && *word && (is_special_token(*word) == SUCCESS))
 	// 	*word = add_char_to_word_free(*word, 3);
-	//ft_printf(1, "Char count = %d\n", char_count);
 	//ft_printf(1, "startword6 = |%s|\n", startword);
 	//ft_printf(1, "word = |%s|\n", *word);
 	return (char_count);
