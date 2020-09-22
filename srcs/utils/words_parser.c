@@ -143,7 +143,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 		return (no_quotes(entry, word, simple_q, double_q));
 	else if (*simple_q == 1)
     {
-		if (**entry == '\'')
+		if (**entry == '\'' && *(*entry - 1) != '\\')
 			*simple_q = 0;
     	*word = add_char_to_word_free(*word, **entry);
     }
@@ -156,7 +156,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 		// 	return (1);
 		// }
 		// else
-        if (**entry == '\"')
+        if (**entry == '\"' && *(*entry - 1) != '\\')
 			*double_q = 0;
 		// else if (**entry != '$')
 		*word = add_char_to_word_free(*word, **entry);

@@ -307,13 +307,13 @@ int				sanitize(char *entry, char ***treated)
 	while (*(entry + up))
 		if (sanitize_loop(&up, entry, treated) == ERROR)
 			return (ERROR);
-	int i = 0;
-	ft_printf(1, "LEN TAB = %d\n",  get_double_char_tab_len(*treated));
-	while (i != get_double_char_tab_len(*treated))
-	{
-		ft_printf(1, "Word = |%s|\n", (*treated)[i]);
-		i++;
-	}
+//	int i = 0;
+//	ft_printf(1, "LEN TAB = %d\n",  get_double_char_tab_len(*treated));
+//	while (i != get_double_char_tab_len(*treated))
+//	{
+//		ft_printf(1, "Word = |%s|\n", (*treated)[i]);
+//		i++;
+//	}
 	free(entry);
 	add_word_to_tab("\n", treated);
 	return (SUCCESS);
