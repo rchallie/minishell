@@ -34,6 +34,7 @@ static int		special_char(char ***treated, char *entry, int up, char c)
 	char	*word_free;
 
 	word = NULL;
+	//ft_printf(1, "char = |%c|\n", *(entry + up));
 	if (*(entry + up) == c)
 	{
 		while (*(entry + up) == c)

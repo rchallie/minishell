@@ -224,8 +224,7 @@ int				get_word(char *startword, char **entry_addr, char **word)
 		// //ft_printf(1, "WORD IS NULL 11 = %d\n", (!*word) ? 10 : 20);
 	}
 	//ft_printf(1, "word = |%s|\n", *word);
-	if (word && *word && is_special_token(*word) == SUCCESS && sum_back_backslash(startword - 1) != 1)
-		*word = add_char_to_word_free(*word, 3);
+
 	////ft_printf(1, "Char count = %d\n", char_count);
 	//ft_printf(1, "startword6 = |%s|\n", startword);
 	//ft_printf(1, "word = |%s|\n", *word);
