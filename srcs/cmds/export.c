@@ -70,9 +70,10 @@ static int		export(void)
 		if (double_char_tab_contain(sorted[i], g_export_vars) == ERROR
 			&& ft_strncmp(sorted[i], "_", (ft_strchr(sorted[i], '=')
 				- sorted[i])))
-			ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n",
+			(ft_strchr(sorted[i], '=') == NULL) ? ft_printf(STDOUT_FILENO, "declare -x %.*s\n",
+				(ft_strchr(sorted[i], '=') - sorted[i]) + 1) :(ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n",
 				(ft_strchr(sorted[i], '=') - sorted[i]) + 1, sorted[i],
-				ft_strchr(sorted[i], '=') + 1);
+				ft_strchr(sorted[i], '=') + 1));
 		i++;
 	}
 	free_double_char_tab(sorted);
@@ -151,6 +152,20 @@ static int		add_var_to_export(
 	return (SUCCESS);
 }
 
+int				not_env(char *str)
+{
+	int i;
+
+	i = 0;
+	while (g_envp[i])
+	{
+		if (ft_strcmp(str, g_envp[i]) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 /*
 ** Function: export_
 ** ------------
@@ -200,7 +215,8 @@ int				export_(
 				}
 				else if (end_name != NULL)
 					add_var_to_env(argv[cursor]);
-				add_var_to_export(argv[cursor]);
+				if (not_env(argv[cursor]))
+					add_var_to_export(argv[cursor]);
 			}
 		}
 	}

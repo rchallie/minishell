@@ -173,6 +173,9 @@ echo -e "#                             EXECUTION TESTS                          
 echo -e "#############################################################################$RESET\n"
 
 
+run_test 'export PATH=$PWD/add_path:$PATH ; export | grep PATH ; ls'
+
+
 echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
@@ -738,7 +741,6 @@ then
     rm -rf test_prog
 fi
 
-#OTHERS
 run_test 'touch test_file ; rm test_file'
 run_test 'ls'
 run_test 'cat bible.txt'
@@ -747,14 +749,12 @@ run_test 'echo test > a ; /bin/cat a'
 run_test 'echo test > a ; /bin/rm a'
 run_test '/bin/pwd'
 run_test 'unset PATH ; ls ; cd /bin ; ls'
-run_test 'export PATH=$PWD/add_path:$PATH ; export | grep PATH ; ls'
-
-
 
 
 #EMPTY ENV
 echo 'export' | env -i ../minishell | grep -v _= > diff_minishell.txt
 echo 'export' | env -i bash | grep -v _= > diff_bash.txt
+
 diff --text diff_minishell.txt diff_bash.txt > /dev/random 2>&1
 result=$?
 if [ $result = 0 ]

@@ -239,7 +239,13 @@ int				main(int ac, char **av, char **env)
 		return (ERROR);
 	dup_double_char_tab(env, &g_envp);
 	sigcatcher_init();
-	
+
+	if (bool_get_env_var_by_name("OLDPWD") == 0)
+		add_var_to_env("OLDPWD");
+	char *pwd;
+	pwd = ft_strdup("PWD=");
+	pwd = ft_strjoin(pwd, g_pwd);
+	add_var_to_env(pwd);
 	char *shlvl_string = get_env_var_by_name("SHLVL");
 	int shlvl = 0;
 	int i;

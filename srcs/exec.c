@@ -78,8 +78,6 @@ static int		exec_cmd(char *file, t_exec *ex)
 
 static int		init_for_exec(t_exec *ex, char **cmd, int *seq)
 {
-	char	*last_exec_path;
-
 	ex->exec = cmd[ex->save_seq_cursor];
 	add_word_to_tab(cmd[ex->save_seq_cursor], &ex->argv);
 	if (seq[++ex->save_seq_cursor] > 2)
@@ -95,13 +93,6 @@ static int		init_for_exec(t_exec *ex, char **cmd, int *seq)
 		while (seq[ex->save_seq_cursor]
 			&& seq[ex->save_seq_cursor] <= 2)
 			add_word_to_tab(cmd[ex->save_seq_cursor++], &ex->argv);
-	get_pwd(&ex->exec_path);
-	last_exec_path = ex->exec_path;
-	ex->exec_path = add_char_to_word(ex->exec_path, '/');
-	free(last_exec_path);
-	last_exec_path = ex->exec_path;
-	ex->exec_path = ft_strjoin(ex->exec_path, ex->exec);
-	free(last_exec_path);
 	return (SUCCESS);
 }
 
@@ -179,6 +170,7 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path, char **cmd)
 int				is_exec(char **cmd, int *seq)
 {
 	t_exec	ex;
+	char	*last_exec_path;
 
 	ex.exec = NULL;
 	ex.exec_path = NULL;
@@ -194,12 +186,19 @@ int				is_exec(char **cmd, int *seq)
 		free_double_char_tab(ex.argv);
 		return (ERROR);
 	}
+	if (exec_from_env(&ex, -1, NULL, cmd) == SUCCESS)
+		return (SUCCESS);
+	get_pwd(&ex.exec_path);
+	last_exec_path = ex.exec_path;
+	ex.exec_path = add_char_to_word(ex.exec_path, '/');
+	free(last_exec_path);
+	last_exec_path = ex.exec_path;
+	ex.exec_path = ft_strjoin(ex.exec_path, ex.exec);
+	free(last_exec_path);
 	if (exec_cmd(ex.exec, &ex) == SUCCESS)
 		return (SUCCESS);
 	free(ex.exec_path);
 	ex.exec_path = NULL;
-	if (exec_from_env(&ex, -1, NULL, cmd) == SUCCESS)
-		return (SUCCESS);
 	free_double_char_tab(ex.argv);
 	return (ERROR);
 }
