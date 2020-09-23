@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/21 16:01:44 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/23 17:05:15 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static void		entry_splitter(
 	char *cmd = NULL;
 	char *find = NULL;
 	char *new_start = entry;
-
+	// ft_printf
 	if (entry_splitter_precheck(new_start) == ERROR)
 	{
 		g_ms.last_cmd_rtn = 2;
@@ -92,7 +92,7 @@ static void		entry_splitter(
 	
 	int s_quote = 0;
 	int d_quote = 0;
-	//ft_printf(1, "cmd 1 = |%s|\n", cmd);
+	// ft_printf(1, "cmd 1 = |%s|\n", cmd);
 	while (*new_start)
 	{
 		find = ft_strchr(new_start, ';');
@@ -101,12 +101,20 @@ static void		entry_splitter(
 			find = (new_start + ft_secure_strlen(new_start));
 		}
 		char *cp = new_start;
+		// ft_printf(1, "new_start 1 = |%s|\n", new_start);
+		
 		while (*cp && cp != find)
 		{
-			if (*cp == '\\' && (cp + 1) == find)
+			// ft_printf(1, "CP")
+			if (*cp == '\\')
 			{
-				cp += 2;
-				find = ft_strchr(find + 1, ';');
+					// ft_printf(1, "LOLUP\n");
+				if (*(cp + 1) && (cp + 1) == find)
+				{
+					// ft_printf(1, "LOL\n");
+					find = ft_strchr(find + 1, ';');
+				}
+				cp += 1;
 			}
 			if (*cp == '\'' && *(cp - 1) != '\\' && (s_quote == 0 && d_quote == 0))
 				s_quote = 1;
@@ -121,13 +129,16 @@ static void		entry_splitter(
 					find = ft_strchr(find + 1, ';');
 			cp++;
 		}
-	//	ft_printf(1, "cmd 2 = |%s|\n", cmd);
+		// ft_printf(1, "cmd 2 = |%s|\n", cmd);
 		if (!find)
 			find = (new_start + ft_secure_strlen(new_start));
-	//	ft_printf(1, "cmd 3 = |%s|\n", cmd);
-		cmd = ft_substr(entry, new_start - entry, find - new_start);
-	//	ft_printf(1, "cmd 4 = |%s|\n", cmd);
-		if (treat_entry(cmd) == -1)
+		// ft_printf(1, "cmd 3 = |%s|\n", cmd);
+		if (find != '\0')
+			cmd = ft_substr(entry, new_start - entry, (find - new_start) + 1);
+		else
+			cmd = ft_substr(entry, new_start - entry, find - new_start);
+		// ft_printf(1, "cmd 4 = |%s|\n", cmd);
+		if (treat_entry(cmd) == ERROR)
 		{
 			g_ms.last_cmd_rtn = 2;
 			return ;

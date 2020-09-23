@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:46:46 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/23 10:14:51 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/23 17:05:34 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,16 @@ static int		seq_for_special(char **treated, int *sequ, int *has_cmd, int *i)
 		if (treated[*i] && !is_special(treated[*i], sequ, *i))
 			sequ[*i] = 8;
 		else
+		{
+			// ft_printf(1, "TA MAMAN  = |%s|\n", treated[*i]);
 			return (error_identifier("syntax error near unexpected token",
 				treated[*i]));
+		}
+			
 	}
-	else if (sequ[*i] == 7 || sequ[*i] == 6)
+	else if (sequ[*i] == 6)
 	{
+		// ft_printf(1, "TA PERE\n");
 		if (*has_cmd == 0)
 			return (error_identifier("syntax error near unexpected token",
 				treated[*i]));
@@ -174,7 +179,7 @@ static int		seq_treated_tab(char **treated, int *sequ)
 		{
 			if (((ret_spe =
 				seq_for_special(treated, sequ, &has_cmd, &i)) != SUCCESS))
-				return (ret_spe);
+					return (ret_spe);
 		}
 		else if (has_cmd == 0)
 		{
@@ -183,6 +188,7 @@ static int		seq_treated_tab(char **treated, int *sequ)
 		}
 		else
 			sequ[i] = 2;
+
 		if (sequ[i] == 0 || sequ[i] == 2 || sequ[i] == 8)
 		{
 			if (treated[i] && treated[i][0] == '~'
@@ -190,8 +196,12 @@ static int		seq_treated_tab(char **treated, int *sequ)
 				treated[i] = tuning_home(treated[i]);
 			tuning_treated(&(treated[i]));
 		}
+		else if (sequ[i] == 7)
+			treated[i][0] = '\n';
 		i++;
 	}
+	i = 0;
+
 	return (SUCCESS);
 }
 
