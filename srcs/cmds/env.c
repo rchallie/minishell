@@ -12,6 +12,28 @@
 
 #include "../../incs/minishell.h"
 
+
+int			bool_get_env_var_by_name(char *name)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (g_envp[i])
+	{
+		j = 0;
+		while (g_envp[i][j] && name[j] && g_envp[i][j] == name[j])
+			j++;
+		if (name[j] == '\0' && g_envp[i][j] == '=')
+		{
+			j++;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 char		*get_env_var_by_name(char *name)
 {
 	int		i;

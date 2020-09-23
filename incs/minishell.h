@@ -201,6 +201,7 @@ char				*add_char_to_word_free(char *word, char c);
 */
 
 char				*get_env_var_by_name(char *name);
+int					bool_get_env_var_by_name(char *name);
 int					add_var_to_env(char *var);
 
 /*
