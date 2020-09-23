@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:40:44 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/22 17:58:46 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/23 11:44:01 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,16 @@ static int		no_quotes(char **entry, char **word, int *simple_q,
 	int *double_q)
 {
 	// ft_printf(1, "No quotes [ %d ] \n", **entry);
-	if (**entry == '\'' || **entry == '\"')
+     if (**entry == '\\')
+	{
+		//ft_printf(1, "startword3bis = |%s|\n", *entry);
+		*word = add_char_to_word_free(*word, **entry);
+		(*entry)++;
+		//ft_printf(1, "startword3bis = |%s|\n", *entry);
+		*word = add_char_to_word_free(*word, **entry);
+		//ft_printf(1, "word = |%s|\n", *word);
+		return (2);
+	} else if (**entry == '\'' || **entry == '\"')
 	{
 		// *simple_q = 1;
         (**entry == '\'') ? (*simple_q = 1) : (*double_q = 1); 
@@ -124,15 +133,7 @@ static int		no_quotes(char **entry, char **word, int *simple_q,
     //     else
     //         *word = add_char_to_word_free(word, '"');
 	// }
-	// else if (**entry == '\\')
-	// {
-	// 	//ft_printf(1, "startword3bis = |%s|\n", *entry);
-	// 	(*entry)++;
-	// 	//ft_printf(1, "startword3bis = |%s|\n", *entry);
-	// 	*word = add_char_to_word_free(*word, **entry);
-	// 	//ft_printf(1, "word = |%s|\n", *word);
-	// 	return (1);
-	// }
+	// else
 	// else if (**entry != '$' && **entry != '\0')
 }
 
@@ -143,20 +144,27 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 		return (no_quotes(entry, word, simple_q, double_q));
 	else if (*simple_q == 1)
     {
-		if (**entry == '\'' && *(*entry - 1) != '\\')
+        if (**entry == '\\') //|| *(*entry + 1) == '$' || *(*entry + 1) == '\\')) )
+		{
+			*word = add_char_to_word_free(*word, **entry);
+			(*entry)++;
+			*word = add_char_to_word_free(*word, **entry);
+			return (2);
+		}
+		else if (**entry == '\'')
 			*simple_q = 0;
     	*word = add_char_to_word_free(*word, **entry);
     }
 	else if (*double_q == 1)
 	{
-		// if (**entry == '\\' && (*(*entry + 1) == '\"' || *(*entry + 1) == '$' || *(*entry + 1) == '\\'))
-		// {
-		// 	(*entry)++;
-		// 	*word = add_char_to_word_free(*word, **entry);
-		// 	return (1);
-		// }
-		// else
-        if (**entry == '\"' && *(*entry - 1) != '\\')
+		if (**entry == '\\') //|| *(*entry + 1) == '$' || *(*entry + 1) == '\\')) )
+		{
+			*word = add_char_to_word_free(*word, **entry);
+			(*entry)++;
+			*word = add_char_to_word_free(*word, **entry);
+			return (2);
+		}
+		else if (**entry == '\"')
 			*double_q = 0;
 		// else if (**entry != '$')
 		*word = add_char_to_word_free(*word, **entry);
@@ -211,10 +219,9 @@ int				get_word(char *startword, char **entry_addr, char **word)
 
         // COND D'ARRET 
 
-
 		if ((((*startword == ' ' || *startword == '>' || *startword == '<'
 			|| *startword == '|' || *startword == ';')
-            && (&(*startword) != &(**entry_addr))) && *(startword - 1) != '\\')
+            && (&(*startword) != &(**entry_addr))))
 			&& !(simple_q || double_q))
             {
                 if (*word)
@@ -238,13 +245,12 @@ int				get_word(char *startword, char **entry_addr, char **word)
                 }
             }
 		// ft_printf(1, "WORD IS NULL 8 = %d\n", (!*word) ? 10 : 20);
-		//ft_printf(1, "startword3 = |%s|\n", startword);
+		// ft_printf(1, "startword3 = |%s|\n", startword);
 
         // QUOTE 
-		if_quotes(&startword, word, &simple_q, &double_q);
-        
+		char_count += if_quotes(&startword, word, &simple_q, &double_q);
 		// ft_printf(1, "WORD IS NULL 9 = %d\n", (!*word) ? 10 : 20);
-		//ft_printf(1, "startword4 = |%s|\n", startword);
+		// ft_printf(1, "startword4 = |%s|\n", startword);
         
 		// if (*startword*(startword + 1) == ' '))))
 		// {
@@ -257,8 +263,10 @@ int				get_word(char *startword, char **entry_addr, char **word)
 		// }
 		// ft_printf(1, "WORD IS NULL 10 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword5 = |%s|\n", startword);
+        // printf("s = %d | q = %d | c = %d\n", simple_q, double_q, *startword);
 		if (*startword == '\0' && (simple_q || double_q))
 			quote_error(&startword, entry_addr, &save_startword, simple_q);
+        // printf("s = %d | q = %d | c = %d\n", simple_q, double_q, *startword);
 		// ft_printf(1, "WORD IS NULL 11 = %d\n", (!*word) ? 10 : 20);
 	}
     // ft_printf(1, "WORD = |%s|\n", *word);
