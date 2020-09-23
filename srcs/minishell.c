@@ -27,6 +27,7 @@ int				treat_entry(char *cmd)
 		return (ERROR);
 	}
 	g_ms.has_pipe = 0;
+	//ft_printf(1, "cmd 5 = |%s|\n", cmd);
 	if (get_sequence(cmd_treated, &sequence) != SUCCESS)
 		return (ERROR);
 	reorder_sequence(&cmd_treated, &sequence);
@@ -79,7 +80,7 @@ static void		entry_splitter(
 	char *entry
 )
 {
-	char *cmd;
+	char *cmd = NULL;
 	char *find = NULL;
 	char *new_start = entry;
 
@@ -91,6 +92,7 @@ static void		entry_splitter(
 	
 	int s_quote = 0;
 	int d_quote = 0;
+	//ft_printf(1, "cmd 1 = |%s|\n", cmd);
 	while (*new_start)
 	{
 		find = ft_strchr(new_start, ';');
@@ -101,6 +103,11 @@ static void		entry_splitter(
 		char *cp = new_start;
 		while (*cp && cp != find)
 		{
+			if (*cp == '\\' && (cp + 1) == find)
+			{
+				cp += 2;
+				find = ft_strchr(find + 1, ';');
+			}
 			if (*cp == '\'' && *(cp - 1) != '\\' && (s_quote == 0 && d_quote == 0))
 				s_quote = 1;
 			else if (*cp == '\'' && s_quote == 1)
@@ -114,9 +121,12 @@ static void		entry_splitter(
 					find = ft_strchr(find + 1, ';');
 			cp++;
 		}
+	//	ft_printf(1, "cmd 2 = |%s|\n", cmd);
 		if (!find)
 			find = (new_start + ft_secure_strlen(new_start));
+	//	ft_printf(1, "cmd 3 = |%s|\n", cmd);
 		cmd = ft_substr(entry, new_start - entry, find - new_start);
+	//	ft_printf(1, "cmd 4 = |%s|\n", cmd);
 		if (treat_entry(cmd) == -1)
 		{
 			g_ms.last_cmd_rtn = 2;

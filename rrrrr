@@ -1,1 +1,0 @@
-export 1TEST= ; env | sort | grep -v SHLVL | grep -v _=

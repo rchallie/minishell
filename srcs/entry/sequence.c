@@ -141,6 +141,8 @@ void		tuning_treated(char **str)
 			new_str = add_char_to_word_free(new_str, **str);
 		(*str)++;
 	}
+	if (new_str == NULL)
+		new_str = ft_strdup("");
 	*str = new_str;
 	return ;
 }

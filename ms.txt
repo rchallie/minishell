@@ -1,1 +1,0 @@
-minishell: export: '1TEST=': not a valid identifier
