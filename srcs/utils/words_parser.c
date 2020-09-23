@@ -106,7 +106,7 @@
 static int		no_quotes(char **entry, char **word, int *simple_q,
 	int *double_q)
 {
-	// ft_printf(1, "No quotes [ %d ] \n", **entry);
+	//ft_printf(1, "No quotes [ %c ] \n", **entry);
      if (**entry == '\\')
 	{
 		//ft_printf(1, "startword3bis = |%s|\n", *entry);
@@ -115,8 +115,9 @@ static int		no_quotes(char **entry, char **word, int *simple_q,
 		//ft_printf(1, "startword3bis = |%s|\n", *entry);
 		*word = add_char_to_word_free(*word, **entry);
 		//ft_printf(1, "word = |%s|\n", *word);
-		return (2);
-	} else if (**entry == '\'' || **entry == '\"')
+		return (1);
+	}
+	else if (**entry == '\'' || **entry == '\"')
 	{
 		// *simple_q = 1;
         (**entry == '\'') ? (*simple_q = 1) : (*double_q = 1); 
@@ -149,7 +150,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 			*word = add_char_to_word_free(*word, **entry);
 			(*entry)++;
 			*word = add_char_to_word_free(*word, **entry);
-			return (2);
+			return (1);
 		}
 		else if (**entry == '\'')
 			*simple_q = 0;
@@ -162,7 +163,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 			*word = add_char_to_word_free(*word, **entry);
 			(*entry)++;
 			*word = add_char_to_word_free(*word, **entry);
-			return (2);
+			return (1);
 		}
 		else if (**entry == '\"')
 			*double_q = 0;
@@ -181,6 +182,7 @@ char **save_startword, int simple_q)
 	(simple_q == 1) ? ft_printf(STDOUT_FILENO, "squote > ")
 		: ft_printf(STDOUT_FILENO, "dquote > ");
 	test = edit_line();
+	//ft_printf(1, "test = |%s|\n", test);
 	startword_advencement = *startword - *save_startword;
 	test = ft_strjoin("\n", test);
 	*startword = ft_strjoin(*save_startword, test);
@@ -220,14 +222,14 @@ int				get_word(char *startword, char **entry_addr, char **word)
         // COND D'ARRET 
 
 		if ((((*startword == ' ' || *startword == '>' || *startword == '<'
-			|| *startword == '|' || *startword == ';')
-            && (&(*startword) != &(**entry_addr))))
+			|| *startword == '|' || *startword == ';')))
 			&& !(simple_q || double_q))
             {
                 if (*word)
         			break ;
                 else
                 {
+                	//ft_printf(1, "ELSE\n");
                     char c = *startword;
                     while (*startword == c)
                     {
@@ -264,11 +266,12 @@ int				get_word(char *startword, char **entry_addr, char **word)
 		// ft_printf(1, "WORD IS NULL 10 = %d\n", (!*word) ? 10 : 20);
 		//ft_printf(1, "startword5 = |%s|\n", startword);
         // printf("s = %d | q = %d | c = %d\n", simple_q, double_q, *startword);
-		if (*startword == '\0' && (simple_q || double_q))
+		if (*startword == '\0' && (simple_q || double_q) && isatty(0))
 			quote_error(&startword, entry_addr, &save_startword, simple_q);
         // printf("s = %d | q = %d | c = %d\n", simple_q, double_q, *startword);
 		// ft_printf(1, "WORD IS NULL 11 = %d\n", (!*word) ? 10 : 20);
 	}
+	//ft_printf(1, "isatty(0) = |%d|\n", isatty(0));
     // ft_printf(1, "WORD = |%s|\n", *word);
 	// if (word && *word && (is_special_token(*word) == SUCCESS))
 	// 	*word = add_char_to_word_free(*word, 3);
