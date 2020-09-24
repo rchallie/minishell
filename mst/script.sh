@@ -172,8 +172,10 @@ echo -e "\n\n$CYAN##############################################################
 echo -e "#                             EXECUTION TESTS                               #"
 echo -e "#############################################################################$RESET\n"
 
-
-run_test 'export PATH=$PWD/add_path:$PATH ; export | grep PATH ; ls'
+run_test 'cd .. ; pwd'
+run_test 'cd /Users ; pwd'
+run_test 'cd ; pwd'
+run_test 'mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; pwd ; cd . ; pwd ; cd .. ; pwd'
 
 
 echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
@@ -183,6 +185,7 @@ read user_input
 if [ $user_input = 'y' ]
     then
     #PARSING
+    echo 'AlexJeannot tester : '
     run_test 'echo \n\n'
     run_test 'echo ""' 
     run_test 'echo \|' 
@@ -274,6 +277,12 @@ if [ $user_input = 'y' ]
     run_test "echo lala             |echo       test |                            echo  lala"
     run_test "echo lala ;   echo test| echo        lala"
     run_test "echo        lala|echo test ;echo                                   lala"
+    echo '\nSolal tester :'
+    let 'test_number=1'
+    run_test 'echo test tout'
+    run_test 'echo test      tout'
+    run_test 'echo -n test tout'
+    run_test 'echo -n -n -n test tout'
 fi
 
 echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
@@ -749,7 +758,7 @@ run_test 'echo test > a ; /bin/cat a'
 run_test 'echo test > a ; /bin/rm a'
 run_test '/bin/pwd'
 run_test 'unset PATH ; ls ; cd /bin ; ls'
-
+run_test 'export PATH=$PWD/add_path:$PATH ; export | grep PATH ; ls'
 
 #EMPTY ENV
 echo 'export' | env -i ../minishell | grep -v _= > diff_minishell.txt
