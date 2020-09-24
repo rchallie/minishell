@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/21 16:05:03 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/24 15:14:24 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int	change_dir(
 		if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR
 			&& (!ft_strcmp(".", path) || !ft_strcmp("./", path)))
 		{
+			ft_printf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: %s\n", strerror(errno));
 			g_pwd = add_char_to_word_free(g_pwd, '/');
 			old_pwd = g_pwd;
 			g_pwd = ft_strjoin(g_pwd, path);
