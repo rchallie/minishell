@@ -172,12 +172,6 @@ echo -e "\n\n$CYAN##############################################################
 echo -e "#                             EXECUTION TESTS                               #"
 echo -e "#############################################################################$RESET\n"
 
-run_test 'cd .. ; pwd'
-run_test 'cd /Users ; pwd'
-run_test 'cd ; pwd'
-run_test 'mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; pwd ; cd . ; pwd ; cd .. ; pwd'
-
-
 echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
@@ -277,7 +271,9 @@ if [ $user_input = 'y' ]
     run_test "echo lala             |echo       test |                            echo  lala"
     run_test "echo lala ;   echo test| echo        lala"
     run_test "echo        lala|echo test ;echo                                   lala"
-    echo '\nSolal tester :'
+    
+    echo 
+    echo "Solal tester :"
     let 'test_number=1'
     run_test 'echo test tout'
     run_test 'echo test      tout'
@@ -371,6 +367,16 @@ then
     run_test 'echo lala > a ; rm a ; echo lala > b ; rm b ; echo lala >> a >> b >> a ; cat a b'
     run_test 'echo test > a ; echo test > b ; echo lala >> a >> b >> a ; cat a b'
     rm -rf test_files
+
+    echo ""
+    echo "Solal tester :"
+    let 'test_number=1'
+    run_test 'echo test > ls ; cat ls'
+    run_test 'echo test > ls >> ls >> ls ; echo test >> ls; cat ls'
+    run_test '> lol echo test lol; cat lol'
+    run_test '>lol echo > test>lol>test>>lol>test mdr >lol test >test; cat test'
+    run_test 'cat < ls'
+    run_test 'cat < ls > ls'
 fi
 
 
@@ -453,6 +459,8 @@ then
     run_test 'export _testvar10=10; env | grep -a _testvar10'
     run_test 'export _testvar10=lala10 ; env | grep -a _testvar10'
     run_test 'export testvar=10 ; export testvar=20 ; env | grep -a testvar'
+
+
 fi
 
 echo -e "$WHITE\n\nDo you want to do export tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
@@ -499,7 +507,26 @@ then
     run_test 'export _testvar10=lala10 ; export | grep -a _testvar10'
     run_test 'export testvar=10 ; export testvar=20 ; export | grep -a testvar'
     run_test 'export testvar=lala ; export ; export testvar=10 ; export' 'grep -v _=' 'sort'
+
+    echo ""
+    echo "Solal tester :"
+    let 'test_number=1'
+    ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
+    EXPORT_SHOW="export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD"
+    run_test 'export ='
+    run_test 'export 1TEST= ;' $ENV_SHOW
+    run_test 'export TEST ;' $EXPORT_SHOW
+    run_test 'export ""="" ; ' $ENV_SHOW
+    run_test 'export TES=T="" ;' $ENV_SHOW
+    run_test 'export TE+S=T="" ;' $ENV_SHOW
+    run_test 'export TEST=LOL ; echo $TEST ;' $ENV_SHOW
+    run_test 'export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST'
+    run_test 'export TEST=LOL; export TEST+=LOL ; echo $TEST ;' $ENV_SHOW
+    run_test $ENV_SHOW
+    run_test $EXPORT_SHOW
+    run_test 'export TEST="ls       -l     - a" ; echo $TEST ; $LS ; ' $ENV_SHOW
 fi
+
 echo -e "$WHITE\n\nDo you want to do unset tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
@@ -594,6 +621,15 @@ then
     run_test 'pwd ; cd ../mst/... ; pwd'
     run_test 'pwd ; cd .../../..././././../... ; pwd'
     rm -rf test_cd ~/test_cd ...
+
+    echo ""
+    echo "Solal tester :"
+    let 'test_number=1'
+    run_test 'cd .. ; pwd'
+    run_test 'cd /Users ; pwd'
+    run_test 'cd ; pwd'
+    run_test 'mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; pwd ; cd . ; pwd ; cd .. ; pwd'
+
 fi
 
 echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
@@ -653,6 +689,7 @@ if [ $user_input = 'y' ]
 then
 
     #VARIABLES D'ENVIRONNEMENTS
+    echo 'AlexJeannot tester:'
     run_test 'export test=lala ; echo $test ; export $test=10 ; echo $lala'
     run_test 'export test=lala ; export $test=a10 ; export $lala=test ; unset $lala ; export' 'grep -v _='
     run_test 'export a b c ; unset a c ; export' 'grep -v _='
@@ -671,6 +708,28 @@ then
     run_test 'echo "$LALA"'
     run_test "echo \'$PWD\'"
     run_test "echo \'$LALA\'"
+
+    echo
+    echo 'Solal tester:'
+    run_test 'echo test     \    test'
+    run_test 'echo \"test'
+    run_test 'echo $TEST'
+    run_test 'echo "$TEST"'
+    run_test "echo '$TEST'"
+    run_test 'echo "$TEST$TEST$TEST"'
+    run_test 'echo "$TEST$TEST=lol$TEST"'
+    run_test 'echo "   $TEST lol $TEST"'
+    run_test 'echo $TEST$TEST$TEST'
+    run_test 'echo $TEST$TEST=lol$TEST""lol'
+    run_test 'echo    $TEST lol $TEST'
+    run_test 'echo test "" test "" test'
+    run_test 'echo "\$TEST"'
+    run_test 'echo "$=TEST"'
+    run_test 'echo "$"'
+    run_test 'echo "$?TEST"'
+    run_test 'echo $TEST $TEST'
+    run_test 'echo "$1TEST"'
+    run_test 'echo "$T1TEST"'
 fi
 echo -e "$WHITE\n\nDo you want to do pipe tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
@@ -679,6 +738,7 @@ read user_input
 if [ $user_input = 'y' ]
 then
     #PIPE
+    echo 'AlexJeannot tester:'
     run_test 'export a | echo lala ; export' 'grep -v _='
     run_test 'export | echo lala'
     run_test 'unset PWD | echo lala ; export' 'grep -v _='
@@ -689,6 +749,14 @@ then
     run_test 'cat bible.txt | grep testifieth'
     echo -e "\n$ORANGE >> THIS TEST MAY TAKE A WHILE TO ACHIEVE $RESET"
     run_test 'echo test | cat | cat | cat | cat | cat | grep test'
+    
+    echo
+    echo 'Solal tester:'
+    run_test 'cat tests/lorem.txt | grep arcu | cat -e'
+    run_test 'echo test | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e | cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e| cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e|cat -e'
+    run_test 'ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls'
+    run_test 'ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls|ls'
+
 fi
 
 echo -e "$WHITE\n\nDo you want to do \$? tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
@@ -759,6 +827,13 @@ run_test 'echo test > a ; /bin/rm a'
 run_test '/bin/pwd'
 run_test 'unset PATH ; ls ; cd /bin ; ls'
 run_test 'export PATH=$PWD/add_path:$PATH ; export | grep PATH ; ls'
+
+run_test 'echo testing multi ; echo "test 1 ; | and 2" ; cat tests/lorem.txt | grep Lorem'
+run_test ';; test'
+run_test '| test'
+run_test 'echo > <'
+run_test 'echo | |'
+run_test '<'
 
 #EMPTY ENV
 echo 'export' | env -i ../minishell | grep -v _= > diff_minishell.txt
@@ -873,6 +948,20 @@ run_return 'exit lala lala'
 run_return 'exit 55 lala'
 run_return 'exit lala 55'
 
+run_return "exit 42"
+run_return "exit 42 53 68"
+run_return "exit 259"
+run_return "exit 9223372036854775807"
+run_return "exit -9223372036854775808"
+run_return "exit 9223372036854775808"
+run_return "exit -9223372036854775810"
+run_return "exit -4"
+run_return "exit wrong"
+run_return "exit wrong_command"
+run_return "gdagadgag"
+run_return "ls -Z"
+run_return "cd gdhahahad"
+run_return "ls -la | wtf"
 
 echo -e "$WHITE\n\nTest leaks ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
