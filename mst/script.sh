@@ -172,6 +172,79 @@ echo -e "\n\n$CYAN##############################################################
 echo -e "#                             EXECUTION TESTS                               #"
 echo -e "#############################################################################$RESET\n"
 
+echo -e "$WHITE\n\nDo you want to do export tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
+echo -ne "$CYAN>> $RESET"
+let 'test_number=1'
+read user_input
+if [ $user_input = 'y' ]
+then
+
+    #EXPORT
+    echo "AlexJeannot tester :"
+    run_test 'export' 'grep -v _=' 'sort'                    #1
+    export SHLVL=8 && run_test 'export' 'grep -a SHLVL'     #2
+    export SHLVL=test && run_test 'export' 'grep -a SHLVL'  #3
+    export SHLVL=0 && run_test 'export' 'grep -a SHLVL'     #4
+    export SHLVL=+23 && run_test 'export' 'grep -a SHLVL'   #5
+    export SHLVL=-10 && run_test 'export' 'grep -a SHLVL'   #6
+    export SHLVL=8+8 && run_test 'export' 'grep -a SHLVL'   #7
+    export SHLVL=++9 && run_test 'export' 'grep -a SHLVL'   #8
+    export SHLVL=-8+8 && run_test 'export' 'grep -a SHLVL'  #9
+    export SHLVL=9-8 && run_test 'export' 'grep -a SHLVL'   #10
+    export SHLVL=-3+6 && run_test 'export' 'grep -a SHLVL'
+    run_test 'export %' 
+    run_test 'export !' 
+    run_test 'export +' 
+    run_test 'export testvar ; export | grep -a testvar'
+    run_test 'export testvar= ; export | grep -a testvar'
+    run_test 'export testvar=0 ; export | grep -a testvar'
+    run_test 'export testvar=1234567 ; export | grep -a testvar'
+    run_test 'export testvar=lala ; export | grep -a testvar'
+    run_test 'export testvar=lala%lala ; export | grep -a testvar'
+    run_test 'export testvar=@lala ; export | grep -a testvar'
+    run_test 'export testvar10 ; export | grep -a testvar10'
+    run_test 'export testvar10= ; export | grep -a testvar10'
+    run_test 'export testvar10=10 ; export | grep -a testvar10'
+    run_test 'export _testvar ; export | grep -a _testvar'
+    run_test 'export _testvar= ; export | grep -a _testvar'
+    run_test 'export _testvar=10 ; export | grep -a _testvar'
+    run_test 'export _testvar=lala ; export | grep -a _testvar'
+    run_test 'export _testvar=lala10 ; export | grep -a _testvar'
+    run_test 'export _testvar10 ; export | grep -a _testvar10'
+    run_test 'export _testvar10= ; export | grep -a _testvar10'
+    run_test 'export _testvar10=lala ; export | grep -a _testvar10'
+    run_test 'export _testvar10=10; export | grep -a _testvar10'
+    run_test 'export _testvar10=lala10 ; export | grep -a _testvar10'
+    run_test 'export testvar=10 ; export testvar=20 ; export | grep -a testvar'
+    run_test 'export testvar=lala ; export ; export testvar=10 ; export' 'grep -v _=' 'sort'
+
+    echo ""
+    echo "Solal tester :"
+    let 'test_number=1'
+    ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
+    EXPORT_SHOW="export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD"
+    run_test 'export ='
+    run_test 'export 1TEST= ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST ; export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD'
+    run_test 'export ""="" ;  env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TES=T="" ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TE+S=T="" ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TE-S=T="" ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST'
+    run_test 'export TEST=LOL; export TEST+=LOL ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL; export TEST+=2LOL ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL; export TEST-=LOL ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL; export TEST-=a ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL; export TEST-=lol ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL; export TEST-=2LOL ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test 'export TEST=LOL; export TEST-=salut ; echo $TEST ; env | sort | grep -v SHLVL | grep -v _='
+    run_test $ENV_SHOW
+    run_test $EXPORT_SHOW
+    run_test 'export TEST="ls       -l     - a" ; echo $TEST ; $LS ;  env | sort | grep -v SHLVL | grep -v _='
+fi
+
+
 echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
@@ -461,70 +534,6 @@ then
     run_test 'export testvar=10 ; export testvar=20 ; env | grep -a testvar'
 
 
-fi
-
-echo -e "$WHITE\n\nDo you want to do export tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
-echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
-read user_input
-if [ $user_input = 'y' ]
-then
-
-    #EXPORT
-   run_test 'export' 'grep -v _=' 'sort'                    #1
-    export SHLVL=8 && run_test 'export' 'grep -a SHLVL'     #2
-    export SHLVL=test && run_test 'export' 'grep -a SHLVL'  #3
-    export SHLVL=0 && run_test 'export' 'grep -a SHLVL'     #4
-    export SHLVL=+23 && run_test 'export' 'grep -a SHLVL'   #5
-    export SHLVL=-10 && run_test 'export' 'grep -a SHLVL'   #6
-    export SHLVL=8+8 && run_test 'export' 'grep -a SHLVL'   #7
-    export SHLVL=++9 && run_test 'export' 'grep -a SHLVL'   #8
-    export SHLVL=-8+8 && run_test 'export' 'grep -a SHLVL'  #9
-    export SHLVL=9-8 && run_test 'export' 'grep -a SHLVL'   #10
-    export SHLVL=-3+6 && run_test 'export' 'grep -a SHLVL'
-    run_test 'export %' 
-    run_test 'export !' 
-    run_test 'export +' 
-    run_test 'export testvar ; export | grep -a testvar'
-    run_test 'export testvar= ; export | grep -a testvar'
-    run_test 'export testvar=0 ; export | grep -a testvar'
-    run_test 'export testvar=1234567 ; export | grep -a testvar'
-    run_test 'export testvar=lala ; export | grep -a testvar'
-    run_test 'export testvar=lala%lala ; export | grep -a testvar'
-    run_test 'export testvar=@lala ; export | grep -a testvar'
-    run_test 'export testvar10 ; export | grep -a testvar10'
-    run_test 'export testvar10= ; export | grep -a testvar10'
-    run_test 'export testvar10=10 ; export | grep -a testvar10'
-    run_test 'export _testvar ; export | grep -a _testvar'
-    run_test 'export _testvar= ; export | grep -a _testvar'
-    run_test 'export _testvar=10 ; export | grep -a _testvar'
-    run_test 'export _testvar=lala ; export | grep -a _testvar'
-    run_test 'export _testvar=lala10 ; export | grep -a _testvar'
-    run_test 'export _testvar10 ; export | grep -a _testvar10'
-    run_test 'export _testvar10= ; export | grep -a _testvar10'
-    run_test 'export _testvar10=lala ; export | grep -a _testvar10'
-    run_test 'export _testvar10=10; export | grep -a _testvar10'
-    run_test 'export _testvar10=lala10 ; export | grep -a _testvar10'
-    run_test 'export testvar=10 ; export testvar=20 ; export | grep -a testvar'
-    run_test 'export testvar=lala ; export ; export testvar=10 ; export' 'grep -v _=' 'sort'
-
-    echo ""
-    echo "Solal tester :"
-    let 'test_number=1'
-    ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
-    EXPORT_SHOW="export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD"
-    run_test 'export ='
-    run_test 'export 1TEST= ;' $ENV_SHOW
-    run_test 'export TEST ;' $EXPORT_SHOW
-    run_test 'export ""="" ; ' $ENV_SHOW
-    run_test 'export TES=T="" ;' $ENV_SHOW
-    run_test 'export TE+S=T="" ;' $ENV_SHOW
-    run_test 'export TEST=LOL ; echo $TEST ;' $ENV_SHOW
-    run_test 'export TEST=LOL ; echo $TEST$TEST$TEST=lol$TEST'
-    run_test 'export TEST=LOL; export TEST+=LOL ; echo $TEST ;' $ENV_SHOW
-    run_test $ENV_SHOW
-    run_test $EXPORT_SHOW
-    run_test 'export TEST="ls       -l     - a" ; echo $TEST ; $LS ; ' $ENV_SHOW
 fi
 
 echo -e "$WHITE\n\nDo you want to do unset tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
