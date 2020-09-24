@@ -130,15 +130,20 @@ static int		add_var_to_export(
 )
 {
 	int		i;
+	int		plus;
 	char	*end_name;
 
 	i = 0;
+	plus = 0;
 	end_name = ft_strchr(var_name, '=');
+	if (end_name)
+		plus = (*(end_name - 1) == '+') ? 1 : 0;
+	ft_printf(1, "plus = |%d|\n", plus);
 	if (end_name == NULL && (is_set(var_name) == SUCCESS))
 		return (SUCCESS);
 	while (g_export_vars && g_export_vars[i] != NULL)
 	{
-		if (!ft_strncmp(g_export_vars[i], var_name, end_name - var_name))
+		if (!ft_strncmp(g_export_vars[i], var_name, end_name - var_name - plus))
 			break ;
 		i++;
 	}
@@ -146,8 +151,13 @@ static int		add_var_to_export(
 		return (add_word_to_tab(var_name, &g_export_vars));
 	else
 	{
-		ft_strdel(&g_export_vars[i]);
-		g_export_vars[i] = ft_strdup(var_name);
+		if (*(end_name - 1) == '+')
+			g_export_vars[i] = ft_strjoin(g_export_vars[i], end_name);
+		else
+		{
+			ft_strdel(&g_export_vars[i]);
+			g_export_vars[i] = ft_strdup(var_name);
+		}
 	}
 	return (SUCCESS);
 }
@@ -155,12 +165,22 @@ static int		add_var_to_export(
 int				not_env(char *str)
 {
 	int i;
+	int plus;
+	char *end_name;
 
+	i = 0;
+	plus = 0;
+	end_name = ft_strchr(str, '=');
+	if (end_name)
+		plus = (*(end_name - 1) == '+') ? 1 : 0;
 	i = 0;
 	while (g_envp[i])
 	{
-		if (ft_strcmp(str, g_envp[i]) == 0)
+		if (!ft_strncmp(g_envp[i], str, end_name - str - plus)
+			&& g_envp[i][(end_name - str)] == '=')
+		{
 			return (0);
+		}
 		i++;
 	}
 	return (1);
@@ -182,6 +202,21 @@ int				not_env(char *str)
 **		returns: return 0
 */
 
+int				is_valid_name(char *str)
+{
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+			return (0);
+	str++;
+	while (*str && *str != '=')
+	{
+		if (!ft_isalnum(*str) && *str != '_')
+			if (!(*str == '+' && *(str + 1) && *(str + 1) == '='))
+				return (0);
+		str++;
+	}
+	return (1);
+}
+
 int				export_(
 	int argc,
 	char **argv,
@@ -199,7 +234,7 @@ int				export_(
 	{
 		while (argv[++cursor])
 		{
-			if (!ft_isalpha(argv[cursor][0]) && argv[cursor][0] != '_')
+			if (is_valid_name(argv[cursor]) == 0)
 			{
 				ft_printf(2, "minishell: export: '%s': %s",
 					argv[cursor], "not a valid identifier\n");
@@ -211,10 +246,12 @@ int				export_(
 				if (end_name == argv[cursor])
 				{
 					ft_printf(2, "minishell: export: « %s » : %s\n",
-						argv[cursor], "invalid identifier");
+						argv[cursor], "not a valid identifier");
 				}
 				else if (end_name != NULL)
+				{
 					add_var_to_env(argv[cursor]);
+				}
 				if (not_env(argv[cursor]))
 					add_var_to_export(argv[cursor]);
 			}
