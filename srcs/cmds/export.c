@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/09/16 19:01:31 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/24 18:33:51 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ static int		add_var_to_export(
 	end_name = ft_strchr(var_name, '=');
 	if (end_name)
 		plus = (*(end_name - 1) == '+') ? 1 : 0;
-	ft_printf(1, "plus = |%d|\n", plus);
+	// ft_printf(1, "plus = |%d|\n", plus);
 	if (end_name == NULL && (is_set(var_name) == SUCCESS))
 		return (SUCCESS);
 	while (g_export_vars && g_export_vars[i] != NULL)
@@ -152,7 +152,7 @@ static int		add_var_to_export(
 	else
 	{
 		if (*(end_name - 1) == '+')
-			g_export_vars[i] = ft_strjoin(g_export_vars[i], end_name);
+			g_export_vars[i] = ft_strjoin(g_export_vars[i], end_name + 1);
 		else
 		{
 			ft_strdel(&g_export_vars[i]);
