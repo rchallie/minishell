@@ -51,9 +51,9 @@ static int		entry_splitter_precheck(
 	if (*entry && *entry == ';')
 	{
 		if (*(entry + 1) && *(entry + 1) == ';')
-			ft_printf(2, "minishell : syntax error near unexpected token « ;; »\n");
+			ft_printf(2, "minishell: syntax error near unexpected token « ;; »\n");
 		else
-			ft_printf(2, "minishell : syntax error near unexpected token « ; »\n");
+			ft_printf(2, "minishell: syntax error near unexpected token « ; »\n");
 		return (ERROR);
 	}
 	while (*entry)
@@ -68,7 +68,7 @@ static int		entry_splitter_precheck(
 			d_quote = 0;
 		if ((s_quote != 1 && d_quote != 1) && *entry && *entry == ';' && *(entry + 1) == ';')
 		{
-			ft_printf(2, "minishell : syntax error near unexpected token « ;; »\n");
+			ft_printf(2, "minishell: syntax error near unexpected token « ;; »\n");
 			return (ERROR);
 		}
 		entry++;

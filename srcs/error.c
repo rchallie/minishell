@@ -16,6 +16,7 @@ int		error_command(char *cmd)
 {
 	ft_printf(2, "minishell: %s: command not found\n", cmd);
 	g_ms.last_cmd_rtn = 127;
+	//ft_printf(1, "g_ms.last_cmd_rtn = |%d|\n", g_ms.last_cmd_rtn);
 	return (1);
 }
 
