@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/24 15:14:24 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 01:18:38 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,22 @@ static int	change_dir(
 	{
 		closedir(dir);
 		old_pwd = get_env_var_by_name("PWD");
-		add_var_to_env(ft_strjoin("OLDPWD=", old_pwd));
+		char *to_free = ft_strjoin("OLDPWD=", old_pwd);
+		(old_pwd) ? free(old_pwd) : 0;
+		add_var_to_env(to_free);
+		(to_free) ? free(to_free) : 0;
 		rtn = chdir(path);
+		to_free = g_pwd;
 		if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR
 			&& (!ft_strcmp(".", path) || !ft_strcmp("./", path)))
 		{
 			ft_printf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: %s\n", strerror(errno));
-			g_pwd = add_char_to_word_free(g_pwd, '/');
+			g_pwd = add_char_to_word(g_pwd, '/');
 			old_pwd = g_pwd;
 			g_pwd = ft_strjoin(g_pwd, path);
-			free(old_pwd);
+			(old_pwd) ? free(old_pwd) : 0;
 		}
+		(to_free) ? free(to_free) : 0;
 		if (rtn == -1)
 			return (error_path("cd", argv[cursor + 1], errno));
 	}
@@ -97,13 +102,23 @@ int			cd(
 	{
 		path = get_env_var_by_name("HOME");
 		if (!argv[cursor + 1] && ft_secure_strlen(path) == 0)
+		{
+			(path) ? free(path) : 0;
 			return (error_unidentified("cd", "HOME"));
+		}
 	}
 	else
 		path = ft_strdup(argv[cursor + 1]);
 	if (change_dir(path, cursor, argv) != 0)
+	{
+		(path) ? free(path) : 0;
 		return (1);
+	}
 	get_shell_pwd(&pwd);
-	add_var_to_env(ft_strjoin("PWD=", pwd));
+	char *pwd_env = ft_strjoin("PWD=", pwd);
+	add_var_to_env(pwd_env);
+	(path) ? free(path) : 0;
+	(pwd) ? free(pwd) : 0;
+	(pwd_env) ? free(pwd_env) : 0;
 	return (0);
 }

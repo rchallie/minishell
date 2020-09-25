@@ -83,6 +83,7 @@ int		get_next_line(int fd, char **line)
 	char			*buff;
 	static char		*save;
 	int				reader;
+	char			*save_save;
 
 	reader = 1;
 	if (fd < 0 || !line)
@@ -97,7 +98,9 @@ int		get_next_line(int fd, char **line)
 			return (-1);
 		}
 		buff[reader] = '\0';
+		save_save = save;
 		save = ft_strjoin(save, buff);
+		free(save_save);
 	}
 	free(buff);
 	*line = get_line(save);

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:46:46 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/23 17:05:34 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 01:26:57 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ static char		*tuning_home(char *word)
 {
 	char *home;
 	char *tmp_word;
+	char *save_word;
 
+	save_word = word;
 	home = get_env_var_by_name("HOME");
 	if (ft_secure_strlen(home) != 0)
 		word = ft_strjoin(home, (word + 1));
@@ -110,7 +112,8 @@ static char		*tuning_home(char *word)
 		word = ft_strjoin(tmp_word, (word + 1));
 		free(tmp_word);
 	}
-	free(home);
+	(save_word) ? free(save_word) : 0;
+	(home) ? free(home) : 0;
 	return (word);
 }
 
@@ -119,10 +122,12 @@ void		tuning_treated(char **str)
 	int simple_q;
 	int double_q;
 	char *new_str;
+	char *save;
 
 	new_str = NULL;
 	simple_q = 0;
 	double_q = 0;
+	save = *str;
 	while (**str)
 	{
 		// ft_printf(1, "CHAR = |%c||%s|\n", **str, *str);
@@ -149,6 +154,7 @@ void		tuning_treated(char **str)
 	if (new_str == NULL)
 		new_str = ft_strdup("");
 	*str = new_str;
+	(save) ? free(save) : 0;
 	return ;
 }
 
