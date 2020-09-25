@@ -19,8 +19,10 @@ static char		**get_cmd_arguments(char **cmd, int *seq)
 
 	rtn = NULL;
 	cursor = 0;
+	while (cmd[cursor] && seq[cursor] != 0)
+		cursor++;
 	add_word_to_tab(cmd[cursor], &rtn);
-	if (seq[cursor + 1] == 2)
+	if (cmd[cursor] && seq[cursor + 1] == 2)
 	{
 		cursor++;
 		while (seq[cursor] == 2)
@@ -38,7 +40,9 @@ int				treat_command(char **cmd, int *seq)
 
 	argv = NULL;
 	cursor = 0;
-	if (seq[cursor] == 0
+	while (cmd[cursor] && seq[cursor] != 0)
+		cursor++;
+	if (cmd[cursor] && seq[cursor] == 0
 		&& (g_ms.isexecret = is_exec(cmd, seq)) == ERROR)
 	{
 		if ((g_ms.iscmdret = is_cmd(cmd[cursor])) != -1
@@ -52,7 +56,10 @@ int				treat_command(char **cmd, int *seq)
 		}
 		else if (seq[cursor] == 0
 			&& g_ms.iscmdret == -1 && cmd[cursor][0])
+		{
+			g_ms.last_cmd_rtn = 127;
 			return (ERROR);
+		}
 	}
 	return (SUCCESS);
 }
@@ -85,7 +92,11 @@ int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 			flags = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
 				: O_CREAT | O_RDWR | O_APPEND;
 			if ((*fdout = open(cmd[cursor], flags, mask)) == -1)
+			{
+				//ft_printf(1, "ERROR\n");
 				return (error_file(cmd[cursor], errno));
+			}
+			//ft_printf(1, "SUCCESS\n");
 			redir_type = 0;
 		}
 		else if (seq[cursor] == 8 && redir_type == 5)
@@ -135,7 +146,6 @@ void			cmd_no_pipe(char **cmd, int *seq)
 
 	if (has_redir(cmd, seq, &fdinput, &fdoutput) != SUCCESS)
 		return ;
-
 	// ft_printf(1, "FDINPUT = %d | FDOUTPUT = %d\n", fdinput, fdoutput);
 	
 	// printf("IS INTERACTIV = %d\n", isatty(STDIN_FILENO));
@@ -204,6 +214,5 @@ int				has_redir_input(int redir_type,
 		return (has_redir_input(redir_type, cursor + 1, fd, cmd, seq));
 	else if (seq[cursor] == 5)
 		return (has_redir_input(seq[cursor], cursor + 1, fd, cmd, seq));
-	
 	return (has_redir_input(redir_type, cursor + 1, fd, cmd, seq));
 }

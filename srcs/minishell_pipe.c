@@ -118,7 +118,7 @@ static int		child(
 	if ((*fork_ = fork()) < 0)
 		return (0);
 	(*fork_ == 0) ? child_treat(nb_cmd_p, pipes_, child_cmd) : 0;
-	(*fork_ == 0) ? exit(0) : 0;
+	(*fork_ == 0) ? exit(g_ms.last_cmd_rtn) : 0;
 	(*fork_ != 0) ? close(pipes_[(nb_cmd_p * 2) + 1]) : 0;
 	return (1);
 }
@@ -164,8 +164,9 @@ static int		parent(
 		nb_cmd_p++;
 	}
 	waitpid(fork_, &status, 0);
+	g_ms.last_cmd_rtn = WEXITSTATUS(status);
 	free(pipes_);
-	exit(0);
+	exit(g_ms.last_cmd_rtn);
 }
 
 /*
@@ -181,6 +182,8 @@ static int		parent(
 **			"seq"		the sequence of elements in the command.
 */
 
+#include <errno.h>
+
 void			cmd_has_pipe(
 	char **cmd,
 	int *seq
@@ -195,20 +198,29 @@ void			cmd_has_pipe(
 	gen_status = 0;
 	pipes_ = NULL;
 	pipes_count = 0;
+//	ft_printf(1, "HEREAAA\n");
 	if ((gen_fork = fork()) < 0)
 		exit(1258);
 	if (gen_fork == 0)
 	{
 		//ADD CHECK MALLOC
+		//ft_printf(1, "child\n");
 		pipes_ = malloc(sizeof(int) * (g_ms.has_pipe * 2) - 1);
 		while (pipes_count < g_ms.has_pipe - 1)
 		{
+		//	ft_printf(1, "pipe_count = |%d|\n", pipes_count);
 			if (pipe(pipes_ + (pipes_count * 2)) == -1)
+			{
+		//		ft_printf(1, "EXIT\n");
 				exit(2);
+			}
 			pipes_count++;
 		}
 		parent(pipes_, cmd, seq);
 	}
 	else
+	{
 		waitpid(gen_fork, &gen_status, 0);
+		g_ms.last_cmd_rtn = WEXITSTATUS(gen_status);
+	}
 }
