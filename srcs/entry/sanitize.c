@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/22 20:44:05 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/25 18:35:28 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,20 @@
 // 	return (word);
 // }
 
-int	env_var(char **entry, char **word)
+static int test_d_quote_prev(char **entry, char *dollar_pos)
+{
+	int d_quote;
+
+	d_quote = 0;
+	while (**entry && *entry != dollar_pos)
+	{
+		d_quote = (d_quote == 0) ? 1 : 0;
+		(*entry)++;
+	}
+	return (d_quote);
+}
+
+int	env_var(char **entry, char **word, char **entry_addr)
 {
  	int rtn;
  	char *env_var_name;
@@ -121,12 +134,19 @@ int	env_var(char **entry, char **word)
  	env_var_name = NULL;
  	rtn = 0;
  	// ft_printf(1, "Actual char (pre) = %c (%.12s)| %d\n", **entry, *entry, **entry);
- 	if (**entry == '$' && *(*entry + 1) && *(*entry + 1) != ' ')
+	
+ 	if (**entry == '$' && *(*entry + 1) && *(*entry + 1) != ' ' && *(*entry + 1) != '\\' && *(*entry + 1) != '"')
  	{
+		// if (*(*entry + 2) && *(*entry + 2) == '"')
+		// {
+		// 	*word = add_char_to_word_free(*word, '$');
+		// 	(*entry)++;
+		// 	return (rtn);
+		// }
  		// ft_printf(1, "WORD IS NULL 1 = %d\n", (!*word) ? 10 : 20);
  		(*entry)++;
  		rtn++;
- 		if (**entry == '{')
+		if (**entry == '{')
  		{
  			(*entry)++;
  			rtn++;
@@ -180,7 +200,8 @@ int	env_var(char **entry, char **word)
  	}
  	else if (**entry == '$')
 	{
- 		*word = add_char_to_word_free(*word, '$');
+		if (!(test_d_quote_prev(entry_addr, *entry) == 1 && *(*entry + 1) == '"'))
+ 			*word = add_char_to_word_free(*word, '$');
 		(*entry)++;
 	}
  //	ft_printf(1, "Actual char (end) = %c (%.12s)| %d\n", **entry, *entry, **entry);
@@ -218,7 +239,7 @@ int	env_var_boucle(char **entry)
 		if (**entry == '$' && simple_q == 0)
 		{
 			// printf("CHAR = |%c| PREV = |%c|\n", **entry, **(entry - 1));
-			if (env_var(entry, &word) == -1)
+			if (env_var(entry, &word, &save) == -1)
 				return (-1);
 			char *to_free;
 			to_free = NULL;
