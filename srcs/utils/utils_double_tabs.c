@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 16:14:35 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/18 18:24:58 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/09/26 00:04:04 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void		free_double_char_tab(char **tab_to_free)
 	int		i;
 	int		tab_len;
 
-	i = 0;
 	if (!tab_to_free)
 		return ;
 	tab_len = get_double_char_tab_len(tab_to_free);
@@ -67,8 +66,10 @@ void		free_double_char_tab(char **tab_to_free)
 		free(tab_to_free);
 		return ;
 	}
+	i = 0;
 	while (i < tab_len)
 		free(tab_to_free[i++]);
+	free(tab_to_free[i]);
 	free(tab_to_free);
 }
 

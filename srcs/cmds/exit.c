@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 17:24:07 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/21 17:34:24 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 00:50:25 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ int				exit_minishell(
 	free(g_ms.sequence);
 	(g_envp) ? free_double_char_tab(g_envp) : 0;
 	(g_export_vars) ? free_double_char_tab(g_export_vars) : 0;
+	(g_pwd) ? free(g_pwd) : 0;
 	if (argc == 2)
 	{
 		if (!is_numeric_str(argv[1]))

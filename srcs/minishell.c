@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/23 17:05:15 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 00:49:37 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ static void		entry_splitter(
 			g_ms.last_cmd_rtn = 2;
 			return ;
 		}
+		if (cmd)
+			free(cmd);
 		s_quote = 0;
 		d_quote = 0;
 		if (find && *find && *(find + 1) != 0)
@@ -242,10 +244,15 @@ int				main(int ac, char **av, char **env)
 
 	if (bool_get_env_var_by_name("OLDPWD") == 0)
 		add_var_to_env("OLDPWD");
+	
 	char *pwd;
+	char *forfree;
 	pwd = ft_strdup("PWD=");
+	forfree = pwd;
 	pwd = ft_strjoin(pwd, g_pwd);
+	free(forfree);
 	add_var_to_env(pwd);
+	free(pwd);
 	char *shlvl_string = get_env_var_by_name("SHLVL");
 	int shlvl = 0;
 	int i;
@@ -282,6 +289,10 @@ int				main(int ac, char **av, char **env)
 			if (minishell_loop(1, line, &cmd_ret) == ERROR)
 				return (1);
 			cmd_ret = g_ms.last_cmd_rtn;
+			free(line);
+			line = NULL;
 		}
+		if (line)
+			free(line);
 	return (g_ms.last_cmd_rtn);
 }
