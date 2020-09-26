@@ -6,12 +6,51 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:36:32 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/26 01:18:38 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 23:34:05 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
 #include "../../incs/minishell.h"
+
+/*
+**	Function: move_to_dir
+**	--------------------
+**		Move to new working directory.
+**
+**		(char *)	path : final path to directory.
+**
+**		returns:	return 0 : no problem.
+**					return 1 : an error appear.
+*/
+
+static int	move_to_dir(
+	char *path
+)
+{
+	int			rtn;
+	char		*old_pwd;
+	char		*to_free;
+
+	old_pwd = get_env_var_by_name("PWD");
+	to_free = ft_strjoin("OLDPWD=", old_pwd);
+	(old_pwd) ? free(old_pwd) : 0;
+	add_var_to_env(to_free);
+	(to_free) ? free(to_free) : 0;
+	rtn = chdir(path);
+	to_free = g_pwd;
+	if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR
+		&& (!ft_strcmp(".", path) || !ft_strcmp("./", path)))
+	{
+		ft_printf(2, "cd: error retrieving current directory: %s%s\n",
+			"getcwd: cannot access parent directories: ", strerror(errno));
+		g_pwd = add_char_to_word(g_pwd, '/');
+		old_pwd = g_pwd;
+		g_pwd = ft_strjoin(g_pwd, path);
+		(old_pwd) ? free(old_pwd) : 0;
+	}
+	(to_free) ? free(to_free) : 0;
+	return (rtn);
+}
 
 /*
 **	Function: change_dir
@@ -33,8 +72,6 @@ static int	change_dir(
 )
 {
 	DIR			*dir;
-	int			rtn;
-	char		*old_pwd;
 
 	dir = opendir(path);
 	if (!dir)
@@ -42,26 +79,46 @@ static int	change_dir(
 	else
 	{
 		closedir(dir);
-		old_pwd = get_env_var_by_name("PWD");
-		char *to_free = ft_strjoin("OLDPWD=", old_pwd);
-		(old_pwd) ? free(old_pwd) : 0;
-		add_var_to_env(to_free);
-		(to_free) ? free(to_free) : 0;
-		rtn = chdir(path);
-		to_free = g_pwd;
-		if (get_pwd(&g_pwd) == ERROR_NO_CURRENT_WORK_DIR
-			&& (!ft_strcmp(".", path) || !ft_strcmp("./", path)))
-		{
-			ft_printf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: %s\n", strerror(errno));
-			g_pwd = add_char_to_word(g_pwd, '/');
-			old_pwd = g_pwd;
-			g_pwd = ft_strjoin(g_pwd, path);
-			(old_pwd) ? free(old_pwd) : 0;
-		}
-		(to_free) ? free(to_free) : 0;
-		if (rtn == -1)
+		if (move_to_dir(path) == -1)
 			return (error_path("cd", argv[cursor + 1], errno));
 	}
+	return (0);
+}
+
+/*
+**	Function: cd_protocol
+**	--------------------
+**		Call function to change of working directory.
+**		Update pwd. Free used values in cd.
+**
+**		(char *)	path : final path to directory.
+**		(int)		curosr : arguments cursor.
+**		(char **)	argv : arguments.
+**
+**		returns:	return 0 : no problem.
+**					return 1 : an error appear.
+*/
+
+static int	cd_protocol(
+	char *path,
+	int cursor,
+	char **argv
+)
+{
+	char		*pwd;
+	char		*pwd_env;
+
+	if (change_dir(path, cursor, argv) != 0)
+	{
+		(path) ? free(path) : 0;
+		return (1);
+	}
+	get_shell_pwd(&pwd);
+	pwd_env = ft_strjoin("PWD=", pwd);
+	add_var_to_env(pwd_env);
+	(pwd) ? free(pwd) : 0;
+	(pwd_env) ? free(pwd_env) : 0;
+	(path) ? free(path) : 0;
 	return (0);
 }
 
@@ -88,7 +145,6 @@ int			cd(
 {
 	char		*path;
 	int			cursor;
-	char		*pwd;
 
 	(void)argc;
 	(void)envp;
@@ -109,16 +165,5 @@ int			cd(
 	}
 	else
 		path = ft_strdup(argv[cursor + 1]);
-	if (change_dir(path, cursor, argv) != 0)
-	{
-		(path) ? free(path) : 0;
-		return (1);
-	}
-	get_shell_pwd(&pwd);
-	char *pwd_env = ft_strjoin("PWD=", pwd);
-	add_var_to_env(pwd_env);
-	(path) ? free(path) : 0;
-	(pwd) ? free(pwd) : 0;
-	(pwd_env) ? free(pwd_env) : 0;
-	return (0);
+	return (cd_protocol(path, cursor, argv));
 }

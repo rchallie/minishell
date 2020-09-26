@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/21 16:11:57 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 00:03:23 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,48 +171,4 @@ void			cmd_no_pipe(char **cmd, int *seq)
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdout);
 	}
-}
-
-
-
-int				has_redir_output(int redir_type,
-	int cursor, int fd, char **cmd, int *seq)
-{
-	int			o;
-	int			s;
-
-	// ft_printf(1, "OUTPUT | seq [cursor] = %d | redir_type = %d\n", seq[cursor], redir_type);
-	s = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	if (cursor != 0 && (!seq[cursor] || seq[cursor] == 6
-		|| seq[cursor] == 7 || seq[cursor] == 9))
-		return (fd);
-	else if (seq[cursor] == 2)
-		return (has_redir_output(redir_type, cursor + 1, fd, cmd, seq));
-	else if (seq[cursor] == 4 || seq[cursor] == 3)
-		return (has_redir_output(seq[cursor], cursor + 1, fd, cmd, seq));
-	else if (seq[cursor] == 8 && (redir_type == 4 || redir_type == 3))
-	{
-		(fd >= 3) ? close(fd) : 0;
-		o = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
-			: O_CREAT | O_RDWR | O_APPEND;
-		// ft_printf(1, "O = %d\n", o);
-		if ((fd = open(cmd[cursor], o, s)) == -1)
-			return (error_file(cmd[cursor], errno));
-		redir_type = 0;
-	}
-
-	return (has_redir_output(redir_type, cursor + 1, fd, cmd, seq));
-}
-
-int				has_redir_input(int redir_type,
-	int cursor, int fd, char **cmd, int *seq)
-{
-	if (cursor != 0 && (!seq[cursor] || seq[cursor] == 6
-		|| seq[cursor] == 7 || seq[cursor] == 9))
-		return (fd);
-	else if (seq[cursor] == 2)
-		return (has_redir_input(redir_type, cursor + 1, fd, cmd, seq));
-	else if (seq[cursor] == 5)
-		return (has_redir_input(seq[cursor], cursor + 1, fd, cmd, seq));
-	return (has_redir_input(redir_type, cursor + 1, fd, cmd, seq));
 }

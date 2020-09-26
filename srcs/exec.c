@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/18 16:20:53 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 18:06:04 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,14 +143,14 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path, char **cmd)
 			ex->exec_path = add_char_to_word(ex->path_list[i], '/');
 			last_exec_path = ex->exec_path;
 			ex->exec_path = ft_strjoin(ex->exec_path, ex->exec);
-			free(last_exec_path);
+			(last_exec_path) ? free(last_exec_path) : 0;
 			if (exec_cmd(ex->exec_path, ex) == SUCCESS)
 			{
 				free_double_char_tab(ex->path_list);
 				free(ex->exec_path);
 				return (SUCCESS);
 			}
-			free(ex->exec_path);
+			(ex->exec_path) ? free(ex->exec_path) : 0;
 		}
 	}
 	free_double_char_tab(ex->path_list);
@@ -170,7 +170,7 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path, char **cmd)
 int				is_exec(char **cmd, int *seq)
 {
 	t_exec	ex;
-	char	*last_exec_path;
+	// char	*last_exec_path;
 
 	ex.exec = NULL;
 	ex.exec_path = NULL;
@@ -182,23 +182,23 @@ int				is_exec(char **cmd, int *seq)
 		return (ERROR);
 	if (ft_secure_strlen(ex.exec) == 0)
 	{
-		free(ex.exec_path);
+		(ex.exec_path) ? free(ex.exec_path) : 0;
 		free_double_char_tab(ex.argv);
 		return (ERROR);
 	}
 	if (exec_from_env(&ex, -1, NULL, cmd) == SUCCESS)
 		return (SUCCESS);
-	get_pwd(&ex.exec_path);
-	last_exec_path = ex.exec_path;
-	ex.exec_path = add_char_to_word(ex.exec_path, '/');
-	free(last_exec_path);
-	last_exec_path = ex.exec_path;
-	ex.exec_path = ft_strjoin(ex.exec_path, ex.exec);
-	free(last_exec_path);
+	ex.exec_path = NULL;
+	// get_pwd(&ex.exec_path);
+	// last_exec_path = ex.exec_path;
+	// ex.exec_path = add_char_to_word(ex.exec_path, '/');
+	// (last_exec_path) ? free(last_exec_path) : 0;
+	// last_exec_path = ex.exec_path;
+
+	// ex.exec_path = ft_strjoin(ex.exec_path, ex.exec);
+	// (last_exec_path) ? free(last_exec_path) : 0;
 	if (exec_cmd(ex.exec, &ex) == SUCCESS)
 		return (SUCCESS);
-	free(ex.exec_path);
-	ex.exec_path = NULL;
 	free_double_char_tab(ex.argv);
 	return (ERROR);
 }
