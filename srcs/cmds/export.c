@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 13:13:15 by thervieu          #+#    #+#             */
-/*   Updated: 2020/09/24 18:33:51 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 22:30:08 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ static int		export(void)
 		if (double_char_tab_contain(sorted[i], g_export_vars) == ERROR
 			&& ft_strncmp(sorted[i], "_", (ft_strchr(sorted[i], '=')
 				- sorted[i])))
-			(ft_strchr(sorted[i], '=') == NULL) ? ft_printf(STDOUT_FILENO, "declare -x %.*s\n",
-				(ft_strchr(sorted[i], '=') - sorted[i]) + 1) :(ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n",
-				(ft_strchr(sorted[i], '=') - sorted[i]) + 1, sorted[i],
-				ft_strchr(sorted[i], '=') + 1));
+			(ft_strchr(sorted[i], '=') == NULL) ? ft_printf(STDOUT_FILENO,
+			"declare -x %.*s\n", (ft_strchr(sorted[i], '=') - sorted[i]) + 1)
+			: (ft_printf(STDOUT_FILENO, "declare -x %.*s\"%s\"\n",
+			(ft_strchr(sorted[i], '=') - sorted[i]) + 1, sorted[i],
+			ft_strchr(sorted[i], '=') + 1));
 		i++;
 	}
 	free_double_char_tab(sorted);
@@ -138,35 +139,21 @@ static int		add_var_to_export(
 	end_name = ft_strchr(var_name, '=');
 	if (end_name)
 		plus = (*(end_name - 1) == '+') ? 1 : 0;
-	// ft_printf(1, "plus = |%d|\n", plus);
 	if (end_name == NULL && (is_set(var_name) == SUCCESS))
 		return (SUCCESS);
 	while (g_export_vars && g_export_vars[i] != NULL)
-	{
-		if (!ft_strncmp(g_export_vars[i], var_name, end_name - var_name - plus))
+		if (!ft_strncmp(g_export_vars[i++], var_name, end_name - var_name - plus))
 			break ;
-		i++;
-	}
 	if (g_export_vars == NULL || g_export_vars[i] == NULL)
 		return (add_word_to_tab(var_name, &g_export_vars));
-	else
-	{
-		if (*(end_name - 1) == '+')
-			g_export_vars[i] = ft_strjoin(g_export_vars[i], end_name + 1);
-		else
-		{
-			ft_strdel(&g_export_vars[i]);
-			g_export_vars[i] = ft_strdup(var_name);
-		}
-	}
 	return (SUCCESS);
 }
 
 int				not_env(char *str)
 {
-	int i;
-	int plus;
-	char *end_name;
+	int		i;
+	int		plus;
+	char	*end_name;
 
 	i = 0;
 	plus = 0;
@@ -177,13 +164,38 @@ int				not_env(char *str)
 	while (g_envp[i])
 	{
 		if (!ft_strncmp(g_envp[i], str, end_name - str - plus)
-			&& g_envp[i][(end_name - str)] == '=')
-		{
+			&& g_envp[i][(end_name - plus - str)] == '=')
 			return (0);
-		}
 		i++;
 	}
 	return (1);
+}
+
+int				remove_from_export(char *str)
+{
+	int		i;
+	int		plus;
+	char	*end_name;
+
+	i = 0;
+	plus = 0;
+	if (!g_export_vars)
+		return (SUCCESS);
+	end_name = ft_strchr(str, '=');
+	if (end_name)
+		plus = (*(end_name - 1) == '+') ? 1 : 0;
+	i = 0;
+	while (g_export_vars[i])
+	{
+		if (!ft_strncmp(g_export_vars[i], str, end_name - str - plus)
+			&& (g_export_vars[i][(end_name - plus - str)] == '='
+			|| g_export_vars[i][(end_name - plus - str)] == '\0'))
+			if(double_char_tab_remove(&g_export_vars[i],
+				&g_export_vars) == ERROR)
+				return (ERROR);
+		i++;
+	}
+	return (SUCCESS);
 }
 
 /*
@@ -202,10 +214,12 @@ int				not_env(char *str)
 **		returns: return 0
 */
 
-int				is_valid_name(char *str)
+int				is_valid_name(
+	char *str
+)
 {
 	if (!ft_isalpha(str[0]) && str[0] != '_')
-			return (0);
+		return (0);
 	str++;
 	while (*str && *str != '=')
 	{
@@ -223,11 +237,11 @@ int				export_(
 	char **envp
 )
 {
-	(void)envp;
 	int			cursor;
 	char		*end_name;
 	int			error;
 
+	(void)envp;
 	error = 0;
 	cursor = 0;
 	if (argc > 1)
@@ -249,18 +263,15 @@ int				export_(
 						argv[cursor], "not a valid identifier");
 				}
 				else if (end_name != NULL)
-				{
 					add_var_to_env(argv[cursor]);
-				}
 				if (not_env(argv[cursor]))
 					add_var_to_export(argv[cursor]);
+				else
+					remove_from_export(argv[cursor]);
 			}
 		}
 	}
 	else
 		export();
-	if (error == 0)
-		return (0);
-	else
-		return (1);
+	return ((error == 0) ? 0 : 1);
 }

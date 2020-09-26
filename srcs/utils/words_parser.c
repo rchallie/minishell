@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:40:44 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/25 18:17:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 00:47:55 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ static int		no_quotes(char **entry, char **word, int *simple_q,
      if (**entry == '\\')
 	{
 		//ft_printf(1, "startword3bis = |%s|\n", *entry);
-		*word = add_char_to_word_free(*word, **entry);
-		(*entry)++;
+		*word = add_char_to_word_free(*word, *(*entry)++);
 		//ft_printf(1, "startword3bis = |%s|\n", *entry);
 		*word = add_char_to_word_free(*word, **entry);
 		//ft_printf(1, "word = |%s|\n", *word);
@@ -147,8 +146,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
     {
         if (**entry == '\\') //|| *(*entry + 1) == '$' || *(*entry + 1) == '\\')) )
 		{
-			*word = add_char_to_word_free(*word, **entry);
-			(*entry)++;
+			*word = add_char_to_word_free(*word, *(*entry)++);
 			*word = add_char_to_word_free(*word, **entry);
 			return (1);
 		}
@@ -160,8 +158,7 @@ int				if_quotes(char **entry, char **word, int *simple_q,
 	{
 		if (**entry == '\\') //|| *(*entry + 1) == '$' || *(*entry + 1) == '\\')) )
 		{
-			*word = add_char_to_word_free(*word, **entry);
-			(*entry)++;
+			*word = add_char_to_word_free(*word, *(*entry)++);
 			*word = add_char_to_word_free(*word, **entry);
 			return (1);
 		}

@@ -28,6 +28,7 @@ SRC			=	minishell.c 					\
 				cmds/export.c					\
 				entry/sequence.c				\
 				entry/sanitize.c 				\
+				entry/sanitize_env.c 			\
 				entry/reorder.c					\
 				termcap/termcap.c				\
 				termcap/init_and_interr_term.c 	\
