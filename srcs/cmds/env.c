@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 14:48:15 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/24 18:29:52 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 17:47:54 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int			env(int argc, char **argv, char **g_envp)
 	char	*env_list;
 	int		cursor;
 	int		i;
+	char	*save;
 
 	(void)argc;
 	(void)argv;
@@ -143,10 +144,13 @@ int			env(int argc, char **argv, char **g_envp)
 		return (2);
 	while (g_envp[i])
 	{
+		save = env_list;
 		env_list = ft_strjoin(env_list, g_envp[i]);
-		env_list = add_char_to_word(env_list, '\n');
+		(save) ? free(save) : 0;
+		env_list = add_char_to_word_free(env_list, '\n');
 		i++;
 	}
 	ft_printf(STDOUT_FILENO, "%s", env_list);
+	(env_list) ? free(env_list) : 0;
 	return (0);
 }

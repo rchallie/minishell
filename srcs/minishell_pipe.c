@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/09/18 16:55:58 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 17:46:01 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ static void		child_treat(
 	int *child_seq;
 
 	get_sequence(child_cmd, &child_seq);
-	// reorder_sequence(&child_cmd, &child_seq);
+	reorder_sequence(&child_cmd, &child_seq);
 	child_in_out_put(nb_cmd_p, pipes_, child_cmd, child_seq);
 	count_closed_pipes = 0;
 	while (count_closed_pipes < ((g_ms.has_pipe - 1) * 2))
 		close(pipes_[count_closed_pipes++]);
 	cmd_return = treat_command(child_cmd, child_seq);
+	(child_seq) ? free(child_seq) : 0;
 	if (cmd_return == ERROR)
 		error_command(child_cmd[0]);
 }
@@ -162,6 +163,7 @@ static int		parent(
 		if (!child(&fork_, nb_cmd_p, pipes_, child_cmd))
 			break ;
 		nb_cmd_p++;
+		free_double_char_tab(child_cmd);
 	}
 	waitpid(fork_, &status, 0);
 	g_ms.last_cmd_rtn = WEXITSTATUS(status);
