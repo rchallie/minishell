@@ -27,6 +27,7 @@ SRC			=	minishell.c 					\
 				cmds/echo.c						\
 				cmds/export.c					\
 				entry/sequence.c				\
+				entry/sequence_tuning.c			\
 				entry/sanitize.c 				\
 				entry/sanitize_env.c 			\
 				entry/reorder.c					\
