@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 13:54:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/28 15:23:30 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 21:27:18 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int		error_command(char *cmd)
 {
 	ft_printf(2, "minishell: %s: command not found\n", cmd);
 	g_ms.last_cmd_rtn = 127;
-	//ft_printf(1, "g_ms.last_cmd_rtn = |%d|\n", g_ms.last_cmd_rtn);
 	return (1);
 }
 

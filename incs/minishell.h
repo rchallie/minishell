@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/27 10:25:50 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 20:38:45 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,8 +212,10 @@ int					get_next_line(int fd, char **line);
 int					ft_printf(int fd, const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);
-int					get_word(char *startword, char **entry_addr, char **word);
-
+int					get_word(char *startword, char **entry_addr, char **word, int *char_count);
+void				quote_error(char **startword, char **entry_addr,
+					char **save_startword, int simple_q);
+					
 /*
 ** _____ Pwd _____
 */

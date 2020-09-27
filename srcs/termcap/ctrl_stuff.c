@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:55:44 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/19 18:54:22 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 19:46:03 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		clear_screen_(int *key, t_line *line)
 	set_curpos(line);
 }
 
-void	delete_char_ctrl_d(t_line *line)
+void		delete_char_ctrl_d(t_line *line)
 {
 	if (line->cursor == line->length)
 		return ;
