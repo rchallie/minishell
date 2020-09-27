@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/27 23:31:10 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/28 00:30:58 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define ERROR_SIGQUIT 0xB
 # define ERROR_NO_CURRENT_WORK_DIR 0xC
 
-# include "../srcs/libft/libft.h"
+# include "../libft/libft.h"
 # include <stdlib.h>
 # include <stdint.h>
 # include <unistd.h>

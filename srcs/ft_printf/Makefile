@@ -6,7 +6,7 @@
 #    By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/27 13:29:35 by thervieu          #+#    #+#              #
-#    Updated: 2020/05/29 18:06:24 by excalibur        ###   ########.fr        #
+#    Updated: 2020/09/28 00:32:19 by excalibur        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror -g
 
-LIBFT_PATH = ../libft/
+LIBFT_PATH = ../../libft/
 
 LIBFT_NAME = libft.a
 

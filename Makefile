@@ -84,7 +84,7 @@ all:	$(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C $(SRCS_DIR)ft_printf 
-	clang $(FLAGS) $(INCLUDES) $(SRCS_DIR)ft_printf/libftprintf.a ./srcs/libft/*.o ./srcs/ft_printf/*.o $(OBJS) -o $(NAME) 
+	clang $(FLAGS) $(INCLUDES) $(SRCS_DIR)ft_printf/libftprintf.a ./libft/*.o ./srcs/ft_printf/*.o $(OBJS) -o $(NAME) 
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)/minishell.h
 		@mkdir -p $(OBJS_DIR)
@@ -104,12 +104,12 @@ all: $(NAME)
 
 clean:
 	rm -rf $(OBJS_DIR)
-	$(MAKE) clean -C $(SRCS_DIR)libft
+	$(MAKE) clean -C ./libft
 	$(MAKE) clean -C $(SRCS_DIR)ft_printf
 	
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) fclean -C $(SRCS_DIR)libft
+	$(MAKE) fclean -C ./libft
 	$(MAKE) fclean -C $(SRCS_DIR)ft_printf
 	
 re: fclean all
