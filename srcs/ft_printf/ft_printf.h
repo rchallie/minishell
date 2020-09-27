@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 09:53:22 by thervieu          #+#    #+#             */
-/*   Updated: 2020/05/15 15:26:56 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/28 00:31:39 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdarg.h>
 # include <stddef.h>
 # include <stdio.h>
-# include "../libft/libft.h"
+# include "../../libft/libft.h"
 
 typedef struct	s_flags
 {
