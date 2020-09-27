@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/27 00:03:23 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 23:47:29 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,13 @@ static char		**get_cmd_arguments(char **cmd, int *seq)
 	return (rtn);
 }
 
-int				treat_command(char **cmd, int *seq)
+int				treat_command(char **cmd, int *seq, int cursor)
 {
 	static int	(*builtin[7])(int argc, char **argv, char **envp) = {
 		&echo_, &print_work_dir, &exit_minishell, &env, &cd, &export_, &unset};
 	char		**argv;
-	int			cursor;
 
 	argv = NULL;
-	cursor = 0;
 	while (cmd[cursor] && seq[cursor] != 0)
 		cursor++;
 	if (cmd[cursor] && seq[cursor] == 0
@@ -49,13 +47,11 @@ int				treat_command(char **cmd, int *seq)
 			&& (g_ms.iscmdret >= 0 && g_ms.iscmdret <= 6))
 		{
 			argv = get_cmd_arguments(cmd, seq);
-			g_ms.last_cmd_rtn =
-				builtin[g_ms.iscmdret](get_double_char_tab_len(argv),
-				argv, g_envp);
+			g_ms.last_cmd_rtn = builtin[g_ms.iscmdret](
+				get_double_char_tab_len(argv), argv, g_envp);
 			free_double_char_tab(argv);
 		}
-		else if (seq[cursor] == 0
-			&& g_ms.iscmdret == -1 && cmd[cursor][0])
+		else if (seq[cursor] == 0 && g_ms.iscmdret == -1 && cmd[cursor][0])
 		{
 			g_ms.last_cmd_rtn = 127;
 			return (ERROR);
@@ -66,12 +62,15 @@ int				treat_command(char **cmd, int *seq)
 
 int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 {
-	int cursor = -1;
-	int redir_type = 0;
+	int cursor;
+	int redir_type;
+	int flags;
+	int mask;
 
-	int flags = 0;
-	int mask = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	
+	cursor = -1;
+	redir_type = 0;
+	flags = 0;
+	mask = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	while (42)
 	{
 		cursor++;
@@ -87,16 +86,11 @@ int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 		}
 		else if (seq[cursor] == 8 && (redir_type == 4 || redir_type == 3))
 		{
-			// ft_printf(1,"LOL : %d | %d\n", *fdout, (*fdout >= 3) ? 10 : 20);
 			(*fdout >= 3) ? close(*fdout) : 0;
 			flags = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
 				: O_CREAT | O_RDWR | O_APPEND;
 			if ((*fdout = open(cmd[cursor], flags, mask)) == -1)
-			{
-				//ft_printf(1, "ERROR\n");
 				return (error_file(cmd[cursor], errno));
-			}
-			//ft_printf(1, "SUCCESS\n");
 			redir_type = 0;
 		}
 		else if (seq[cursor] == 8 && redir_type == 5)
@@ -112,59 +106,28 @@ int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 
 void			cmd_no_pipe(char **cmd, int *seq)
 {
-	int			saved_stdout = 0;
-	int			saved_stdin = 0;
-	int			fdinput = STDIN_FILENO;
-	int			fdoutput = STDOUT_FILENO;
+	int			saved_stdout;
+	int			saved_stdin;
+	int			fdinput;
+	int			fdoutput;
 
-
-	// if ((fdoutput = has_redir_output(0,
-	// 	1, STDOUT_FILENO, cmd, seq)) == -1
-	// || (fdinput = has_redir_input(0,
-	// 	1, STDIN_FILENO, cmd, seq)) == -1)
-	// 	return ;
-
-	// if (fdinput != STDIN_FILENO)
-	// 	dup2(fdinput, STDIN_FILENO);
-	// if (fdoutput != STDOUT_FILENO)
-	// 	dup2(fdoutput, STDOUT_FILENO);
-	// if (treat_command(cmd, seq) == ERROR)
-	// 	error_command(cmd[0]);
-	// if (fdinput != STDIN_FILENO)
-	// 	close(fdinput);
-	// if (fdoutput != STDOUT_FILENO)
-	// 	close(fdoutput);
-	
-	// if ((fdoutput = has_redir_output(0,
-	// 	0, STDOUT_FILENO, cmd, seq)) == -1
-	// || (fdinput = has_redir_input(0,
-	// 	0, STDIN_FILENO, cmd, seq)) == -1)
-	// {
-	// 	ft_printf(1, "OUT\n");
-	// 	return ;
-	// }
-
+	saved_stdin = STDIN_FILENO;
+	saved_stdout = STDOUT_FILENO;
+	fdinput = STDIN_FILENO;
+	fdoutput = STDOUT_FILENO;
 	if (has_redir(cmd, seq, &fdinput, &fdoutput) != SUCCESS)
 		return ;
-	// ft_printf(1, "FDINPUT = %d | FDOUTPUT = %d\n", fdinput, fdoutput);
-	
-	// printf("IS INTERACTIV = %d\n", isatty(STDIN_FILENO));
-	if (fdoutput != STDOUT_FILENO)
-		saved_stdout = dup(STDOUT_FILENO);
-	if (fdinput != STDIN_FILENO)
-		saved_stdin = dup(STDIN_FILENO);
-
-	// ft_printf(1, "FILENO STDERR = %d\n", fileno(stderr));
+	(fdinput != STDIN_FILENO) ? saved_stdin = dup(STDIN_FILENO) : 0;
+	(fdoutput != STDOUT_FILENO) ? saved_stdout = dup(STDOUT_FILENO) : 0;
 	dup2(fdinput, STDIN_FILENO);
 	dup2(fdoutput, STDOUT_FILENO);
-	if (treat_command(cmd, seq) == ERROR)
-		error_command(cmd[0]);
+	(treat_command(cmd, seq, 0) == ERROR) ? error_command(cmd[0]) : 0;
 	if (fdinput != STDIN_FILENO)
 	{
 		close(fdinput);
 		dup2(saved_stdin, STDIN_FILENO);
 		close(saved_stdin);
-	}	
+	}
 	if (fdoutput != STDOUT_FILENO)
 	{
 		close(fdoutput);

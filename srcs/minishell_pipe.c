@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 21:46:16 by thervieu          #+#    #+#             */
-/*   Updated: 2020/09/26 17:46:01 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 23:31:28 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void		child_treat(
 	count_closed_pipes = 0;
 	while (count_closed_pipes < ((g_ms.has_pipe - 1) * 2))
 		close(pipes_[count_closed_pipes++]);
-	cmd_return = treat_command(child_cmd, child_seq);
+	cmd_return = treat_command(child_cmd, child_seq, 0);
 	(child_seq) ? free(child_seq) : 0;
 	if (cmd_return == ERROR)
 		error_command(child_cmd[0]);

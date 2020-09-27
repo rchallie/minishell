@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 12:55:44 by thervieu          #+#    #+#             */
-/*   Updated: 2020/09/27 19:46:03 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 23:31:23 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		exit_pgm(int *key, t_line *line)
 		exit = new_double_char_tab_init(1, "exit");
 		exit[1] = NULL;
 		get_sequence(exit, &int_exit);
-		treat_command(exit, int_exit);
+		treat_command(exit, int_exit, 0);
 	}
 	else
 		delete_char_ctrl_d(line);
