@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 16:44:03 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/26 00:05:46 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 19:46:38 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	**new_double_char_tab(size_t double_tab_size)
 	return (new_tab);
 }
 
-char	**new_double_char_tab_init(size_t double_tab_size, char *str_init)
+char		**new_double_char_tab_init(size_t double_tab_size, char *str_init)
 {
 	char	**new_tab;
 

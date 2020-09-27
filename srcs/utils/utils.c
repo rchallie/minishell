@@ -6,11 +6,28 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 16:27:25 by rchallie          #+#    #+#             */
-/*   Updated: 2020/05/25 16:05:31 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 20:35:17 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
+
+void		quote_error(char **startword, char **entry_addr,
+char **save_startword, int simple_q)
+{
+	char		*test;
+	int			startword_advencement;
+
+	(simple_q == 1) ? ft_printf(STDOUT_FILENO, "squote > ")
+		: ft_printf(STDOUT_FILENO, "dquote > ");
+	test = edit_line();
+	startword_advencement = *startword - *save_startword;
+	test = ft_strjoin("\n", test);
+	*startword = ft_strjoin(*save_startword, test);
+	*entry_addr = ft_strjoin(*entry_addr, test);
+	*save_startword = *startword;
+	*startword += startword_advencement;
+}
 
 int			ft_is_whitespace(char c)
 {
