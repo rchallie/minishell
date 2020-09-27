@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/26 18:06:04 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 23:16:44 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,33 +108,15 @@ static int		init_for_exec(t_exec *ex, char **cmd, int *seq)
 **					return 1 :	if everything was okay
 */
 
-static int		exec_from_env(t_exec *ex, int i, char *last_exec_path, char **cmd)
+static int		exec_from_env(
+	t_exec *ex,
+	int i,
+	char *last_exec_path,
+	char **cmd
+)
 {
 	ex->env_path = get_env_var_by_name("PATH");
-	// if (ex->env_path)
-
-	// char *new_start = ex->env_path;
-	// char *find = NULL;
-	// char *path;
-	// while (new_start)
-	// {
-	// 	path = NULL;
-	// 	find = ft_strchr(new_start, ':');
-	// 	if (!find)
-	// 		find = new_start + ft_secure_strlen(new_start);
-	// 	path = ft_substr(ex->env_path, new_start - ex->env_path, find - new_start);
-	// 	add_word_to_tab(path, &ex->path_list);
-	// 	exit(1);
-	// 	if (path)
-	// 		free(path);
-	// 	if (find)
-	// 		new_start = find + 1;
-	// 	else
-	// 		new_start = find;
-	// }
-
 	ex->path_list = ft_split(ex->env_path, ':');
-
 	free(ex->env_path);
 	if (is_cmd(cmd[0]) == -1)
 	{
@@ -170,7 +152,6 @@ static int		exec_from_env(t_exec *ex, int i, char *last_exec_path, char **cmd)
 int				is_exec(char **cmd, int *seq)
 {
 	t_exec	ex;
-	// char	*last_exec_path;
 
 	ex.exec = NULL;
 	ex.exec_path = NULL;
@@ -189,14 +170,6 @@ int				is_exec(char **cmd, int *seq)
 	if (exec_from_env(&ex, -1, NULL, cmd) == SUCCESS)
 		return (SUCCESS);
 	ex.exec_path = NULL;
-	// get_pwd(&ex.exec_path);
-	// last_exec_path = ex.exec_path;
-	// ex.exec_path = add_char_to_word(ex.exec_path, '/');
-	// (last_exec_path) ? free(last_exec_path) : 0;
-	// last_exec_path = ex.exec_path;
-
-	// ex.exec_path = ft_strjoin(ex.exec_path, ex.exec);
-	// (last_exec_path) ? free(last_exec_path) : 0;
 	if (exec_cmd(ex.exec, &ex) == SUCCESS)
 		return (SUCCESS);
 	free_double_char_tab(ex.argv);

@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/26 00:49:37 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 23:59:21 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,6 @@ int				main(int ac, char **av, char **env)
 	else
 		shlvl = ft_atoi(shlvl_string) + 1;
 	free(shlvl_string);
-
 	shlvl_string = ft_itoa(shlvl);
 	char *shlvl_final = ft_strjoin("SHLVL=",shlvl_string);
 	add_var_to_env(shlvl_final);
@@ -285,14 +284,13 @@ int				main(int ac, char **av, char **env)
 	else
 		while ((rtn = get_next_line(0, &line)) > 0)
 		{
-			//ft_printf(1, "line = |%s|\n", line);
 			if (minishell_loop(1, line, &cmd_ret) == ERROR)
 				return (1);
 			cmd_ret = g_ms.last_cmd_rtn;
 			free(line);
 			line = NULL;
 		}
-		if (line)
-			free(line);
+	if (line)
+		free(line);
 	return (g_ms.last_cmd_rtn);
 }
