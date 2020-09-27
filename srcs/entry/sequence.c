@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 14:46:46 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/26 01:26:57 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 10:33:57 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,11 @@ static int		seq_for_special(char **treated, int *sequ, int *has_cmd, int *i)
 		if (treated[*i] && !is_special(treated[*i], sequ, *i))
 			sequ[*i] = 8;
 		else
-		{
-			// ft_printf(1, "TA MAMAN  = |%s|\n", treated[*i]);
 			return (error_identifier("syntax error near unexpected token",
 				treated[*i]));
-		}
-			
 	}
 	else if (sequ[*i] == 6)
 	{
-		// ft_printf(1, "TA PERE\n");
 		if (*has_cmd == 0)
 			return (error_identifier("syntax error near unexpected token",
 				treated[*i]));
@@ -84,78 +79,6 @@ static int		seq_for_special(char **treated, int *sequ, int *has_cmd, int *i)
 			*has_cmd = 0;
 	}
 	return (SUCCESS);
-}
-
-/*
-**	Function: tuning_home
-**	--------------------
-**		Modify '~' to home directory in and create new word.
-**
-**		(char *)	word : the word to treat.
-**
-**		returns:	return : a word with treated '~'.
-*/
-
-static char		*tuning_home(char *word)
-{
-	char *home;
-	char *tmp_word;
-	char *save_word;
-
-	save_word = word;
-	home = get_env_var_by_name("HOME");
-	if (ft_secure_strlen(home) != 0)
-		word = ft_strjoin(home, (word + 1));
-	else
-	{
-		tmp_word = ft_strjoin("/Users/", get_env_var_by_name("USER"));
-		word = ft_strjoin(tmp_word, (word + 1));
-		free(tmp_word);
-	}
-	(save_word) ? free(save_word) : 0;
-	(home) ? free(home) : 0;
-	return (word);
-}
-
-void		tuning_treated(char **str)
-{
-	int simple_q;
-	int double_q;
-	char *new_str;
-	char *save;
-
-	new_str = NULL;
-	simple_q = 0;
-	double_q = 0;
-	save = *str;
-	while (**str)
-	{
-		// ft_printf(1, "CHAR = |%c||%s|\n", **str, *str);
-		if (**str == '\\' && simple_q == 0)
-		{
-			if (double_q == 1 && *(*(str + 1)) && *(*str + 1) != '\\'
-				&& *(*str + 1) != '$' && *(*str + 1) != '\"')
-				new_str = add_char_to_word_free(new_str, **str);
-			(*str)++;
-			new_str = add_char_to_word_free(new_str, **str);
-		}
-		else if (**str == '\"' && double_q == 0 && simple_q != 1)
-			double_q = 1;
-		else if (**str == '\"' && double_q == 1)
-			double_q = 0;
-		else if (**str == '\'' && simple_q == 0 && double_q != 1)
-			simple_q = 1;
-		else if (**str == '\'' && simple_q == 1)
-			simple_q = 0;
-		else
-			new_str = add_char_to_word_free(new_str, **str);
-		(*str)++;
-	}
-	if (new_str == NULL)
-		new_str = ft_strdup("");
-	*str = new_str;
-	(save) ? free(save) : 0;
-	return ;
 }
 
 /*
@@ -185,7 +108,7 @@ static int		seq_treated_tab(char **treated, int *sequ)
 		{
 			if (((ret_spe =
 				seq_for_special(treated, sequ, &has_cmd, &i)) != SUCCESS))
-					return (ret_spe);
+				return (ret_spe);
 		}
 		else if (has_cmd == 0)
 		{
@@ -194,20 +117,8 @@ static int		seq_treated_tab(char **treated, int *sequ)
 		}
 		else
 			sequ[i] = 2;
-
-		if (sequ[i] == 0 || sequ[i] == 2 || sequ[i] == 8)
-		{
-			if (treated[i] && treated[i][0] == '~'
-				&& (!treated[i][1] || treated[i][1] == '/'))
-				treated[i] = tuning_home(treated[i]);
-			tuning_treated(&(treated[i]));
-		}
-		else if (sequ[i] == 7)
-			treated[i][0] = '\n';
-		i++;
+		tuning_sequence(treated, sequ, i++);
 	}
-	i = 0;
-
 	return (SUCCESS);
 }
 

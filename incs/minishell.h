@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/27 00:02:39 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/27 10:25:50 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ int					has_redir_input(int redir_type, int cursor, int fd, char **cmd, int *seq
 void				cmd_has_pipe(char **cmd, int *seq);
 void				cmd_no_pipe(char **cmd, int *seq);
 int					treat_command(char **cmd, int *seq);
+int					tuning_sequence(char **treated, int *sequ, int i);
 
 /*
 ** _____ Errors _____
