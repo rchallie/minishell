@@ -39,7 +39,6 @@ static void		child_in_out_put(
 {
 	int			fdinput = STDIN_FILENO;
 	int			fdoutput = STDOUT_FILENO;
-
 	// if ((fdoutput = has_redir_output(0,
 	// 	1, STDOUT_FILENO, child_cmd, child_seq)) == -1
 	// || (fdinput = has_redir_input(0,
@@ -48,15 +47,14 @@ static void		child_in_out_put(
 	
 	if (has_redir(child_cmd, child_seq, &fdinput, &fdoutput) != SUCCESS)
 		return ;
-
 	if (fdinput != STDIN_FILENO)
 		dup2(fdinput, STDIN_FILENO);
 	else if (nb_cmd_p != 0)
-		dup2(pipes_[(nb_cmd_p - 1) * 2], STDIN_FILENO);
+		dup2(pipes_[0], STDIN_FILENO);
 	if (fdoutput != STDOUT_FILENO)
 		dup2(fdoutput, STDOUT_FILENO);
 	else if (nb_cmd_p != g_ms.has_pipe - 1)
-		dup2(pipes_[(nb_cmd_p * 2) + 1], STDOUT_FILENO);
+		dup2(pipes_[1], STDOUT_FILENO);
 }
 
 /*
@@ -86,8 +84,12 @@ static void		child_treat(
 	reorder_sequence(&child_cmd, &child_seq);
 	child_in_out_put(nb_cmd_p, pipes_, child_cmd, child_seq);
 	count_closed_pipes = 0;
-	while (count_closed_pipes < ((g_ms.has_pipe - 1) * 2))
-		close(pipes_[count_closed_pipes++]);
+	//while (count_closed_pipes < ((g_ms.has_pipe - 1) * 2))
+	//	close(pipes_[count_closed_pipes++]);
+	/*for (int i = 0; i < get_double_char_tab_len(child_cmd); i++)
+	{
+		ft_printf(2, "child = |%d|\n", child_seq[i]);
+	}*/
 	cmd_return = treat_command(child_cmd, child_seq, 0);
 	(child_seq) ? free(child_seq) : 0;
 	if (cmd_return == ERROR)
@@ -108,7 +110,7 @@ static void		child_treat(
 **			"pipes_"	the pipes array.
 **			"child_cmd"	the child command.
 */
-
+/*
 static int		child(
 	int *fork_,
 	int nb_cmd_p,
@@ -123,7 +125,7 @@ static int		child(
 	(*fork_ != 0) ? close(pipes_[(nb_cmd_p * 2) + 1]) : 0;
 	return (1);
 }
-
+*/
 /*
 ** Function: parent
 ** ------------
@@ -136,7 +138,7 @@ static int		child(
 **			"cmd"		the command.
 **			"seq"		the sequence of elements in the command.
 */
-
+/*
 static int		parent(
 	int *pipes_,
 	char **cmd,
@@ -170,7 +172,7 @@ static int		parent(
 	free(pipes_);
 	exit(g_ms.last_cmd_rtn);
 }
-
+*/
 /*
 ** Function: cmd_has_pipe
 ** ------------
@@ -193,32 +195,58 @@ void			cmd_has_pipe(
 {
 	int		gen_fork;
 	int		gen_status;
-	int		*pipes_;
-	int		pipes_count;
+	int		pipes_[2];
+	int		cmd_nb;
+	int j = 0;
 
 	gen_fork = 0;
 	gen_status = 0;
-	pipes_ = NULL;
-	pipes_count = 0;
-//	ft_printf(1, "HEREAAA\n");
+	cmd_nb = 0;
 	if ((gen_fork = fork()) < 0)
 		exit(1258);
 	if (gen_fork == 0)
 	{
-		//ADD CHECK MALLOC
-		//ft_printf(1, "child\n");
-		pipes_ = malloc(sizeof(int) * (g_ms.has_pipe * 2) - 1);
-		while (pipes_count < g_ms.has_pipe - 1)
+		int fd_in = 0;
+		int gen = 0;
+		while (cmd_nb < g_ms.has_pipe)
 		{
-		//	ft_printf(1, "pipe_count = |%d|\n", pipes_count);
-			if (pipe(pipes_ + (pipes_count * 2)) == -1)
-			{
-		//		ft_printf(1, "EXIT\n");
+			if (pipe(pipes_) == -1)
 				exit(2);
+			char **child_cmd;
+	
+			child_cmd = NULL;
+			while (cmd[j] && seq[j] != 6 && seq[j] != 9)
+				add_word_to_tab(cmd[j++], &child_cmd);
+			if (cmd[j])
+				j++;	
+			int fork_ = 0;
+
+			if ((fork_ = fork()) == 0)
+			{
+				dup2(fd_in, 0);
+				if (cmd_nb != g_ms.has_pipe - 1)
+					dup2(pipes_[1], 1);
+				close(pipes_[0]);
+				
+				signal(SIGINT, NULL);
+
+
+				child_treat(cmd_nb, pipes_, child_cmd);			
+				
+				close(pipes_[1]);
+				exit(g_ms.last_cmd_rtn);
 			}
-			pipes_count++;
+			else
+			{
+				waitpid(fork_, &gen, 0);
+				free_double_char_tab(child_cmd);
+				close(pipes_[1]);
+				fd_in = pipes_[0];
+			}
+			cmd_nb++;
 		}
-		parent(pipes_, cmd, seq);
+		g_ms.last_cmd_rtn = WEXITSTATUS(gen);
+		exit(g_ms.last_cmd_rtn);
 	}
 	else
 	{
