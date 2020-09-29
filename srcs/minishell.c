@@ -12,151 +12,6 @@
 
 #include "../incs/minishell.h"
 
-int				treat_entry(char *cmd)
-{
-	char	**cmd_treated;
-	int		*sequence;
-	int		cursor;
-
-	cmd_treated = NULL;
-	sequence = NULL;
-	cursor = 0;
-	if (!sanitize(cmd, &cmd_treated))
-	{
-		g_ms.last_cmd_rtn = 2;
-		return (ERROR);
-	}
-	g_ms.has_pipe = 0;
-	//ft_printf(1, "cmd 5 = |%s|\n", cmd);
-	if (get_sequence(cmd_treated, &sequence) != SUCCESS)
-		return (ERROR);
-	reorder_sequence(&cmd_treated, &sequence);
-	while (cmd_treated[cursor])
-		g_ms.has_pipe += (sequence[cursor++] == 6) ? 1 : 0;
-	g_ms.has_pipe += (g_ms.has_pipe) ? 1 : 0;
-	(g_ms.has_pipe == 0) ?
-		cmd_no_pipe(cmd_treated, sequence)
-			: cmd_has_pipe(cmd_treated, sequence);
-	free_double_char_tab(cmd_treated);
-	free(sequence);
-	return (SUCCESS);
-}
-
-static int		entry_splitter_precheck(
-	char *entry
-)
-{
-	int s_quote = 0;
-	int d_quote = 0;
-	if (*entry && *entry == ';')
-	{
-		if (*(entry + 1) && *(entry + 1) == ';')
-			ft_printf(2, "minishell: syntax error near unexpected token « ;; »\n");
-		else
-			ft_printf(2, "minishell: syntax error near unexpected token « ; »\n");
-		return (ERROR);
-	}
-	while (*entry)
-	{
-		if (*entry == '\'' && *(entry - 1) != '\\' && s_quote == 0)
-			s_quote = 1;
-		else if (*entry == '\'' && *(entry - 1) != '\\' && s_quote == 1)
-			s_quote = 0;
-		if (*entry == '"' && *(entry - 1) != '\\' && d_quote == 0)
-			d_quote = 1;
-		else if (*entry == '"' && *(entry - 1) != '\\' && d_quote == 1)
-			d_quote = 0;
-		if ((s_quote != 1 && d_quote != 1) && *entry && *entry == ';' && *(entry + 1) == ';')
-		{
-			ft_printf(2, "minishell: syntax error near unexpected token « ;; »\n");
-			return (ERROR);
-		}
-		entry++;
-	}
-	return (SUCCESS);
-}
-
-static void		entry_splitter(
-	char *entry
-)
-{
-	char *cmd = NULL;
-	char *find = NULL;
-	char *new_start = entry;
-	// ft_printf
-	if (entry_splitter_precheck(new_start) == ERROR)
-	{
-		g_ms.last_cmd_rtn = 2;
-		return ;
-	}
-	
-	int s_quote = 0;
-	int d_quote = 0;
-	// ft_printf(1, "cmd 1 = |%s|\n", cmd);
-	while (*new_start)
-	{
-		find = ft_strchr(new_start, ';');
-		if (!find)
-		{
-			find = (new_start + ft_secure_strlen(new_start));
-		}
-		char *cp = new_start;
-		// ft_printf(1, "new_start 1 = |%s|\n", new_start);
-		
-		while (*cp && cp != find)
-		{
-			// ft_printf(1, "CP")
-			if (*cp == '\\')
-			{
-					// ft_printf(1, "LOLUP\n");
-				if (*(cp + 1) && (cp + 1) == find)
-				{
-					// ft_printf(1, "LOL\n");
-					find = ft_strchr(find + 1, ';');
-				}
-				cp += 1;
-			}
-			if (*cp == '\'' && *(cp - 1) != '\\' && (s_quote == 0 && d_quote == 0))
-				s_quote = 1;
-			else if (*cp == '\'' && s_quote == 1)
-				s_quote = 0;
-			if (*cp == '"' && *(cp - 1) != '\\' && (d_quote == 0 && s_quote == 0))
-				d_quote = 1;
-			else if (*cp == '"' && *(cp - 1) != '\\' && d_quote == 1)
-				d_quote = 0;
-			if (cp && *(cp + 1) && (cp + 1) == find && (s_quote == 1 || d_quote == 1))
-				if (*find && (*find + 1))
-					find = ft_strchr(find + 1, ';');
-			cp++;
-		}
-		// ft_printf(1, "cmd 2 = |%s|\n", cmd);
-		if (!find)
-			find = (new_start + ft_secure_strlen(new_start));
-		// ft_printf(1, "cmd 3 = |%s|\n", cmd);
-		if (find != '\0')
-			cmd = ft_substr(entry, new_start - entry, (find - new_start) + 1);
-		else
-			cmd = ft_substr(entry, new_start - entry, find - new_start);
-		// ft_printf(1, "cmd 4 = |%s|\n", cmd);
-		if (treat_entry(cmd) == ERROR)
-		{
-			g_ms.last_cmd_rtn = 2;
-			return ;
-		}
-		if (cmd)
-			free(cmd);
-		s_quote = 0;
-		d_quote = 0;
-		if (find && *find && *(find + 1) != 0)
-			new_start = find + 1;
-		else
-			new_start = 0;
-		if (new_start == 0)
-			break ;
-	}
-
-}
-
 /*
 ** Function: minishell_loop
 ** ------------
@@ -176,6 +31,7 @@ static void		entry_splitter(
 
 static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 {
+	*cmd_ret = 0;
 	g_ms = (t_minishell){.iscmdret = 0, .isexecret = -1,
 		.last_cmd_rtn = *cmd_ret};
 	add_var_to_env("_=./minishell");
@@ -185,11 +41,60 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 		if (print_prompt() == ERROR)
 			return (ERROR);
 		line_edition();
-		entry_splitter(g_ms.entry);
+		entry_splitter(g_ms.entry, 0, 0);
 	}
 	else
-		entry_splitter(entry);
+		entry_splitter(entry, 0, 0);
 	*cmd_ret = g_ms.last_cmd_rtn;
+	return (SUCCESS);
+}
+
+static void beg_shlvl(void)
+{
+	int i;
+	int shlvl;
+	char *shlvl_final;
+	char *shlvl_string;
+
+	i = 0;
+	shlvl = 0;
+	shlvl_string = get_env_var_by_name("SHLVL");
+	(shlvl_string[0] == '-' || shlvl_string[0] =='+') ? ++i : 0;
+	while (shlvl_string[i] <= '9' && shlvl_string[i] >= '0')
+		i++;
+	if (shlvl_string[i] != '\0')
+		shlvl = 1;
+	else if (shlvl_string[0] == '-')
+		shlvl = 0;
+	else
+		shlvl = ft_atoi(shlvl_string) + 1;
+	(shlvl_string) ? free(shlvl_string) : 0;
+	shlvl_string = ft_itoa(shlvl);
+	shlvl_final = ft_strjoin("SHLVL=",shlvl_string);
+	add_var_to_env(shlvl_final);
+	(shlvl_string) ? free(shlvl_string) : 0;
+	(shlvl_final) ? free(shlvl_final) : 0;
+}
+
+static int beg_pwd(char **env)
+{
+	char *pwd;
+	char *forfree;
+
+	pwd = NULL;
+	forfree = NULL;
+	if(!get_pwd(&g_pwd))
+		return (ERROR);
+	dup_double_char_tab(env, &g_envp);
+	sigcatcher_init();
+	if (bool_get_env_var_by_name("OLDPWD") == 0)
+		add_var_to_env("OLDPWD");
+	pwd = ft_strdup("PWD=");
+	forfree = pwd;
+	pwd = ft_strjoin(pwd, g_pwd);
+	(forfree) ? free(forfree) : 0;
+	add_var_to_env(pwd);
+	(pwd) ? free(pwd) : 0;
 	return (SUCCESS);
 }
 
@@ -229,51 +134,13 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 int				main(int ac, char **av, char **env)
 {
 	int			cmd_ret;
-	int			rtn;
 	char		*line;
 
 	(void)ac;
 	(void)av;
-	cmd_ret = 0;
-	rtn = 0;
-
-	if(!get_pwd(&g_pwd))
+	if (beg_pwd(env) == ERROR)
 		return (ERROR);
-	dup_double_char_tab(env, &g_envp);
-	sigcatcher_init();
-
-	if (bool_get_env_var_by_name("OLDPWD") == 0)
-		add_var_to_env("OLDPWD");
-	
-	char *pwd;
-	char *forfree;
-	pwd = ft_strdup("PWD=");
-	forfree = pwd;
-	pwd = ft_strjoin(pwd, g_pwd);
-	free(forfree);
-	add_var_to_env(pwd);
-	free(pwd);
-	char *shlvl_string = get_env_var_by_name("SHLVL");
-	int shlvl = 0;
-	int i;
-
-	i = 0;
-	(shlvl_string[0] == '-' || shlvl_string[0] =='+') ? ++i : 0;
-	while (shlvl_string[i] <= '9' && shlvl_string[i] >= '0')
-		i++;
-	if (shlvl_string[i] != '\0')
-		shlvl = 1;
-	else if (shlvl_string[0] == '-')
-		shlvl = 0;
-	else
-		shlvl = ft_atoi(shlvl_string) + 1;
-	free(shlvl_string);
-	shlvl_string = ft_itoa(shlvl);
-	char *shlvl_final = ft_strjoin("SHLVL=",shlvl_string);
-	add_var_to_env(shlvl_final);
-	free(shlvl_string);
-	free(shlvl_final);
-
+	beg_shlvl();
 	if (isatty(0))
 	{
 		put_beg();
@@ -282,15 +149,14 @@ int				main(int ac, char **av, char **env)
 				return (1);
 	}
 	else
-		while ((rtn = get_next_line(0, &line)) > 0)
+		while (get_next_line(0, &line) > 0)
 		{
 			if (minishell_loop(1, line, &cmd_ret) == ERROR)
 				return (1);
 			cmd_ret = g_ms.last_cmd_rtn;
-			free(line);
+			(line) ? free(line) : 0;
 			line = NULL;
 		}
-	if (line)
-		free(line);
+	(line) ? free(line) : 0;
 	return (g_ms.last_cmd_rtn);
 }

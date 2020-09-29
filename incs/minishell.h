@@ -196,6 +196,11 @@ char				**new_double_char_tab_init(size_t double_tab_size, char *str_init);
 char				*add_char_to_word(char *word, char c);
 char				*add_char_to_word_free(char *word, char c);
 
+int					entry_splitter_precheck(char *entry);
+void				find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote);
+int					entry_splitter(char *entry, int s_quote, int d_quote);
+
+
 /*
 ** _____ Environment _____
 */
