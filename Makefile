@@ -85,8 +85,8 @@ _YELLOW=$'\x1b[33m
 all:	$(NAME)
 
 $(NAME): $(OBJS)
-	$(MAKE) -C $(SRCS_DIR)ft_printf 
-	clang $(FLAGS) $(INCLUDES) $(SRCS_DIR)ft_printf/libftprintf.a ./libft/*.o ./srcs/ft_printf/*.o $(OBJS) -o $(NAME) 
+	make bonus -C ./libft
+	clang $(FLAGS) $(INCLUDES) ./libft/*.o ./libft/ft_printf/*.o $(OBJS) -o $(NAME) 
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)/minishell.h
 		@mkdir -p $(OBJS_DIR)
@@ -107,12 +107,10 @@ all: $(NAME)
 clean:
 	rm -rf $(OBJS_DIR)
 	$(MAKE) clean -C ./libft
-	$(MAKE) clean -C $(SRCS_DIR)ft_printf
 	
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) fclean -C ./libft
-	$(MAKE) fclean -C $(SRCS_DIR)ft_printf
 	
 re: fclean all
 

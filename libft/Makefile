@@ -83,24 +83,38 @@ SRC_BONUS =	ft_lstadd_back.c	\
 		ft_lstnew.c			\
 		ft_lstsize.c		
 
+SRC_PRINTF = ./ft_printf/ft_printf.c				\
+		./ft_printf/is_x.c					\
+		./ft_printf/manage_char_and_str.c	\
+		./ft_printf/manage_flags.c			\
+		./ft_printf/manage_int_and_ptr.c	\
+		./ft_printf/manage_percent.c		\
+		./ft_printf/manage_uint_and_hexa.c	\
+		./ft_printf/parse_flags.c			\
+		./ft_printf/put_group_functions.c
+
 OBJ = $(SRC:.c=.o)
+OBJ_PRINTF = $(SRC_PRINTF:.c=.o)
 
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-all : $(NAME)
+./ft_printf/%.o: ./ft_printf/%.c
+	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(NAME): $(OBJ)
+all : $(NAME) 
+
+$(NAME): $(OBJ_PRINTF) $(OBJ) 
 	@ar rcs $@ $^
 
-bonus: $(OBJ) $(OBJ_BONUS)
+bonus: $(OBJ) $(OBJ_BONUS) $(OBJ_PRINTF)
 	@ar rcs $(NAME) $^
 
 clean:
 	@echo "Remove .o  ..."
-	@/bin/rm -f $(OBJ) $(OBJ_BONUS)
+	@/bin/rm -f $(OBJ) $(OBJ_BONUS) $(OBJ_PRINTF)
 
 fclean: clean
 	@echo "Remove lib ..."
