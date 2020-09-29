@@ -23,7 +23,7 @@
 **				 return 0 : if the variable is not set.
 */
 
-int				is_set(
+int			is_set(
 	char *var_name
 )
 {

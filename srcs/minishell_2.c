@@ -60,6 +60,31 @@ int				treat_command(char **cmd, int *seq, int cursor)
 	return (SUCCESS);
 }
 
+static int		handle_file(char *cmd, int *fdin, int *fdout, int *redir_type)
+{
+	int flags;
+	int mask;
+
+	flags = 0;
+	mask = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	if (*redir_type == 4 || *redir_type == 3)
+	{
+		(*fdout >= 3) ? close(*fdout) : 0;
+		flags = (*redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
+			: O_CREAT | O_RDWR | O_APPEND;
+		if ((*fdout = open(cmd, flags, mask)) == -1)
+			return (-1);
+	}
+	else if (*redir_type == 5)
+	{
+		(*fdin >= 3) ? close(*fdin) : 0;
+		if ((*fdin = open(cmd, O_RDONLY)) == -1)
+			return (-1);
+	}
+	*redir_type = 0;
+	return (1);
+}
+
 int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 {
 	int cursor;
@@ -71,35 +96,22 @@ int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 	redir_type = 0;
 	flags = 0;
 	mask = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	while (42)
+	while (++cursor != -1)
 	{
-		cursor++;
 		if (cursor != 0 && (!seq[cursor] || seq[cursor] == 6
 			|| seq[cursor] == 7 || seq[cursor] == 9))
 			return (SUCCESS);
-		else if (seq[cursor] == 2)
+		else if (seq[cursor] == 2 || seq[cursor] == 4
+			|| seq[cursor] == 3 || seq[cursor] == 5)
+		{
+			(seq[cursor] != 2) ? (redir_type = seq[cursor]) : 0;
 			continue;
-		else if (seq[cursor] == 4 || seq[cursor] == 3 || seq[cursor] == 5)
-		{
-			redir_type = seq[cursor];
-			continue;
 		}
-		else if (seq[cursor] == 8 && (redir_type == 4 || redir_type == 3))
-		{
-			(*fdout >= 3) ? close(*fdout) : 0;
-			flags = (redir_type == 3) ? O_CREAT | O_RDWR | O_TRUNC
-				: O_CREAT | O_RDWR | O_APPEND;
-			if ((*fdout = open(cmd[cursor], flags, mask)) == -1)
+		else if (seq[cursor] == 8 && (redir_type == 4 || redir_type == 3
+			|| redir_type == 5))
+			if (handle_file(cmd[cursor], fdin, fdout, &redir_type) == -1)
 				return (error_file(cmd[cursor], errno));
-			redir_type = 0;
-		}
-		else if (seq[cursor] == 8 && redir_type == 5)
-		{
-			(*fdin >= 3) ? close(*fdin) : 0;
-			if ((*fdin = open(cmd[cursor], O_RDONLY)) == -1)
-				return (error_file(cmd[cursor], errno));
-			redir_type = 0;
-		}
+
 	}
 	return (ERROR);
 }
@@ -122,16 +134,11 @@ void			cmd_no_pipe(char **cmd, int *seq)
 	dup2(fdinput, STDIN_FILENO);
 	dup2(fdoutput, STDOUT_FILENO);
 	(treat_command(cmd, seq, 0) == ERROR) ? error_command(cmd[0]) : 0;
-	if (fdinput != STDIN_FILENO)
-	{
-		close(fdinput);
-		dup2(saved_stdin, STDIN_FILENO);
-		close(saved_stdin);
-	}
-	if (fdoutput != STDOUT_FILENO)
-	{
-		close(fdoutput);
-		dup2(saved_stdout, STDOUT_FILENO);
-		close(saved_stdout);
-	}
+	(fdinput != STDIN_FILENO) ? close(fdinput) : 0;
+	(fdinput != STDIN_FILENO) ? dup2(saved_stdin, STDIN_FILENO) : 0;
+	(fdinput != STDIN_FILENO) ? close(saved_stdin) : 0;
+	(fdoutput != STDOUT_FILENO) ? close(fdoutput) : 0;
+	(fdoutput != STDOUT_FILENO) ? dup2(saved_stdout, STDOUT_FILENO) : 0;
+	(fdoutput != STDOUT_FILENO) ? close(saved_stdout) : 0;
 }
+
