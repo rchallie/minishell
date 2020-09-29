@@ -236,6 +236,10 @@ int					env(int argc, char **argv, char **envp);
 int					echo_(int argc, char **argv, char **envp);
 int					exit_minishell(int argc, char **argv, char **envp);
 int					unset(int argc, char **argv, char **envp);
+int					add_var_to_export(char *var_name);
+int					not_env(char *str);
+int					remove_from_export(char *str);
+int					is_set(char *var_name);
 
 /*
 ** _____ Command line treatment _____

@@ -12,7 +12,6 @@
 
 #include "../../incs/minishell.h"
 
-
 int			bool_get_env_var_by_name(char *name)
 {
 	int		i;
@@ -95,35 +94,26 @@ int			remove_var_env(char *var_name)
 int			add_var_to_env(char *var)
 {
 	int		i;
-	int		plus = 0;
+	int		plus;
 	char	*end_name;
 
-	i = 0;
+	i = -1;
+	plus = 0;
 	end_name = ft_strchr(var, '=');
 	if (end_name)
 		plus = (*(end_name - 1) == '+') ? 1 : 0;
-	// ft_printf(1, "VAR = |%.*s|\n", end_name - var - plus, var);
-	while (g_envp[i] != NULL)
-	{
+	while (g_envp[++i] != NULL)
 		if (!ft_strncmp(g_envp[i], var, end_name - var - plus)
 			&& g_envp[i][((end_name - plus) - var)] == '=')
 			break ;
-		i++;
-	}
 	if (g_envp[i] == NULL)
-	{
 		return (add_word_to_tab(var, &g_envp));
-	}
+	else if (*(end_name - 1) == '+')
+		g_envp[i] = ft_strjoin(g_envp[i], end_name + 1);
 	else
 	{
-		//ft_printf(1, "ENV existe\n");
-		if (*(end_name - 1) == '+')
-			g_envp[i] = ft_strjoin(g_envp[i], end_name + 1);
-		else
-		{
-			ft_strdel(&g_envp[i]);
-			g_envp[i] = ft_strdup(var);
-		}
+		ft_strdel(&g_envp[i]);
+		g_envp[i] = ft_strdup(var);
 	}
 	return (SUCCESS);
 }

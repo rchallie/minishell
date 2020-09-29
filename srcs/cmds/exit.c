@@ -12,20 +12,26 @@
 
 #include "../../incs/minishell.h"
 
-
 /*
 **	Function: array to u_int8_t
 **	--------------------
 */
 
-
-static int			is_space(char c)
+static int		is_space(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\r' || c == '\v'
 			|| c == '\n' || c == '\f')
 		return (1);
 	return (0);
 }
+
+/*
+**	Function: if_numeric_str
+**	--------------------
+**		Check if string is numeric (from machine_minus to machine_max)
+**
+**		(char *)	the string
+*/
 
 static u_int8_t	ft_atou(const char *str)
 {
@@ -49,14 +55,21 @@ static u_int8_t	ft_atou(const char *str)
 	return (nb);
 }
 
+/*
+**	Function: if_numeric_str
+**	--------------------
+**		Check if string is numeric (from machine_minus to machine_max)
+**
+**		(char *)	the string
+*/
 
-int		is_numeric_str(char *str)
+int				is_numeric_str(char *str)
 {
-	int 	i;
-	int		sign;
-	int		nb;
+	int			i;
+	int			sign;
+	int			nb;
 
-	nb = 0;	
+	nb = 0;
 	i = 0;
 	sign = 0;
 	sign = (str[i] == '+' || str[i] == '-') ? ++i : i;
@@ -66,7 +79,8 @@ int		is_numeric_str(char *str)
 			return (0);
 		i++;
 	}
-	if (ft_secure_strlen(str) == (ft_secure_strlen("9223372036854775808") + sign))
+	if (ft_secure_strlen(str) == (ft_secure_strlen("9223372036854775808")
+		+ sign))
 	{
 		nb = 10 * (str[sign + 17] - '0') + (str[sign + 18] - '0');
 		if (str[0] == '-' && nb > 8)
@@ -75,6 +89,27 @@ int		is_numeric_str(char *str)
 			return (0);
 	}
 	return (1);
+}
+
+/*
+**	Function: if_not_numeric_str_exit
+**	--------------------
+**		Check if string is numeric.
+**		If not prints the right error msg.
+** 		Exit command. Leave minishell propely.
+**
+**		(char **)	argv : arguments.
+*/
+
+static void		if_not_numeric_str_exit(char **argv)
+{
+	if (!is_numeric_str(argv[1]))
+	{
+		(isatty(0)) ? ft_printf(2, "exit\n") : 0;
+		ft_printf(2, "minishell: exit: %s: numeric argument required\n",
+			argv[1]);
+		exit(2);
+	}
 }
 
 /*
@@ -99,17 +134,10 @@ int				exit_minishell(
 	default_term_mode();
 	if (argc > 2)
 	{
-		if (!is_numeric_str(argv[1]))
-		{
-			if (isatty(0))
-				ft_printf(2, "exit\n");
-			ft_printf(2, "minishell: exit: %s: numeric argument required\n", argv[1]);
-			exit(2);
-		}
-		if (isatty(0))
-			ft_printf(2, "exit\n");
+		if_not_numeric_str_exit(argv);
+		(isatty(0)) ? ft_printf(2, "exit\n") : 0;
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return((is_numeric_str(argv[1]) ? 1 : 2));
+		return ((is_numeric_str(argv[1]) ? 1 : 2));
 	}
 	free_double_char_tab(g_ms.treated);
 	free(g_ms.sequence);
@@ -118,16 +146,9 @@ int				exit_minishell(
 	(g_pwd) ? free(g_pwd) : 0;
 	if (argc == 2)
 	{
-		if (!is_numeric_str(argv[1]))
-		{
-			if (isatty(0))
-				ft_printf(2, "exit\n");
-			ft_printf(2, "minishell: exit: %s: numeric argument required\n", argv[1]);
-			exit(2);
-		}
+		if_not_numeric_str_exit(argv);
 		exit(ft_atou(argv[1]));
 	}
-	if (argc == 1 && isatty(0))
-		ft_printf(2, "exit\n");
+	(argc == 1 && isatty(0)) ? ft_printf(2, "exit\n") : 0;
 	exit(g_ms.last_cmd_rtn);
 }

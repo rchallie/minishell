@@ -184,7 +184,7 @@ echo -e "$WHITE\n\nDo you want to do export tests ? [$GREEN y$WHITE /$RED n $WHI
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
 
     #EXPORT
@@ -257,7 +257,7 @@ echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
     then
     #PARSING
     echo 'AlexJeannot tester : '
@@ -374,7 +374,7 @@ echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED 
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     #REDIRECTIONS
     mkdir test_files
@@ -473,7 +473,7 @@ echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED n $WHITE
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     #ECHO
     run_test 'echo test'
@@ -513,7 +513,7 @@ echo -e "$WHITE\n\nDo you want to do env tests ? [$GREEN y$WHITE /$RED n $WHITE]
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     #ENV
     run_test 'env' 'grep -v _=' 'sort'
@@ -556,7 +556,7 @@ echo -e "$WHITE\n\nDo you want to do unset tests ? [$GREEN y$WHITE /$RED n $WHIT
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
     then
     #UNSET
     run_test 'unset'
@@ -585,7 +585,7 @@ echo -e "$WHITE\n\nDo you want to do pwd tests ? [$GREEN y$WHITE /$RED n $WHITE]
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
 #PWD
     run_test 'pwd'
@@ -600,7 +600,7 @@ echo -e "$WHITE\n\nDo you want to do cd tests ? [$GREEN y$WHITE /$RED n $WHITE]$
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     #CD
     mkdir test_cd
@@ -661,7 +661,7 @@ echo -e "$WHITE\n\nDo you want to do echo tests ? [$GREEN y$WHITE /$RED n $WHITE
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
     then
     #EXIT
     run_test 'exit'
@@ -710,7 +710,7 @@ echo -e "$WHITE\n\nDo you want to do environement variables tests ? [$GREEN y$WH
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
 
     #VARIABLES D'ENVIRONNEMENTS
@@ -760,7 +760,7 @@ echo -e "$WHITE\n\nDo you want to do pipe tests ? [$GREEN y$WHITE /$RED n $WHITE
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     #PIPE
     echo 'AlexJeannot tester:'
@@ -788,7 +788,7 @@ echo -e "$WHITE\n\nDo you want to do \$? tests ? [$GREEN y$WHITE /$RED n $WHITE]
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     #$?
     run_test 'export a ; echo $?'
@@ -826,7 +826,7 @@ echo -e "$WHITE\n\nDo you want to do program tests ? [$GREEN y$WHITE /$RED n $WH
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     #PROGRAM
     run_test './prog'
@@ -892,7 +892,7 @@ echo -e "$WHITE\n\nTest not mandatory commands ? [$GREEN y$WHITE /$RED n $WHITE]
 echo -ne "$CYAN>> $RESET"
 let 'test_number=1'
 read user_input
-if [ $user_input = 'y' ]
+if [ $user_input != 'n' ]
 then
     echo -e "\n\n$ORANGE#############################################################################"
     echo -e "#             NOT MANDATORY TO BE SIMILAR BUT MUST NOT SEGFAULT             #"
