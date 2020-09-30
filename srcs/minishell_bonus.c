@@ -6,13 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/30 15:45:17 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 19:57:56 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
-static int		print_prompt(void)
+int		print_prompt(void)
 {
 	char *pwd;
 

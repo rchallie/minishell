@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/30 15:45:35 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 17:40:47 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,13 +168,15 @@ char				**g_export_vars;
 char				*g_pwd;
 t_minishell			g_ms;
 
+int		print_prompt(void);
+
 /*
 ** _____ Signal catchers _____
 */
 
 void				sigcatcher_init();
-void				sigint_catcher();
-void				sigquit_catcher();
+void				sig_catcher_minishell(int num);
+void				sig_catcher_exec(int num);
 
 /*
 ** _____ Double char tab _____

@@ -39,9 +39,9 @@ SRC_BONUS	=	minishell_bonus.c 				\
 				minishell_pipe.c 				\
 				splitter.c 						\
 				check.c							\
-				exec.c							\
+				exec_bonus.c					\
 				error.c							\
-				sig_catcher.c					\
+				sig_catcher_bonus.c				\
 				interface.c						\
 				utils/utils_bonus.c				\
 				utils/word_parser_bonus.c		\
@@ -120,7 +120,7 @@ $(NAME): $(OBJS)
 
 $(NAME_BONUS): $(OBJS_BONUS)
 	make bonus -C ./libft
-	clang $(FLAGS) $(INCLUDES) ./libft/*.o ./libft/ft_printf/*.o $(OBJS_BONUS) -o $(NAME) 
+	clang $(FLAGS) $(INCLUDES) ./libft/*.o ./libft/ft_printf/*.o $(OBJS_BONUS) -o $(NAME_BONUS) 
 
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)/minishell.h
 		@mkdir -p $(OBJS_DIR)
@@ -144,6 +144,7 @@ clean:
 	
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME_BONUS)
 	$(MAKE) fclean -C ./libft
 	
 re: fclean all
