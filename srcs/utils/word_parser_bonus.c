@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   words_parser.c                                     :+:      :+:    :+:   */
+/*   word_parser_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:40:44 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/30 15:33:49 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 15:33:43 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,9 @@ int				get_word(
 			break ;
 		(sim_q == 0 && dou_q == 0) ? no_quotes(&startword, word, &sim_q, &dou_q)
 			: if_quotes(&startword, word, &sim_q, &dou_q);
-		if (*startword)
-			startword++;
+		(*startword) ? startword++ : 0;
 		if (*startword == '\0' && (sim_q || dou_q) && isatty(0))
-		{
-			(void)entry_addr;
-			return ((ft_printf(2, "minishell: multiligne\n") > 0) ? 0 : -1);
-		}
+			quote_error(&startword, entry_addr, &save_startword, sim_q);
 	}
 	*c_cnt = startword - save_startword;
 	return (SUCCESS);

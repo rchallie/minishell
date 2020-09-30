@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   minishell_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/30 15:43:02 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 15:45:17 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 	if (isatty == 0)
 	{
 		(void)entry;
-		if (print_prompt() == ERROR || get_next_line(0, &entry) < 0)
+		if (print_prompt() == ERROR)
 			return (ERROR);
-		entry_splitter(entry, 0, 0);
+		line_edition();
+		entry_splitter(g_ms.entry, 0, 0);
 	}
 	else
 		entry_splitter(entry, 0, 0);
@@ -152,11 +153,13 @@ int				main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	line = NULL;
 	if (beg_pwd(env) == ERROR)
 		return (ERROR);
 	beg_shlvl();
 	if (isatty(0))
 	{
+		put_beg();
 		while (42)
 			if (minishell_loop(0, g_ms.entry, &cmd_ret) == ERROR)
 				return (1);

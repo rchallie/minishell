@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/28 00:30:58 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 15:45:35 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,7 +293,6 @@ void				raw_term_mode(void);
 void				line_edition(void);
 void				clear_term(void);
 void				put_beg(void);
-int					print_prompt(void);
 int					tc_putchar(int c);
 void				get_cursor_start_pos(t_line *line);
 int					ft_getwinsz(t_winsz *winsz);
