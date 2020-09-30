@@ -2,6 +2,7 @@
 
 NAME 		= 	minishell
 
+NAME_BONUS	=	minishell_bonus
 # ==========================================================================================
 # SRCS =====================================================================================
 
@@ -9,12 +10,11 @@ SRCS_DIR 	= 	srcs/
 SRC			=	minishell.c 					\
 				minishell_2.c 					\
 				minishell_pipe.c 				\
-				splitter.c 				\
+				splitter.c 						\
 				check.c							\
 				exec.c							\
 				error.c							\
 				sig_catcher.c					\
-				interface.c						\
 				utils/utils.c					\
 				utils/words_parser.c			\
 				utils/utils_double_tabs.c		\
@@ -23,6 +23,34 @@ SRC			=	minishell.c 					\
 				cmds/cd.c						\
 				cmds/pwd.c						\
 				cmds/exit.c						\
+				cmds/unset.c					\
+				cmds/env.c						\
+				cmds/echo.c						\
+				cmds/export.c					\
+				cmds/export_utils.c				\
+				entry/sequence.c				\
+				entry/sequence_tuning.c			\
+				entry/sanitize.c 				\
+				entry/sanitize_env.c 			\
+				entry/reorder.c
+
+SRC_BONUS	=	minishell_bonus.c 				\
+				minishell_2.c 					\
+				minishell_pipe.c 				\
+				splitter.c 						\
+				check.c							\
+				exec_bonus.c					\
+				error.c							\
+				sig_catcher_bonus.c				\
+				interface.c						\
+				utils/utils_bonus.c				\
+				utils/word_parser_bonus.c		\
+				utils/utils_double_tabs.c		\
+				utils/utils_double_tabs_2.c		\
+				cmds/check.c					\
+				cmds/cd.c						\
+				cmds/pwd.c						\
+				cmds/exit_bonus.c				\
 				cmds/unset.c					\
 				cmds/env.c						\
 				cmds/echo.c						\
@@ -65,6 +93,8 @@ FLAGS 		= -ltermcap -Wall -Wextra -Werror -g
 OBJS_DIR 	= 	objs/
 OBJ 		= 	$(SRC:.c=.o)
 OBJS 		= 	$(addprefix $(OBJS_DIR), $(OBJ))
+OBJ_BONUS 	= 	$(SRC_BONUS:.c=.o)
+OBJS_BONUS 	= 	$(addprefix $(OBJS_DIR), $(OBJ_BONUS))
 
 # ==========================================================================================
 
@@ -88,6 +118,10 @@ $(NAME): $(OBJS)
 	make bonus -C ./libft
 	clang $(FLAGS) $(INCLUDES) ./libft/*.o ./libft/ft_printf/*.o $(OBJS) -o $(NAME) 
 
+$(NAME_BONUS): $(OBJS_BONUS)
+	make bonus -C ./libft
+	clang $(FLAGS) $(INCLUDES) ./libft/*.o ./libft/ft_printf/*.o $(OBJS_BONUS) -o $(NAME_BONUS) 
+
 $(OBJS_DIR)%.o :	$(SRCS_DIR)%.c $(INCS_DIR)/minishell.h
 		@mkdir -p $(OBJS_DIR)
 		@mkdir -p $(OBJS_DIR)entry
@@ -110,9 +144,13 @@ clean:
 	
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME_BONUS)
 	$(MAKE) fclean -C ./libft
 	
 re: fclean all
+
+bonus: $(NAME_BONUS)
+
 
 valgrind: all
 	valgrind --log-file=val --leak-check=yes --errors-for-leak-kinds=all --show-leak-kinds=all ./$(NAME)

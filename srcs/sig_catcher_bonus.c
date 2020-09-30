@@ -1,53 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sig_catcher.c                                      :+:      :+:    :+:   */
+/*   sig_catcher_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 18:19:10 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/30 19:01:55 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 18:10:17 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
-void		sigcatcher_init(void)
-{
-	if (signal(SIGINT, sig_catcher_minishell) == SIG_ERR)
-		exit(ERROR_SIGINT);
-	if (signal(SIGQUIT, sig_catcher_minishell) == SIG_ERR)
-		exit(ERROR_SIGQUIT);
-}
-
-void		sig_catcher_minishell(int num)
+void		sig_catcher(int num)
 {
 	if (num == SIGINT)
 	{
-		write(2, "\n", 1);
+		write(1, "\n", 1);
 		g_ms.last_cmd_rtn = 130;
-		(g_ms.entry) ? free(g_ms.entry) : 0;
-		g_ms.entry = NULL;
-		if (print_prompt() == ERROR)
-			exit(1);
 	}
 	else if (num ==	SIGQUIT)
 	{
-		ft_printf(2, "\b\b  \b\b");
+		write(1, "Quit (core dumped)\n", 19);
 		g_ms.last_cmd_rtn = 131;
 	}
 }
 
-void		sig_catcher_exec(int num)
+void		sigcatcher_init(void)
 {
-	if (num == SIGQUIT)
-	{
-		write(2, "Quit (core dumped)\n", 19);
-		g_ms.last_cmd_rtn = 131;
-	}
-	else if (num == SIGINT)
-	{
-		g_ms.last_cmd_rtn = 130;
-		ft_printf(2, "\n");
-	}
+	if (signal(SIGINT, sig_catcher) == SIG_ERR)
+		exit(ERROR_SIGINT);
+	if (signal(SIGQUIT, sig_catcher) == SIG_ERR)
+		exit(ERROR_SIGQUIT);
 }

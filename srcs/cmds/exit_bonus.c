@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 17:24:07 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/30 15:44:15 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/26 00:50:25 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int				exit_minishell(
 	(void)argc;
 	(void)argv;
 	(void)env;
+	default_term_mode();
 	if (argc > 2)
 	{
 		if_not_numeric_str_exit(argv);

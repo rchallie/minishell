@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/27 20:51:07 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 14:27:57 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ static int		sanitize_loop(int *up, char *entry, char ***treated)
 	while (ft_is_whitespace(*(entry + *up)))
 		(*up)++;
 	error_check = 0;
-	get_word((entry + *up), &entry, &word, &error_check);
+	if (get_word((entry + *up), &entry, &word, &error_check) == -1)
+		return (ERROR);
 	if (error_check == -1)
 		return (ERROR);
 	*up += error_check;

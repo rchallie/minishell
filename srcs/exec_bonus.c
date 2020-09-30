@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   exec_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 14:34:30 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/30 19:39:43 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/09/30 18:12:06 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ static int		do_cmd(char *file, t_exec *ex)
 	}
 	else
 	{
-		if (signal(SIGQUIT, sig_catcher_exec) == SIG_ERR)
-			exit(ERROR_SIGQUIT);
-		if (signal(SIGINT, sig_catcher_exec) == SIG_ERR)
-			exit(ERROR_SIGINT);
 		waitpid(pid, &status, 0);
 		g_ms.last_cmd_rtn = WEXITSTATUS(status);
 		free_double_char_tab(ex->argv);
@@ -122,8 +118,7 @@ static int		exec_from_env(
 	ex->env_path = get_env_var_by_name("PATH");
 	ex->path_list = ft_split(ex->env_path, ':');
 	free(ex->env_path);
-	if (is_cmd(cmd[0]) == -1 && !((cmd[0][0] == '.' && (cmd[0][1] == '.'
-		|| cmd[0][1] == '/'))))
+	if (is_cmd(cmd[0]) == -1)
 	{
 		while (++i < get_double_char_tab_len(ex->path_list))
 		{
