@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_parser_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:40:44 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/30 15:33:43 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 16:06:14 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static int		normal_char(
 	return (0);
 }
 
-int				get_word(
+int				get_word_bonus(
 	char *startword,
 	char **entry_addr,
 	char **word,

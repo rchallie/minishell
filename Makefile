@@ -58,7 +58,7 @@ SRC_BONUS	=	minishell_bonus.c 				\
 				cmds/export_utils.c				\
 				entry/sequence.c				\
 				entry/sequence_tuning.c			\
-				entry/sanitize.c 				\
+				entry/sanitize_bonus.c 			\
 				entry/sanitize_env.c 			\
 				entry/reorder.c					\
 				termcap/termcap.c				\

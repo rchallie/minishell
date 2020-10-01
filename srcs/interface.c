@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interface.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 18:35:30 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/30 16:32:40 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 16:15:09 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void		print_middle_term(char *str1, char *str2, int str_len, int row)
 	default_term_mode();
 }
 
-void			put_beg(void)
+int				put_beg(void)
 {
 	clear_term();
 	print_middle_term("\e[91m┌┬┐\e[92m┬┌┐\e[93m┌┬┌\e[94m─┐┬",
@@ -58,5 +58,5 @@ void			put_beg(void)
 		"\e[95m┘┴ \e[96m┴└─\e[91m┘┴─\e[92m┘┴─┘", 24, 3);
 	print_middle_term("", "", 0, 4);
 	default_term_mode();
-	return ;
+	return (1);
 }

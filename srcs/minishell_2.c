@@ -103,10 +103,7 @@ int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 			return (SUCCESS);
 		else if (seq[cursor] == 2 || seq[cursor] == 4
 			|| seq[cursor] == 3 || seq[cursor] == 5)
-		{
 			(seq[cursor] != 2) ? (redir_type = seq[cursor]) : 0;
-			continue;
-		}
 		else if (seq[cursor] == 8 && (redir_type == 4 || redir_type == 3
 			|| redir_type == 5))
 			if (handle_file(cmd[cursor], fdin, fdout, &redir_type) == -1)

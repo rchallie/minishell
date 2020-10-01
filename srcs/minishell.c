@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 12:30:14 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 16:20:53 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 					break ;
 			}
 		}
-		entry_splitter(g_ms.entry, 0, 0);
+		entry_splitter(g_ms.entry, 0, 0, NULL);
 	}
 	else
-		entry_splitter(entry, 0, 0);
+		entry_splitter(entry, 0, 0, NULL);
 	*cmd_ret = g_ms.last_cmd_rtn;
 	return (SUCCESS);
 }
