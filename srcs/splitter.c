@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_2.c                                      :+:      :+:    :+:   */
+/*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thervieu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 19:29:27 by thervieu          #+#    #+#             */
-/*   Updated: 2020/09/29 19:29:28 by thervieu         ###   ########.fr       */
+/*   Updated: 2020/10/01 12:44:43 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
-int				treat_entry(char *cmd)
+int		treat_entry(char *cmd)
 {
 	char	**cmd_treated;
 	int		*sequence;
@@ -27,7 +27,6 @@ int				treat_entry(char *cmd)
 		return (ERROR);
 	}
 	g_ms.has_pipe = 0;
-	//ft_printf(1, "cmd 5 = |%s|\n", cmd);
 	if (get_sequence(cmd_treated, &sequence) != SUCCESS)
 		return (ERROR);
 	reorder_sequence(&cmd_treated, &sequence);
@@ -46,14 +45,19 @@ int		entry_splitter_precheck(
 	char *entry
 )
 {
-	int s_quote = 0;
-	int d_quote = 0;
+	int s_quote;
+	int d_quote;
+
+	s_quote = 0;
+	d_quote = 0;
 	if (*entry && *entry == ';')
 	{
 		if (*(entry + 1) && *(entry + 1) == ';')
-			ft_printf(2, "minishell: syntax error near unexpected token « ;; »\n");
+			ft_printf(2,
+				"minishell: syntax error near unexpected token « ;; »\n");
 		else
-			ft_printf(2, "minishell: syntax error near unexpected token « ; »\n");
+			ft_printf(2,
+				"minishell: syntax error near unexpected token « ; »\n");
 		return (ERROR);
 	}
 	while (*entry)
@@ -66,9 +70,11 @@ int		entry_splitter_precheck(
 			d_quote = 1;
 		else if (*entry == '"' && *(entry - 1) != '\\' && d_quote == 1)
 			d_quote = 0;
-		if ((s_quote != 1 && d_quote != 1) && *entry && *entry == ';' && *(entry + 1) == ';')
+		if ((s_quote != 1 && d_quote != 1) && *entry && *entry == ';'
+			&& *(entry + 1) == ';')
 		{
-			ft_printf(2, "minishell: syntax error near unexpected token « ;; »\n");
+			ft_printf(2,
+				"minishell: syntax error near unexpected token « ;; »\n");
 			return (ERROR);
 		}
 		entry++;
@@ -76,7 +82,7 @@ int		entry_splitter_precheck(
 	return (SUCCESS);
 }
 
-void find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote)
+void	find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote)
 {
 	char *cp;
 
@@ -89,7 +95,8 @@ void find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote)
 				*find = ft_strchr(*find + 1, ';');
 			cp += 1;
 		}
-		if (*cp == '\'' && *(cp - 1) != '\\' && (*s_quote == 0 && *d_quote == 0))
+		if (*cp == '\'' && *(cp - 1) != '\\'
+			&& (*s_quote == 0 && *d_quote == 0))
 			*s_quote = 1;
 		else if (*cp == '\'' && *s_quote == 1)
 			*s_quote = 0;
@@ -97,7 +104,8 @@ void find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote)
 			*d_quote = 1;
 		else if (*cp == '"' && *(cp - 1) != '\\' && *d_quote == 1)
 			*d_quote = 0;
-		if (cp && *(cp + 1) && (cp + 1) == *find && (*s_quote == 1 || *d_quote == 1))
+		if (cp && *(cp + 1) && (cp + 1) == *find && (*s_quote == 1
+			|| *d_quote == 1))
 			if (**find && (**find + 1))
 				*find = ft_strchr(*find + 1, ';');
 		cp++;
@@ -127,7 +135,8 @@ int		entry_splitter(
 		find = ft_strchr(new_start, ';');
 		(!find) ? (find = (new_start + ft_secure_strlen(new_start))) : 0;
 		find_semicolon(new_start, &find, &s_quote, &d_quote);
-		cmd = (find != '\0') ? ft_substr(entry, new_start - entry, (find - new_start) + 1)
+		cmd = (find != '\0') ? ft_substr(entry,
+			new_start - entry, (find - new_start) + 1)
 			: ft_substr(entry, new_start - entry, find - new_start);
 		if (treat_entry(cmd) == ERROR)
 			return (g_ms.last_cmd_rtn = 2);

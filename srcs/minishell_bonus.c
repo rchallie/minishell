@@ -6,13 +6,13 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/30 19:57:56 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 12:25:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
-int		print_prompt(void)
+int				print_prompt(void)
 {
 	char *pwd;
 
@@ -63,17 +63,17 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 	return (SUCCESS);
 }
 
-static void beg_shlvl(void)
+static void		beg_shlvl(void)
 {
-	int i;
-	int shlvl;
-	char *shlvl_final;
-	char *shlvl_string;
+	int		i;
+	int		shlvl;
+	char	*shlvl_final;
+	char	*shlvl_string;
 
 	i = 0;
 	shlvl = 0;
 	shlvl_string = get_env_var_by_name("SHLVL");
-	(shlvl_string[0] == '-' || shlvl_string[0] =='+') ? ++i : 0;
+	(shlvl_string[0] == '-' || shlvl_string[0] == '+') ? ++i : 0;
 	while (shlvl_string[i] <= '9' && shlvl_string[i] >= '0')
 		i++;
 	if (shlvl_string[i] != '\0')
@@ -84,20 +84,20 @@ static void beg_shlvl(void)
 		shlvl = ft_atoi(shlvl_string) + 1;
 	(shlvl_string) ? free(shlvl_string) : 0;
 	shlvl_string = ft_itoa(shlvl);
-	shlvl_final = ft_strjoin("SHLVL=",shlvl_string);
+	shlvl_final = ft_strjoin("SHLVL=", shlvl_string);
 	add_var_to_env(shlvl_final);
 	(shlvl_string) ? free(shlvl_string) : 0;
 	(shlvl_final) ? free(shlvl_final) : 0;
 }
 
-static int beg_pwd(char **env)
+static int		beg_pwd(char **env)
 {
 	char *pwd;
 	char *forfree;
 
 	pwd = NULL;
 	forfree = NULL;
-	if(!get_pwd(&g_pwd))
+	if (!get_pwd(&g_pwd))
 		return (ERROR);
 	dup_double_char_tab(env, &g_envp);
 	sigcatcher_init();
@@ -149,7 +149,6 @@ int				main(int ac, char **av, char **env)
 {
 	int			cmd_ret;
 	char		*line;
-
 
 	(void)ac;
 	(void)av;

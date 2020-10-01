@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_3.c                                      :+:      :+:    :+:   */
+/*   minishell_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 18:38:48 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/27 23:47:29 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 12:05:42 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int				has_redir(char **cmd, int *seq, int *fdin, int *fdout)
 			|| redir_type == 5))
 			if (handle_file(cmd[cursor], fdin, fdout, &redir_type) == -1)
 				return (error_file(cmd[cursor], errno));
-
 	}
 	return (ERROR);
 }
@@ -141,4 +140,3 @@ void			cmd_no_pipe(char **cmd, int *seq)
 	(fdoutput != STDOUT_FILENO) ? dup2(saved_stdout, STDOUT_FILENO) : 0;
 	(fdoutput != STDOUT_FILENO) ? close(saved_stdout) : 0;
 }
-
