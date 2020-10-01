@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 16:21:05 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/01 17:56:30 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int				print_prompt(void)
 
 static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 {
-	*cmd_ret = 0;
 	g_ms = (t_minishell){.iscmdret = 0, .isexecret = -1,
 		.last_cmd_rtn = *cmd_ret};
 	add_var_to_env("_=./minishell");
