@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   exit_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 17:24:07 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/26 00:50:25 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 19:48:01 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ int				exit_minishell(
 	if (argc == 2)
 	{
 		if_not_numeric_str_exit(argv);
+		(isatty(0)) ? ft_printf(2, "exit\n") : 0;
 		exit(ft_atou(argv[1]));
 	}
 	(argc == 1 && isatty(0)) ? ft_printf(2, "exit\n") : 0;
