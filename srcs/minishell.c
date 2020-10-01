@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 17:57:55 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 18:37:27 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/minishell.h"
 
-int		print_prompt(void)
+int			print_prompt(void)
 {
 	char *pwd;
 
@@ -23,6 +23,51 @@ int		print_prompt(void)
 	ft_printf(STDOUT_FILENO,
 		"\e[92ml\e[93ml\e[97m] \e[91m%s \e[97m: ", pwd);
 	free(pwd);
+	return (SUCCESS);
+}
+
+static void	exit_negative_read(void)
+{
+	int		*int_exit;
+	char	**exit;
+
+	exit = new_double_char_tab_init(1, "exit");
+	exit[1] = NULL;
+	get_sequence(exit, &int_exit);
+	treat_command(exit, int_exit, 0);
+	return ;
+}
+
+static int	minishell_loop_isatty(
+	int rtn,
+	char *save,
+	char *buffer
+)
+{
+	if (print_prompt() == ERROR)
+		return (ERROR);
+	if (!(buffer = ft_strnew(sizeof(char) * (2))))
+		return (-1);
+	while (42)
+	{
+		if ((rtn = read(0, buffer, 1)) == -1)
+		{
+			(buffer) ? free(buffer) : 0;
+			(save) ? free(save) : 0;
+			exit_negative_read();
+		}
+		save = g_ms.entry;
+		if (buffer != NULL && *buffer == '\n')
+			break ;
+		if (buffer != NULL)
+			g_ms.entry = ft_strjoin(save, buffer);
+		(save && save != g_ms.entry) ? free(save) : 0;
+		(ft_strlen(g_ms.entry) == 0 && rtn == 0) ? exit_negative_read() : 0;
+		ft_bzero(buffer, sizeof(char) * (2));
+	}
+	(buffer) ? free(buffer) : 0;
+	if (g_ms.entry != NULL)
+		entry_splitter(g_ms.entry, 0, 0, NULL);
 	return (SUCCESS);
 }
 
@@ -43,7 +88,7 @@ int		print_prompt(void)
 **					   command.
 */
 
-static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
+static int	minishell_loop(int isatty, char *entry, int *cmd_ret)
 {
 	sigcatcher_init();
 	g_ms = (t_minishell){.iscmdret = 0, .isexecret = -1,
@@ -51,98 +96,12 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 	add_var_to_env("_=./minishell");
 	if (isatty == 0)
 	{
-		int rtn;
-		if (print_prompt() == ERROR)
+		if (minishell_loop_isatty(0, NULL, NULL) == ERROR)
 			return (ERROR);
-		
-		char *save = NULL;
-		char *buffer = NULL;
-		if (!(buffer = ft_strnew(sizeof(char) * (2))))
-			return (-1);
-		while (42)
-		{
-			if ((rtn = read(0, buffer, 1)) == -1)
-			{
-				(buffer) ? free(buffer) : 0;
-				(save) ? free(save) : 0;
-				int		*int_exit;
-				char	**exit;
-				exit = new_double_char_tab_init(1, "exit");
-				exit[1] = NULL;
-				get_sequence(exit, &int_exit);
-				treat_command(exit, int_exit, 0);
-			}
-			save = g_ms.entry;
-			if (buffer != NULL && *buffer == '\n')
-				break;
-			if (buffer != NULL)
-				g_ms.entry = ft_strjoin(save, buffer);
-			(save && save != g_ms.entry) ? free(save) : 0;
-			if (ft_strlen(g_ms.entry) == 0 && rtn == 0)
-			{
-				int		*int_exit;
-				char	**exit;
-				exit = new_double_char_tab_init(1, "exit");
-				exit[1] = NULL;
-				get_sequence(exit, &int_exit);
-				treat_command(exit, int_exit, 0);
-			}
-			ft_bzero(buffer, sizeof(char) * (2));
-		}
-		if (g_ms.entry != NULL)
-			entry_splitter(g_ms.entry, 0, 0, NULL);
 	}
 	else
 		entry_splitter(entry, 0, 0, NULL);
 	*cmd_ret = g_ms.last_cmd_rtn;
-	return (SUCCESS);
-}
-
-static void	beg_shlvl(void)
-{
-	int		i;
-	int		shlvl;
-	char	*shlvl_final;
-	char	*shlvl_string;
-
-	i = 0;
-	shlvl = 0;
-	shlvl_string = get_env_var_by_name("SHLVL");
-	(shlvl_string[0] == '-' || shlvl_string[0] == '+') ? ++i : 0;
-	while (shlvl_string[i] <= '9' && shlvl_string[i] >= '0')
-		i++;
-	if (shlvl_string[i] != '\0')
-		shlvl = 1;
-	else if (shlvl_string[0] == '-')
-		shlvl = 0;
-	else
-		shlvl = ft_atoi(shlvl_string) + 1;
-	(shlvl_string) ? free(shlvl_string) : 0;
-	shlvl_string = ft_itoa(shlvl);
-	shlvl_final = ft_strjoin("SHLVL=", shlvl_string);
-	add_var_to_env(shlvl_final);
-	(shlvl_string) ? free(shlvl_string) : 0;
-	(shlvl_final) ? free(shlvl_final) : 0;
-}
-
-static int	beg_pwd(char **env)
-{
-	char *pwd;
-	char *forfree;
-
-	pwd = NULL;
-	forfree = NULL;
-	if (!get_pwd(&g_pwd))
-		return (ERROR);
-	dup_double_char_tab(env, &g_envp);
-	if (bool_get_env_var_by_name("OLDPWD") == 0)
-		add_var_to_env("OLDPWD");
-	pwd = ft_strdup("PWD=");
-	forfree = pwd;
-	pwd = ft_strjoin(pwd, g_pwd);
-	(forfree) ? free(forfree) : 0;
-	add_var_to_env(pwd);
-	(pwd) ? free(pwd) : 0;
 	return (SUCCESS);
 }
 
@@ -179,7 +138,7 @@ static int	beg_pwd(char **env)
 **			"env"	: the environments variables.
 */
 
-int				main(int ac, char **av, char **env)
+int			main(int ac, char **av, char **env)
 {
 	int			cmd_ret;
 	char		*line;
@@ -189,14 +148,13 @@ int				main(int ac, char **av, char **env)
 	line = NULL;
 	if (beg_pwd(env) == ERROR)
 		return (ERROR);
-	beg_shlvl();
-	if (isatty(0))
+	if (isatty(0) && beg_shlvl())
 	{
 		while (42)
 			if (minishell_loop(0, g_ms.entry, &cmd_ret) == ERROR)
 				return (1);
 	}
-	else
+	else if (beg_shlvl())
 		while (get_next_line(0, &line) > 0)
 		{
 			if (minishell_loop(1, line, &cmd_ret) == ERROR)

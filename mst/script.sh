@@ -216,7 +216,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do more echo tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
     then
@@ -318,7 +317,7 @@ if [ $user_input != 'n' ]
     
     echo 
     echo "Solal tester :"
-    let 'test_number=1'
+
     run_test 'echo test tout'
     run_test 'echo test      tout'
     run_test 'echo -n test tout'
@@ -326,14 +325,13 @@ if [ $user_input != 'n' ]
 
     echo 
     echo "Mazoise tester :"
-    let 'test_number=1'
+
     run_test "echo $\"PWD\""
     run_test "echo $\'PWD\'"
 fi
 
 echo -e "$WHITE\n\nDo you want to do cd tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -385,7 +383,7 @@ then
 
     echo ""
     echo "Solal tester :"
-    let 'test_number=1'
+
     run_test 'cd .. ; pwd'
     run_test 'cd /Users ; pwd'
     run_test 'cd ; pwd'
@@ -395,7 +393,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do pwd tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -411,7 +408,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do export tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -457,7 +453,7 @@ then
 
     echo ""
     echo "Solal tester :"
-    let 'test_number=1'
+
     ENV_SHOW="env | sort | grep -v SHLVL | grep -v _="
     EXPORT_SHOW="export | sort | grep -v SHLVL | grep -v _= | grep -v OLDPWD"
     run_test 'export ='
@@ -483,7 +479,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do unset tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
     then
@@ -513,7 +508,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do env tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -554,7 +548,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do exit tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
     then
@@ -603,7 +596,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do environement variables tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -654,7 +646,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do REDIRECTIONS tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -741,7 +732,7 @@ then
 
     echo ""
     echo "Solal tester :"
-    let 'test_number=1'
+
     run_test 'echo test > ls ; cat ls'
     run_test 'echo test > ls >> ls >> ls ; echo test >> ls; cat ls'
     run_test '> lol echo test lol; cat lol'
@@ -752,7 +743,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do pipe tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -781,7 +771,6 @@ fi
 
 echo -e "$WHITE\n\nDo you want to do \$? tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -819,7 +808,6 @@ then
 fi
 echo -e "$WHITE\n\nDo you want to do program tests ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then
@@ -839,7 +827,6 @@ then
 fi
 
 echo
-let 'test_number=1'
 run_test 'touch test_file ; rm test_file'
 run_test 'ls'
 run_test 'cat bible.txt'
@@ -883,7 +870,6 @@ fi
 
 echo -e "$WHITE\n\nTest not mandatory commands ? [$GREEN y$WHITE /$RED n $WHITE]$RESET"
 echo -ne "$CYAN>> $RESET"
-let 'test_number=1'
 read user_input
 if [ $user_input != 'n' ]
 then

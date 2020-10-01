@@ -10,6 +10,7 @@ SRCS_DIR 	= 	srcs/
 SRC			=	minishell.c 					\
 				minishell_2.c 					\
 				minishell_pipe.c 				\
+				minishell_init.c 				\
 				splitter.c 						\
 				check.c							\
 				exec.c							\
