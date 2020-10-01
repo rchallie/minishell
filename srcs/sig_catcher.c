@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 18:19:10 by excalibur         #+#    #+#             */
-/*   Updated: 2020/09/30 19:01:55 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 12:08:55 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		sig_catcher_minishell(int num)
 		if (print_prompt() == ERROR)
 			exit(1);
 	}
-	else if (num ==	SIGQUIT)
+	else if (num == SIGQUIT)
 	{
 		ft_printf(2, "\b\b  \b\b");
 		g_ms.last_cmd_rtn = 131;
