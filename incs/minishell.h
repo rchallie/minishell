@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 16:21:20 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/01 18:41:25 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ char				**g_export_vars;
 char				*g_pwd;
 t_minishell			g_ms;
 
-int		print_prompt(void);
+int					print_prompt(void);
 
 /*
 ** _____ Signal catchers _____
@@ -189,7 +189,8 @@ int					double_char_tab_contain(char *name, char **from);
 char				**double_tab_bubble_sort(char ***sort_me);
 int					double_char_tab_remove(char **to_remove, char ***array);
 int					add_word_to_tab(char *word, char ***treated);
-char				**new_double_char_tab_init(size_t double_tab_size, char *str_init);
+char				**new_double_char_tab_init(size_t double_tab_size,
+					char *str_init);
 
 /*
 ** _____ Char array _____
@@ -199,9 +200,10 @@ char				*add_char_to_word(char *word, char c);
 char				*add_char_to_word_free(char *word, char c);
 
 int					entry_splitter_precheck(char *entry);
-void				find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote);
-int					entry_splitter(char *entry, int s_quote, int d_quote, char *cmd);
-
+void				find_semicolon(char *new_start, char **find, int *s_quote,
+					int *d_quote);
+int					entry_splitter(char *entry, int s_quote, int d_quote,
+					char *cmd);
 
 /*
 ** _____ Environment _____
@@ -210,6 +212,8 @@ int					entry_splitter(char *entry, int s_quote, int d_quote, char *cmd);
 char				*get_env_var_by_name(char *name);
 int					bool_get_env_var_by_name(char *name);
 int					add_var_to_env(char *var);
+int					beg_shlvl(void);
+int					beg_pwd(char **env);
 
 /*
 ** _____ Utils _____
@@ -220,10 +224,11 @@ int					ft_printf(int fd, const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);
 int					get_word(char *startword, char **word, int *char_count);
-int					get_word_bonus(char *startword, char **entry_addr, char **word, int *char_count);
+int					get_word_bonus(char *startword, char **entry_addr,
+					char **word, int *char_count);
 void				quote_error(char **startword, char **entry_addr,
 					char **save_startword, int simple_q);
-					
+
 /*
 ** _____ Pwd _____
 */
@@ -255,11 +260,14 @@ int					is_set(char *var_name);
 
 int					get_sequence(char **treated, int **sequence);
 int					sanitize(char *entry, char ***treated);
-int					sanitize_env_var(char **entry, char **word, char **entry_addr);
+int					sanitize_env_var(char **entry, char **word,
+					char **entry_addr);
 int					reorder_sequence(char ***cmd, int **seq);
 int					has_redir(char **cmd, int *seq, int *fdin, int *fdout);
-int					has_redir_output(int redir_type, int cursor, int fd, char **cmd, int *seq);
-int					has_redir_input(int redir_type, int cursor, int fd, char **cmd, int *seq);
+int					has_redir_output(int redir_type, int cursor, int fd,
+					char **cmd, int *seq);
+int					has_redir_input(int redir_type, int cursor, int fd,
+					char **cmd, int *seq);
 void				cmd_has_pipe(char **cmd, int *seq);
 void				cmd_no_pipe(char **cmd, int *seq);
 int					treat_command(char **cmd, int *seq, int cursor);

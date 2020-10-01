@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sig_catcher.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 18:19:10 by excalibur         #+#    #+#             */
-/*   Updated: 2020/10/01 17:30:39 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 20:05:15 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ void		sig_catcher_minishell(int num)
 			exit(1);
 	}
 	else if (num == SIGQUIT)
-	{
 		ft_printf(2, "\b\b  \b\b");
-		g_ms.last_cmd_rtn = 131;
-	}
 }
 
 void		sig_catcher_exec(int num)

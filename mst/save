@@ -1,4 +1,0 @@
-exit lala 55 -> mauvaise erreur / on exit pas
-exit 55 lala -> on exit pas
-exit lala lala -> on exit pas / mauvais message d'erreur
-exit -55 55 -> on exit pas

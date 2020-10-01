@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 17:56:30 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 18:35:28 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 	return (SUCCESS);
 }
 
-static int		beg_shlvl(void)
+static int		beg_shlvl_bonus(void)
 {
 	int		i;
 	int		shlvl;
@@ -90,7 +90,7 @@ static int		beg_shlvl(void)
 	return (1);
 }
 
-static int		beg_pwd(char **env)
+static int		beg_pwd_bonus(char **env)
 {
 	char *pwd;
 	char *forfree;
@@ -153,15 +153,15 @@ int				main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	line = NULL;
-	if (beg_pwd(env) == ERROR)
+	if (beg_pwd_bonus(env) == ERROR)
 		return (ERROR);
-	if (isatty(0) && put_beg() && beg_shlvl())
+	if (isatty(0) && put_beg() && beg_shlvl_bonus())
 	{
 		while (42)
 			if (minishell_loop(0, g_ms.entry, &cmd_ret) == ERROR)
 				return (1);
 	}
-	else
+	else if (beg_shlvl_bonus())
 		while (get_next_line(0, &line) > 0)
 		{
 			if (minishell_loop(1, line, &cmd_ret) == ERROR)

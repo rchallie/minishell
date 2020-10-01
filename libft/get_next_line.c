@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rchallie <rchallie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:20:38 by rchallie          #+#    #+#             */
-/*   Updated: 2019/11/04 10:24:41 by rchallie         ###   ########.fr       */
+/*   Updated: 2020/10/01 18:46:28 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +61,7 @@ char	*get_line(char *str)
 	return (rtn);
 }
 
-int		has_return (char *str)
+int		has_return(char *str)
 {
 	int i;
 
@@ -86,9 +85,7 @@ int		get_next_line(int fd, char **line)
 	char			*save_save;
 
 	reader = 1;
-	if (fd < 0 || !line)
-		return (-1);
-	if (!(buff = malloc(sizeof(char) * (2))))
+	if (fd < 0 || !line || !(buff = ft_strnew(sizeof(char) * 2)))
 		return (-1);
 	while (!has_return(save) && reader != 0)
 	{
@@ -97,7 +94,6 @@ int		get_next_line(int fd, char **line)
 			free(buff);
 			return (-1);
 		}
-		buff[reader] = '\0';
 		save_save = save;
 		save = ft_strjoin(save, buff);
 		free(save_save);
