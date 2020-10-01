@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 14:02:29 by rchallie          #+#    #+#             */
-/*   Updated: 2020/09/30 17:40:47 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 16:21:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ char				*add_char_to_word_free(char *word, char c);
 
 int					entry_splitter_precheck(char *entry);
 void				find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote);
-int					entry_splitter(char *entry, int s_quote, int d_quote);
+int					entry_splitter(char *entry, int s_quote, int d_quote, char *cmd);
 
 
 /*
@@ -219,7 +219,8 @@ int					get_next_line(int fd, char **line);
 int					ft_printf(int fd, const char *str, ...);
 int					ft_secure_strlen(const char *str);
 int					ft_is_whitespace(char c);
-int					get_word(char *startword, char **entry_addr, char **word, int *char_count);
+int					get_word(char *startword, char **word, int *char_count);
+int					get_word_bonus(char *startword, char **entry_addr, char **word, int *char_count);
 void				quote_error(char **startword, char **entry_addr,
 					char **save_startword, int simple_q);
 					
@@ -294,7 +295,7 @@ void				default_term_mode(void);
 void				raw_term_mode(void);
 void				line_edition(void);
 void				clear_term(void);
-void				put_beg(void);
+int					put_beg(void);
 int					tc_putchar(int c);
 void				get_cursor_start_pos(t_line *line);
 int					ft_getwinsz(t_winsz *winsz);

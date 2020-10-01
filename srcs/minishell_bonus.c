@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 12:25:42 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 16:21:05 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 		if (print_prompt() == ERROR)
 			return (ERROR);
 		line_edition();
-		entry_splitter(g_ms.entry, 0, 0);
+		entry_splitter(g_ms.entry, 0, 0, NULL);
 	}
 	else
-		entry_splitter(entry, 0, 0);
+		entry_splitter(entry, 0, 0, NULL);
 	*cmd_ret = g_ms.last_cmd_rtn;
 	return (SUCCESS);
 }
 
-static void		beg_shlvl(void)
+static int		beg_shlvl(void)
 {
 	int		i;
 	int		shlvl;
@@ -88,6 +88,7 @@ static void		beg_shlvl(void)
 	add_var_to_env(shlvl_final);
 	(shlvl_string) ? free(shlvl_string) : 0;
 	(shlvl_final) ? free(shlvl_final) : 0;
+	return (1);
 }
 
 static int		beg_pwd(char **env)
@@ -155,10 +156,8 @@ int				main(int ac, char **av, char **env)
 	line = NULL;
 	if (beg_pwd(env) == ERROR)
 		return (ERROR);
-	beg_shlvl();
-	if (isatty(0))
+	if (isatty(0) && put_beg() && beg_shlvl())
 	{
-		put_beg();
 		while (42)
 			if (minishell_loop(0, g_ms.entry, &cmd_ret) == ERROR)
 				return (1);

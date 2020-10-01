@@ -338,6 +338,7 @@ read user_input
 if [ $user_input != 'n' ]
 then
     #CD
+    echo 'AlexJeannot tester : '
     mkdir test_cd
     mkdir ~/test_cd
     run_test 'pwd ; cd ; pwd'

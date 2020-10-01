@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 19:29:27 by thervieu          #+#    #+#             */
-/*   Updated: 2020/10/01 12:44:43 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/10/01 16:45:08 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,8 @@ int		treat_entry(char *cmd)
 	return (SUCCESS);
 }
 
-int		entry_splitter_precheck(
-	char *entry
-)
+int		precheck_norm(char *entry)
 {
-	int s_quote;
-	int d_quote;
-
-	s_quote = 0;
-	d_quote = 0;
 	if (*entry && *entry == ';')
 	{
 		if (*(entry + 1) && *(entry + 1) == ';')
@@ -60,17 +53,29 @@ int		entry_splitter_precheck(
 				"minishell: syntax error near unexpected token « ; »\n");
 		return (ERROR);
 	}
+	return (SUCCESS);
+}
+
+int		entry_splitter_precheck(
+	char *entry
+)
+{
+	int quote;
+
+	quote = 0;
+	if (precheck_norm(entry) == ERROR)
+		return (ERROR);
 	while (*entry)
 	{
-		if (*entry == '\'' && *(entry - 1) != '\\' && s_quote == 0)
-			s_quote = 1;
-		else if (*entry == '\'' && *(entry - 1) != '\\' && s_quote == 1)
-			s_quote = 0;
-		if (*entry == '"' && *(entry - 1) != '\\' && d_quote == 0)
-			d_quote = 1;
-		else if (*entry == '"' && *(entry - 1) != '\\' && d_quote == 1)
-			d_quote = 0;
-		if ((s_quote != 1 && d_quote != 1) && *entry && *entry == ';'
+		if (*entry == '\'' && *(entry - 1) != '\\' && quote == 0)
+			quote = 1;
+		else if (*entry == '\'' && *(entry - 1) != '\\' && quote == 1)
+			quote = 0;
+		if (*entry == '"' && *(entry - 1) != '\\' && quote == 0)
+			quote = 2;
+		else if (*entry == '"' && *(entry - 1) != '\\' && quote == 2)
+			quote = 0;
+		if ((quote != 1 && quote != 2) && *entry && *entry == ';'
 			&& *(entry + 1) == ';')
 		{
 			ft_printf(2,
@@ -82,17 +87,16 @@ int		entry_splitter_precheck(
 	return (SUCCESS);
 }
 
-void	find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote)
+void	find_semicolon(char *new_start, char **f, int *s_quote, int *d_quote)
 {
 	char *cp;
 
 	cp = new_start;
-	while (*cp && cp != *find)
+	while (*cp && cp != *f)
 	{
 		if (*cp == '\\')
 		{
-			if (*(cp + 1) && (cp + 1) == *find)
-				*find = ft_strchr(*find + 1, ';');
+			(*(cp + 1) && (cp + 1) == *f) ? (*f = ft_strchr(*f + 1, ';')) : 0;
 			cp += 1;
 		}
 		if (*cp == '\'' && *(cp - 1) != '\\'
@@ -104,26 +108,24 @@ void	find_semicolon(char *new_start, char **find, int *s_quote, int *d_quote)
 			*d_quote = 1;
 		else if (*cp == '"' && *(cp - 1) != '\\' && *d_quote == 1)
 			*d_quote = 0;
-		if (cp && *(cp + 1) && (cp + 1) == *find && (*s_quote == 1
+		if (cp && *(cp + 1) && (cp + 1) == *f && (*s_quote == 1
 			|| *d_quote == 1))
-			if (**find && (**find + 1))
-				*find = ft_strchr(*find + 1, ';');
+			(**f && (**f + 1)) ? (*f = ft_strchr(*f + 1, ';')) : 0;
 		cp++;
 	}
-	(!*find) ? (*find = (new_start + ft_secure_strlen(new_start))) : 0;
+	(!*f) ? (*f = (new_start + ft_secure_strlen(new_start))) : 0;
 }
 
 int		entry_splitter(
 	char *entry,
 	int s_quote,
-	int d_quote
+	int d_quote,
+	char *cmd
 )
 {
-	char *cmd;
 	char *find;
 	char *new_start;
 
-	cmd = NULL;
 	find = NULL;
 	new_start = entry;
 	if (entry_splitter_precheck(new_start) == ERROR)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sanitize.c                                         :+:      :+:    :+:   */
+/*   sanitize_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/30 19:14:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 16:03:56 by user42           ###   ########.fr       */
+/*   Created: 2020/10/01 16:03:22 by user42            #+#    #+#             */
+/*   Updated: 2020/10/01 16:13:22 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int		sanitize_loop(int *up, char *entry, char ***treated)
 	while (ft_is_whitespace(*(entry + *up)))
 		(*up)++;
 	error_check = 0;
-	if (get_word((entry + *up), &word, &error_check) == -1)
+	if (get_word_bonus((entry + *up), &entry, &word, &error_check) == -1)
 		return (ERROR);
 	if (error_check == -1)
 		return (ERROR);
