@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
+/*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:46:42 by rchallie          #+#    #+#             */
-/*   Updated: 2020/10/01 16:20:53 by user42           ###   ########.fr       */
+/*   Updated: 2020/10/01 17:57:55 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,49 +46,51 @@ int		print_prompt(void)
 static int		minishell_loop(int isatty, char *entry, int *cmd_ret)
 {
 	sigcatcher_init();
-	*cmd_ret = 0;
 	g_ms = (t_minishell){.iscmdret = 0, .isexecret = -1,
-		.last_cmd_rtn = *cmd_ret};
+		.last_cmd_rtn = *cmd_ret, .entry = NULL};
 	add_var_to_env("_=./minishell");
 	if (isatty == 0)
 	{
 		int rtn;
-		if (print_prompt() == ERROR
-			|| (rtn = get_next_line(0, &g_ms.entry)) < 0)
+		if (print_prompt() == ERROR)
 			return (ERROR);
-		if (ft_strcmp(g_ms.entry, "") == 0 && rtn == 0)
+		
+		char *save = NULL;
+		char *buffer = NULL;
+		if (!(buffer = ft_strnew(sizeof(char) * (2))))
+			return (-1);
+		while (42)
 		{
-			int		*int_exit;
-			char	**exit;
-			exit = new_double_char_tab_init(1, "exit");
-			exit[1] = NULL;
-			get_sequence(exit, &int_exit);
-			treat_command(exit, int_exit, 0);
-		}
-		else if (rtn == 0)
-		{
-			while (42)
+			if ((rtn = read(0, buffer, 1)) == -1)
 			{
-				char *save;
-				save = g_ms.entry;
-				rtn = get_next_line(0, &g_ms.entry);
-				g_ms.entry = ft_strjoin(save, g_ms.entry);
+				(buffer) ? free(buffer) : 0;
 				(save) ? free(save) : 0;
-				if (rtn < 0)
-				{
-					int		*int_exit;
-					char	**exit;
-					ft_printf(2, "minishell: get_next_line error\n");
-					exit = new_double_char_tab_init(1, "exit");
-					exit[1] = NULL;
-					get_sequence(exit, &int_exit);
-					treat_command(exit, int_exit, 0);
-				}
-				else if (rtn > 0)
-					break ;
+				int		*int_exit;
+				char	**exit;
+				exit = new_double_char_tab_init(1, "exit");
+				exit[1] = NULL;
+				get_sequence(exit, &int_exit);
+				treat_command(exit, int_exit, 0);
 			}
+			save = g_ms.entry;
+			if (buffer != NULL && *buffer == '\n')
+				break;
+			if (buffer != NULL)
+				g_ms.entry = ft_strjoin(save, buffer);
+			(save && save != g_ms.entry) ? free(save) : 0;
+			if (ft_strlen(g_ms.entry) == 0 && rtn == 0)
+			{
+				int		*int_exit;
+				char	**exit;
+				exit = new_double_char_tab_init(1, "exit");
+				exit[1] = NULL;
+				get_sequence(exit, &int_exit);
+				treat_command(exit, int_exit, 0);
+			}
+			ft_bzero(buffer, sizeof(char) * (2));
 		}
-		entry_splitter(g_ms.entry, 0, 0, NULL);
+		if (g_ms.entry != NULL)
+			entry_splitter(g_ms.entry, 0, 0, NULL);
 	}
 	else
 		entry_splitter(entry, 0, 0, NULL);
